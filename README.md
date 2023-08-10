@@ -25,12 +25,17 @@ make
 - Create branch for your edits.
 - After your edits, fetch and merge to master.
 - Push.
+
 ```
 alias sgit=git fetch --all && git pull --all && git branch
-
+```
+```
 sgit
 git branch <branch_name>
 git switch <branch_name>
+```
+merge to master:
+```
 git add .
 git commit -m "<message>"
 git switch master
@@ -38,3 +43,10 @@ sgit
 git merge <branch_name>
 git push
 ```
+push branch:
+```
+git add .
+git commit -m "<message>"
+git push <branch_name>
+```
+
