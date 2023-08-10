@@ -28,9 +28,11 @@ make
 
 ```
 alias sgit=git fetch --all && git pull --all && git branch
+alias submodule=git submodule update --init
 ```
 ```
-sgit
+```
+sgit && submodule
 git branch <branch_name>
 git switch <branch_name>
 ```
