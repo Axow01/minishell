@@ -1,0 +1,3 @@
+[submodule "includes/libmms"]
+	path = includes/libmms
+	url = git@github.com:Axow01/libmms.git
