@@ -50,4 +50,7 @@ git add .
 git commit -m "<message>"
 git push <branch_name>
 ```
-
+Delete branch:
+```
+git branch -D <branch_name>
+```
