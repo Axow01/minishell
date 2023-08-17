@@ -1,6 +1,6 @@
 #--- LIBRARY NAME ---#
 NAME = minishell
-LIBFT_DIR = includes/minishell_libft/
+LIBFT_DIR = includes/libftms/
 LIBFT_A = libft.a
 
 #--- COMMAND VARIABLES ---#
@@ -20,7 +20,7 @@ INCDIR = inc
 
 #--- SOURCE ---#
 SRCDIR	=	src
-SRC		= 	
+SRC		= 	main.c
 VPATH	=	$(SRCDIR)
 
 #--- OBJECT ---#
@@ -34,7 +34,7 @@ $(OBJDIR)/%.o:	%.c
 all:	libft $(NAME)
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(OBJ) $(LIBFT_DIR)$(LIBFT_A)
+	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) $(OBJ) 
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
