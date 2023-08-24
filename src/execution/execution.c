@@ -8,14 +8,17 @@ bool	cmd_accessible(char **cmd, int modes)
 	return (true);
 }
 
+t_path	check_path_type(char **cmd)
+{
+	if (cmd[1][0] == '.' || cmd[1][0] == '/')
+		return (ABSOLUTE_PATH);
+	return (COMMAND);
+}
+
 bool	execution(t_infos *infos)
 {
-	int	i;
-
 	if (!infos->cmd || !infos->env)
 		return (false);
-	i = 0;
-	while (infos->cmd[i][0] != 0)
-		printf("%s\n", infos->cmd[i++]);
+	printf("%d\n", check_path_type(infos->cmd));
 	return (true);
 }

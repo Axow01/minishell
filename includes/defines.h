@@ -11,4 +11,10 @@ typedef struct s_infos
 	char	**env;
 }		t_infos;
 
+typedef enum e_path
+{
+	ABSOLUTE_PATH = 0,
+	COMMAND = 1
+}	t_path;
+
 #endif
