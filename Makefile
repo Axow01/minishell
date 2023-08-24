@@ -5,7 +5,7 @@ LIBFT_A = libft.a
 
 #--- COMMAND VARIABLES ---#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 RM = rm -f
 AR = ar rcs
 MK = mkdir -p
@@ -20,7 +20,8 @@ INCDIR = inc
 
 #--- SOURCE ---#
 SRCDIR	=	src
-SRC		= 	main.c
+EXECUTIONDIR = execution
+SRC		= 	main.c execution/execution.c
 VPATH	=	$(SRCDIR)
 
 #--- OBJECT ---#
@@ -39,6 +40,7 @@ ${NAME}:	$(OBJDIR) $(OBJ)
 
 $(OBJDIR):
 	@$(MK) $(OBJDIR)
+	@$(MK) $(OBJDIR)/$(EXECUTIONDIR)
 	
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)

@@ -5,4 +5,8 @@
 # include <stdio.h>
 # include "libftms/inc/libft.h"
 # include "execution.h"
+# include "defines.h"
+
+t_infos	*get_infos(void);
+
 #endif
