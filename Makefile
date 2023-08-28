@@ -5,7 +5,7 @@ LIBFT_A = libft.a
 
 #--- COMMAND VARIABLES ---#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g 
 RM = rm -fd
 AR = ar rcs
 MK = mkdir -p
@@ -23,6 +23,8 @@ SRCDIR	=	src
 EXECUTIONDIR = execution
 SRC		= 	main.c execution/execution.c
 VPATH	=	$(SRCDIR)
+HISTORYLIB    =    readline/libhistory.a
+READLINELIB    =    readline/libreadline.a
 
 #--- OBJECT ---#
 OBJDIR  =   obj
@@ -35,7 +37,7 @@ $(OBJDIR)/%.o:	%.c
 all:	libft $(NAME)
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) $(OBJ) 
+	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) -l readline -l ncurses $(HISTORYLIB) $(READLINELIB) $(OBJ)
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):

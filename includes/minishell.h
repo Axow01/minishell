@@ -6,6 +6,8 @@
 # include "libftms/inc/libft.h"
 # include "execution.h"
 # include "defines.h"
+# include "readline/history.h"
+# include "readline/readline.h"
 
 t_infos	*get_infos(void);
 
