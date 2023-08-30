@@ -14,6 +14,21 @@ t_infos	*get_infos(void)
 	return (infos);
 }
 
+bool	read_line_debug(void)
+{
+	char	*line;
+
+	if(get_infos()->pwd)
+		get_infos()->pwd = mms_free(get_infos()->pwd);
+	get_infos()->pwd = get_pwd(get_infos()->env);
+	printf("\x1b[36;49;1;3m");
+	line = readline(get_infos()->pwd);
+	if (!line)
+		return (false);
+	get_infos()->cmd = ft_split(line, ' ');
+	return (true);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_infos	*infos;
@@ -24,12 +39,13 @@ int	main(int argc, char **argv, char **env)
 	infos->cmd = argv;
 	infos->env = env;
 	infos->path = path_split(env_to_path(infos->env));
-	infos->cmd = mms_alloc(2, sizeof(char **));
-	infos->cmd[1] = 0;
-	infos->cmd[0] = readline("minishell>");
-	if (!infos->cmd[0])
-		mms_kill("Input error!\n", true, 1);
-	printf("Execution success: %d\n", execution(get_infos()));
+	while (1)
+	{
+		if (read_line_debug())
+			execution(get_infos());
+		else
+			printf("Error\nreadline NULL\n");
+	}
 	mms_kill("", false, 0);
 	return (0);
 }

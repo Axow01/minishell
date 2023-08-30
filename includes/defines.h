@@ -9,6 +9,7 @@ typedef struct s_infos
 {
 	char	**cmd;
 	char	**env;
+	char	*pwd;
 	char	**path;
 }		t_infos;
 
