@@ -16,12 +16,13 @@ RED		=	\033[1;31m
 RESET 	= 	\033[0m
 
 #--- INCLUDE ---#
-INCDIR = inc
+INCDIR = includes
 
 #--- SOURCE ---#
 SRCDIR	=	src
 EXECUTIONDIR = execution
-SRC		= 	main.c execution/execution.c
+PATH_DIR = path
+SRC		= 	main.c execution/execution.c path/path.c
 VPATH	=	$(SRCDIR)
 HISTORYLIB    =    readline/libhistory.a
 READLINELIB    =    readline/libreadline.a
@@ -37,12 +38,13 @@ $(OBJDIR)/%.o:	%.c
 all:	libft $(NAME)
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) -l readline -l ncurses $(HISTORYLIB) $(READLINELIB) $(OBJ)
+	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) -L $(INCDIR)/readline/ -l readline -l ncurses $(OBJ)
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
 	@$(MK) $(OBJDIR)
 	@$(MK) $(OBJDIR)/$(EXECUTIONDIR)
+	@$(MK) $(OBJDIR)/$(PATH_DIR)
 	
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)

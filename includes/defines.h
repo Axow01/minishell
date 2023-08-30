@@ -9,6 +9,7 @@ typedef struct s_infos
 {
 	char	**cmd;
 	char	**env;
+	char	**path;
 }		t_infos;
 
 typedef enum e_path
