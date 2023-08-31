@@ -11,7 +11,7 @@ char	*env_to_path(char **env)
 	path = NULL;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], "PATH", 4) == 0)
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			k = 4;
 			path = mms_alloc(ft_strlen(env[i] + k) + 1, sizeof (char));
