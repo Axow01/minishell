@@ -25,6 +25,7 @@ bool	read_line_debug(void)
 	line = readline(get_infos()->pwd);
 	if (!line)
 		return (false);
+	add_history(line);
 	get_infos()->cmd = ft_split(line, ' ');
 	return (true);
 }
