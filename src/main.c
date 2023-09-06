@@ -17,8 +17,9 @@ t_infos	*get_infos(void)
 bool	read_line_debug(void)
 {
 	char	*line;
+	char	**cmd;
 
-	if(get_infos()->pwd)
+	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
 	get_infos()->pwd = get_pwd(get_infos()->env);
 	printf("\x1b[36;49;1;3m");
@@ -26,7 +27,8 @@ bool	read_line_debug(void)
 	if (!line)
 		return (false);
 	add_history(line);
-	get_infos()->cmd = ft_split(line, ' ');
+	cmd = ft_split(line, ' ');
+	get_infos()->cmd = cmd;
 	return (true);
 }
 
