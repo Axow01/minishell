@@ -36,7 +36,10 @@ OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 $(OBJDIR)/%.o:	%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I. -c $< -o $@
 	
-all:	libft $(NAME)
+all:	submodules libft $(NAME)
+
+submodules:
+	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
 	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) -L $(INCDIR)/readline/ -l readline -l ncurses $(OBJ)
