@@ -4,4 +4,4 @@
 [submodule "includes/libmms"]
 	path = includes/libmms
 	url = https://github.com/Axow01/libmms.git
-	branch = v1.0.0
+	branch = b6d9631
