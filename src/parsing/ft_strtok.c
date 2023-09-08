@@ -6,6 +6,7 @@ char    *ft_strtok(char *str, const char delim)
     static char    *stock;
     char        *output;
     bool        found;
+    bool        quote[2];
 
     if (str)
         stock = str;
