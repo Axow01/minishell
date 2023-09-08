@@ -13,6 +13,14 @@ typedef struct s_infos
 	char	**path;
 }		t_infos;
 
+typedef struct s_command
+{
+	char				**cmd;
+	int					stdin;
+	int					stdout;
+	struct s_command	*next;
+}		t_command;
+
 typedef enum e_path
 {
 	ABSOLUTE_PATH = 0,
