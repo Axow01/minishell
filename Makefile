@@ -21,8 +21,9 @@ INCDIR = includes
 #--- SOURCE ---#
 SRCDIR	=	src
 EXECUTIONDIR = execution
+PARSINGDIR = parsing
 PATH_DIR = path
-SRC		= 	main.c execution/execution.c path/path.c
+SRC		= 	main.c execution/execution.c path/path.c parsing/ft_strtok.c parsing/parsing.c
 VPATH	=	$(SRCDIR)
 HISTORYLIB    =    readline/libhistory.a
 READLINELIB    =    readline/libreadline.a
@@ -45,6 +46,7 @@ $(OBJDIR):
 	@$(MK) $(OBJDIR)
 	@$(MK) $(OBJDIR)/$(EXECUTIONDIR)
 	@$(MK) $(OBJDIR)/$(PATH_DIR)
+	@$(MK) $(OBJDIR)/$(PARSINGDIR)
 	
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)

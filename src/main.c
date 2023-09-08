@@ -1,5 +1,7 @@
 
 #include "../includes/minishell.h"
+#include <string.h>
+#include <stdio.h>
 
 t_infos	*get_infos(void)
 {
@@ -26,6 +28,7 @@ bool	read_line_debug(void)
 	if (!line)
 		return (false);
 	add_history(line);
+	teststrtok();
 	get_infos()->cmd = ft_split(line, ' ');
 	return (true);
 }

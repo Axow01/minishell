@@ -3,5 +3,7 @@
 
 # include "libftms/inc/libft.h"
 
+void	teststrtok(void);
+char    *ft_strtok(char *str, const char delim);
 
 #endif
