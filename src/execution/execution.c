@@ -33,36 +33,33 @@ char	**generate_argv(char **cmd)
 	return (argv);
 }
 
-bool	execution(t_infos *infos)
+void	launch_program(char *cmd_absolute, t_infos *infos)
 {
 	pid_t	pid;
 	char	**argv;
-	char	*temp_cmd;
 	int		*status;
 
-	if (!infos->cmd || !infos->env)
-		return (false);
-	if (ft_strncmp(infos->cmd[0], "exit", 4) == 0)
-		mms_kill("", true, 0);
-	temp_cmd = get_cmd_path(infos->cmd, infos->path);
-	status = NULL;
-	execve(infos->cmd[0], );
-	mms_kill();
-	if (temp_cmd)
+	if (cmd_absolute)
 	{
-		infos->cmd[0] = mms_free(infos->cmd[0]);
-		infos->cmd[0] = temp_cmd;
+		status = NULL;
 		argv = generate_argv(infos->cmd);
 		pid = fork();
 		if (pid == 0)
-		{
-			execve(infos->cmd[0], argv, infos->env);
-			mms_kill(NULL, true, 0);
-		}
+			execve(cmd_absolute, argv, infos->env);
 		waitpid(pid, status, 0);
+		cmd_absolute = mms_free(cmd_absolute);
 		argv = mms_free(argv);
 	}
 	else
 		printf("minishell: %s: command not found\n", infos->cmd[0]);
+}
+
+bool	execution(t_infos *infos)
+{
+	if (!infos->cmd || !infos->env)
+		return (false);
+	if (ft_strncmp(infos->cmd[0], "exit", 4) == 0)
+		mms_kill("", true, 0);
+	launch_program(get_cmd_path(infos->cmd, infos->path), infos);
 	return (true);
 }
