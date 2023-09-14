@@ -46,6 +46,8 @@ bool	execution(t_infos *infos)
 		mms_kill("", true, 0);
 	temp_cmd = get_cmd_path(infos->cmd, infos->path);
 	status = NULL;
+	execve(infos->cmd[0], );
+	mms_kill();
 	if (temp_cmd)
 	{
 		infos->cmd[0] = mms_free(infos->cmd[0]);

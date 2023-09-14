@@ -41,7 +41,7 @@ submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) -L $(INCDIR)/readline/ -l readline -l ncurses $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
