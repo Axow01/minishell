@@ -19,11 +19,12 @@ RESET 	= 	\033[0m
 INCDIR = includes
 
 #--- SOURCE ---#
-SRCDIR	=	src
-EXECUTIONDIR = execution
+SRC_DIR	=	src
+EXECUTION_DIR = execution
 PATH_DIR = path
-SRC		= 	main.c execution/execution.c path/path.c
-VPATH	=	$(SRCDIR)
+BUILTINS_DIR = builtins
+SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c
+VPATH	=	$(SRC_DIR)
 HISTORYLIB    =    readline/libhistory.a
 READLINELIB    =    readline/libreadline.a
 
@@ -45,9 +46,7 @@ ${NAME}:	$(OBJDIR) $(OBJ)
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
-	@$(MK) $(OBJDIR)
-	@$(MK) $(OBJDIR)/$(EXECUTIONDIR)
-	@$(MK) $(OBJDIR)/$(PATH_DIR)
+	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd
 	
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)

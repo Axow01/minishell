@@ -64,6 +64,11 @@ bool	execution(t_infos *infos)
 		return (false);
 	if (ft_strncmp(infos->cmd[0], "exit", 4) == 0)
 		mms_kill("", true, 0);
+	else if (ft_strncmp(infos->cmd[0], "cd", 2) == 0)
+	{
+		cd(infos->cmd[1], infos->env);
+		return (true);
+	}
 	if (check_path_type(infos->cmd) == ABSOLUTE_PATH)
 		launch_program(infos->cmd[0], infos);
 	else
