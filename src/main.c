@@ -19,7 +19,7 @@ t_infos	*get_infos(void)
 bool	read_line_debug(void)
 {
 	char	*line;
-	char	**cmd;
+	// char	**cmd;
 
 	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
@@ -29,6 +29,7 @@ bool	read_line_debug(void)
 	if (!line)
 		return (false);
 	add_history(line);
+	// teststrtok();
 	get_infos()->cmd = ft_split(line, ' ');
 	return (true);
 }

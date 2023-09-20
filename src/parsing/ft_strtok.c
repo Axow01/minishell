@@ -9,7 +9,7 @@ char    *ft_strtok(char *str, const char delim)
     static char    *stock;
     char        *output;
     bool        found;
-    bool        quote[2];
+    bool        quote[20];
 
     if (str)
         stock = str;
@@ -24,11 +24,11 @@ char    *ft_strtok(char *str, const char delim)
             found = true;
             output = stock;
         }
-        else if ((!quote[0] && !quote[1]) && *stock == '"')
+        else if ((!quote[0] && !quote[1]) && *stock == '\"')
             quote[0] = true;
         else if ((!quote[0] && !quote[1]) && *stock == '\'')
             quote[1] = true;
-        else if (((found && *stock == delim) && (!quote[0] && !quote[1])) || *stock+1 = NULL)
+        else if (((found && *stock == delim) && (!quote[0] && !quote[1])))
         {
             *stock = 0;
             stock++;
