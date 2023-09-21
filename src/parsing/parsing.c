@@ -8,5 +8,5 @@ void teststrtok(void)
     char *line = "ls -la | wc -l > outfile >> bobfile";
     char *new = ft_strtok(line, '>');
 
-    // printf("test : %s\n", new);
+    printf("test : %s\n", new);
 }
