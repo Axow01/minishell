@@ -51,8 +51,8 @@ void	launch_program(char *cmd_absolute, t_infos *infos)
 		if (pid == 0)
 			execve(cmd_absolute, argv, infos->env);
 		waitpid(pid, status, 0);
-		cmd_absolute = mms_free(cmd_absolute);
-		argv = mms_free(argv);
+		mms_free(cmd_absolute);
+		mms_free(argv);
 	}
 	else
 		printf("minishell: %s: command not found\n", infos->cmd[0]);

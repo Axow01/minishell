@@ -29,7 +29,7 @@ char	**path_split(char *path)
 	char	**path_splited;
 
 	path_splited = ft_split(path, ':');
-	path = mms_free(path);
+	mms_free(path);
 	return (path_splited);
 }
 
@@ -46,7 +46,7 @@ char	*get_cmd_path(char **cmd, char **path)
 		temp_path = ft_strjoin(temp_path, cmd[0]);
 		if (access(temp_path, F_OK | X_OK) == 0)
 			return (temp_path);
-		temp_path = mms_free(temp_path);
+		mms_free(temp_path);
 	}
 	return (NULL);
 }
@@ -70,7 +70,7 @@ char	*get_pwd(char **env)
 				pwd[k - 4] = env[i][k];
 			pwd[k - 4] = '>';
 			tmp = ft_strjoin(pwd, "\x1b[0m");
-			pwd = mms_free(pwd);
+			mms_free(pwd);
 			return (tmp);
 		}
 	}
