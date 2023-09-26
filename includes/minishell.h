@@ -7,6 +7,7 @@
 # include "libftms/inc/libft.h"
 # include "execution.h"
 # include "defines.h"
+# include "builtins.h"
 # include "path.h"
 # include "parsing.h"
 # include "readline/history.h"

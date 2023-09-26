@@ -19,12 +19,13 @@ RESET 	= 	\033[0m
 INCDIR = includes
 
 #--- SOURCE ---#
-SRCDIR	=	src
-EXECUTIONDIR = execution
+SRC_DIR	=	src
+EXECUTION_DIR = execution
 PARSINGDIR = parsing
 PATH_DIR = path
-SRC		= 	main.c execution/execution.c path/path.c parsing/ft_strtok.c parsing/parsing.c
-VPATH	=	$(SRCDIR)
+BUILTINS_DIR = builtins
+SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c parsing/ft_strtok.c parsing/parsing.c
+VPATH	=	$(SRC_DIR)
 HISTORYLIB    =    readline/libhistory.a
 READLINELIB    =    readline/libreadline.a
 
@@ -42,14 +43,11 @@ submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -o $(NAME) $(LIBFT_DIR)$(LIBFT_A) -L $(INCDIR)/readline/ -l readline -l ncurses $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadlinemac -lhistorymac -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
-	@$(MK) $(OBJDIR)
-	@$(MK) $(OBJDIR)/$(EXECUTIONDIR)
-	@$(MK) $(OBJDIR)/$(PATH_DIR)
-	@$(MK) $(OBJDIR)/$(PARSINGDIR)
+	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd
 	
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)

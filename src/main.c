@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **env)
 	infos->cmd = argv;
 	infos->env = env;
 	if (!infos->env)
-		mms_kill("ll", true, 1);
+		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
 	while (1)
 	{
