@@ -16,8 +16,8 @@ typedef struct s_infos
 typedef struct s_command
 {
 	char				**cmd;
-	int					stdin;
-	int					stdout;
+	int					stdin_;
+	int					stdout_;
 	struct s_command	*next;
 }		t_command;
 

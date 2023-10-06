@@ -60,28 +60,5 @@ void	launch_program(char *cmd_absolute, t_infos *infos)
 
 bool	execution(t_infos *infos)
 {
-	int	i;
-
-	if (!infos->cmd || !infos->env)
-		return (false);
-	if (ft_strncmp(infos->cmd[0], "exit", 4) == 0)
-		mms_kill("", true, 0);
-	else if (ft_strncmp(infos->cmd[0], "cd", 2) == 0)
-	{
-		printf("minishell: This command is not currently handled. Sorry!\n");
-		return (true);
-	}
-	else if (ft_strncmp(infos->cmd[0], "ll", 2) == 0)
-	{
-		i = -1;
-		while (infos->cmd[++i])
-			infos->cmd[i] = mms_free(infos->cmd[i]);
-		infos->cmd = mms_free(infos->cmd);
-		infos->cmd = ft_split("ls -l", ' ');
-	}
-	if (check_path_type(infos->cmd) == ABSOLUTE_PATH)
-		launch_program(infos->cmd[0], infos);
-	else
-		launch_program(get_cmd_path(infos->cmd, infos->path), infos);
-	return (true);
+	// Let's redo that completely.
 }
