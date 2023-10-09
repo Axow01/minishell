@@ -9,6 +9,7 @@
 # include "defines.h"
 # include "builtins.h"
 # include "path.h"
+# include "pipe.h"
 # include "readline/history.h"
 # include "readline/readline.h"
 

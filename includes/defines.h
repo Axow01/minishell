@@ -7,10 +7,10 @@
 
 typedef struct s_infos
 {
-	char	**cmd;
-	char	**env;
-	char	*pwd;
-	char	**path;
+	t_command	cmd;
+	char		**env;
+	char		*pwd;
+	char		**path;
 }		t_infos;
 
 typedef struct s_command

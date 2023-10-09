@@ -60,5 +60,5 @@ void	launch_program(char *cmd_absolute, t_infos *infos)
 
 bool	execution(t_infos *infos)
 {
-	// Let's redo that completely.
+	return (true);
 }
