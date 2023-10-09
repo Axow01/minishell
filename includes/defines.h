@@ -5,6 +5,16 @@
 # include "libftms/inc/libft.h"
 # include <stdbool.h>
 
+
+typedef struct s_command
+{
+	char				**cmd;
+	char				*exec_cmd;
+	int					stdin_;
+	int					stdout_;
+	struct s_command	*next;
+}		t_command;
+
 typedef struct s_infos
 {
 	t_command	cmd;
@@ -12,14 +22,6 @@ typedef struct s_infos
 	char		*pwd;
 	char		**path;
 }		t_infos;
-
-typedef struct s_command
-{
-	char				**cmd;
-	int					stdin_;
-	int					stdout_;
-	struct s_command	*next;
-}		t_command;
 
 typedef enum e_path
 {

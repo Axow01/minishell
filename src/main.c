@@ -8,7 +8,6 @@ t_infos	*get_infos(void)
 	if (!infos)
 	{
 		infos = mms_alloc(1, sizeof(t_infos));
-		infos->cmd = NULL;
 		infos->env = NULL;
 	}
 	return (infos);
@@ -28,7 +27,7 @@ bool	read_line_debug(void)
 		return (false);
 	add_history(line);
 	cmd = ft_split(line, ' ');
-	get_infos()->cmd = cmd;
+	get_infos()->cmd.cmd = cmd;
 	return (true);
 }
 
@@ -39,7 +38,8 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	mms_set_alloc_fn(ft_calloc);
 	infos = get_infos();
-	infos->cmd = argv;
+	// infos->cmd = argv;
+	(void) argv;
 	infos->env = env;
 	if (!infos->env)
 		mms_kill("minishell: could not retreive env\n", true, 1);

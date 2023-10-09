@@ -22,8 +22,9 @@ INCDIR = includes
 SRC_DIR	=	src
 EXECUTION_DIR = execution
 PATH_DIR = path
+PIPE_DIR = pipe
 BUILTINS_DIR = builtins
-SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c
+SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c
 VPATH	=	$(SRC_DIR)
 HISTORYLIB    =    readline/libhistory.a
 READLINELIB    =    readline/libreadline.a
@@ -42,11 +43,11 @@ submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadlinemac -lhistorymac -lncurses -o minishell
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
-	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd
+	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR)
 	
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)
