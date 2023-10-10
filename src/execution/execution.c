@@ -37,10 +37,28 @@ char	**generate_argv(char **cmd)
 	return (argv);
 }
 
+bool	print_struct(t_infos *infos)
+{
+	t_command	*cmd_buffer;
+	int			i;
+
+	cmd_buffer = &infos->cmd;
+	i = -1;
+	while (cmd_buffer)
+	{
+		printf("EXEC: %s\n", cmd_buffer->exec_cmd);
+		while (cmd_buffer->cmd_argv[++i])
+			printf("%s\n", cmd_buffer->cmd_argv[i]);
+		cmd_buffer = cmd_buffer->next;
+	}
+	return (true);
+}
+
 bool	execution(t_infos *infos)
 {
 	t_command	*cmd_buffer;
 
+	// Add the sorting to dispach the type of execution (redirections or pipe and simple execution).
 	cmd_buffer = &infos->cmd;
 	while (cmd_buffer)
 	{

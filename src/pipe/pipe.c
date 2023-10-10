@@ -18,7 +18,7 @@ bool	execution_pipe(t_infos *infos)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
-		if (execve(, NULL, infos->env) == -1)
+		if (execve(NULL, NULL, infos->env) == -1)
 			perror("Exec fail!\n");
 	}
 	else // Parent process.
