@@ -14,6 +14,8 @@ bool	cmd_accessible(char **cmd, int modes)
 /// @return The right path type.
 t_path	check_path_type(char **cmd)
 {
+	if (!cmd[0] || !cmd[0][0])
+		return (0);
 	if (cmd[0][0] == '.' || cmd[0][0] == '/')
 		return (ABSOLUTE_PATH);
 	return (COMMAND);
@@ -59,6 +61,8 @@ bool	execution(t_infos *infos)
 	t_command	*cmd_buffer;
 
 	// Add the sorting to dispach the type of execution (redirections or pipe and simple execution).
+	if (ft_strncmp(infos->cmd.cmd[0], "exit", 4) == 0)
+		mms_kill(NULL, true, 0);
 	cmd_buffer = &infos->cmd;
 	while (cmd_buffer)
 	{

@@ -15,4 +15,6 @@
 
 t_infos	*get_infos(void);
 
+char	*get_username(char **env);
+
 #endif

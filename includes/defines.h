@@ -22,6 +22,7 @@ typedef struct s_infos
 	char		**env;
 	char		*pwd;
 	char		**path;
+	char		*username;
 }		t_infos;
 
 typedef enum e_path

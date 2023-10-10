@@ -44,6 +44,7 @@ int	main(int argc, char **argv, char **env)
 	if (!infos->env)
 		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
+	infos->username = get_username(env);
 	while (1)
 	{
 		if (read_line_debug())
