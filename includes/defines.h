@@ -10,6 +10,7 @@ typedef struct s_command
 {
 	char				**cmd;
 	char				*exec_cmd;
+	char				**cmd_argv;
 	int					stdin_;
 	int					stdout_;
 	struct s_command	*next;

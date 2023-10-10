@@ -37,29 +37,19 @@ char	**generate_argv(char **cmd)
 	return (argv);
 }
 
-// void	launch_program(char *cmd_absolute, t_infos *infos)
-// {
-// 	pid_t	pid;
-// 	char	**argv;
-// 	int		*status;
-
-// 	if (cmd_absolute)
-// 	{
-// 		status = NULL;
-// 		argv = generate_argv(infos->cmd);
-// 		pid = fork();
-// 		if (pid == 0)
-// 			execve(cmd_absolute, argv, infos->env);
-// 		waitpid(pid, status, 0);
-// 		mms_free(cmd_absolute);
-// 		mms_free(argv);
-// 	}
-// 	else
-// 		printf("minishell: %s: command not found\n", infos->cmd[0]);
-// }
-
 bool	execution(t_infos *infos)
 {
-	execution_pipe(get_infos());
+	t_command	*cmd_buffer;
+
+	cmd_buffer = &infos->cmd;
+	while (cmd_buffer)
+	{
+		if (check_path_type(cmd_buffer->cmd) == COMMAND)
+			cmd_buffer->exec_cmd = get_cmd_path(cmd_buffer->cmd, infos->path);
+		else
+			cmd_buffer->exec_cmd = cmd_buffer->cmd[0];
+		cmd_buffer->cmd_argv = cmd_buffer->cmd;
+		cmd_buffer = cmd_buffer->next;
+	}
 	return (true);
 }
