@@ -12,4 +12,9 @@
 /// @return True if success false if not.
 bool	execution(t_infos *infos);
 
+/// @brief This function dispach the command to the right place, either it's
+///			a redirection or pipe or just a single command.
+/// @param infos The informations structure.
+void	execution_dispach(t_infos *infos);
+
 #endif

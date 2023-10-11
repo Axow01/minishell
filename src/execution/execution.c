@@ -60,7 +60,6 @@ bool	execution(t_infos *infos)
 {
 	t_command	*cmd_buffer;
 
-	// Add the sorting to dispach the type of execution (redirections or pipe and simple execution).
 	if (ft_strncmp(infos->cmd.cmd[0], "exit", 4) == 0)
 		mms_kill(NULL, true, 0);
 	cmd_buffer = &infos->cmd;
