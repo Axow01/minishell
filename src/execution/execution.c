@@ -21,41 +21,6 @@ t_path	check_path_type(char **cmd)
 	return (COMMAND);
 }
 
-char	**generate_argv(char **cmd)
-{
-	char	**argv;
-	int		nb_args;
-	int		i;
-
-	nb_args = 2;
-	i = 0;
-	while (cmd[++i])
-		nb_args++;
-	argv = mms_alloc(nb_args, sizeof(char **));
-	i = -1;
-	while (cmd[++i])
-		argv[i] = cmd[i];
-	argv[i] = 0;
-	return (argv);
-}
-
-bool	print_struct(t_infos *infos)
-{
-	t_command	*cmd_buffer;
-	int			i;
-
-	cmd_buffer = &infos->cmd;
-	i = -1;
-	while (cmd_buffer)
-	{
-		printf("EXEC: %s\n", cmd_buffer->exec_cmd);
-		while (cmd_buffer->cmd_argv[++i])
-			printf("%s\n", cmd_buffer->cmd_argv[i]);
-		cmd_buffer = cmd_buffer->next;
-	}
-	return (true);
-}
-
 bool	execution(t_infos *infos)
 {
 	t_command	*cmd_buffer;
@@ -72,5 +37,6 @@ bool	execution(t_infos *infos)
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
 		cmd_buffer = cmd_buffer->next;
 	}
+	execution_dispach(infos);
 	return (true);
 }

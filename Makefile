@@ -37,7 +37,7 @@ OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 $(OBJDIR)/%.o:	%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I. -c $< -o $@
 	
-all:	submodules libft $(NAME)
+all:	submodules readline_compile libft $(NAME)
 
 submodules:
 	@git submodule update --init --recursive
@@ -48,7 +48,10 @@ ${NAME}:	$(OBJDIR) $(OBJ)
 
 $(OBJDIR):
 	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR)
-	
+
+readline_compile:
+	@cd includes/readline && ./configure && $(MAKE)
+
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)
 
@@ -59,6 +62,7 @@ clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)
 	@$(RM)r $(OBJDIR)
+	@cd includes/readline && $(MAKE) distclean
 	
 fclean:	clean	
 	@$(MAKE) -C $(LIBFT_DIR) fclean
