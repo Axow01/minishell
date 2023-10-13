@@ -23,6 +23,14 @@ bool	simple_exec(t_command *cmd)
 {
 	pid_t	pid_fork;
 
+	if (!cmd->exec_cmd)
+	{
+		if (check_path_type(cmd->cmd) == COMMAND)
+			ft_printf("minishell: %s: command not found\n", cmd->cmd[0]);
+		else
+			ft_printf("minishell: %s: No such file or directory\n", cmd->cmd[0]);
+		return (false);
+	}
 	pid_fork = fork();
 	if (pid_fork == -1)
 		return (false);
