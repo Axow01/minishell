@@ -23,4 +23,6 @@ void	execution_dispach(t_infos *infos);
 /// @return The right path type.
 t_path	check_path_type(char **cmd);
 
+int16_t	count_cmd(t_command *cmd);
+
 #endif

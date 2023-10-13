@@ -25,6 +25,7 @@ bool	read_line_debug(void)
 	line = readline(get_infos()->pwd);
 	if (!line)
 		return (false);
+	mms_add_ptr(line);
 	add_history(line);
 	cmd = ft_split(line, ' ');
 	get_infos()->cmd.cmd = cmd;
@@ -37,6 +38,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	mms_set_alloc_fn(ft_calloc);
+	printf("pid: %d\n", getpid());
 	infos = get_infos();
 	// infos->cmd = argv;
 	(void) argv;

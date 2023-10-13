@@ -5,6 +5,10 @@
 # include "libftms/inc/libft.h"
 # include <stdbool.h>
 
+typedef struct s_pipe
+{
+	int	p_fd[2];
+}			t_pipe;
 
 typedef struct s_command
 {
