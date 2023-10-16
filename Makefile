@@ -5,7 +5,7 @@ LIBFT_A = libft.a
 
 #--- COMMAND VARIABLES ---#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 RM = rm -fd
 AR = ar rcs
 MK = mkdir -p
@@ -24,7 +24,7 @@ EXECUTION_DIR = execution
 PATH_DIR = path
 PIPE_DIR = pipe
 BUILTINS_DIR = builtins
-SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c
+SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c
 VPATH	=	$(SRC_DIR)
 
 #--- OBJECT ---#

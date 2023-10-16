@@ -11,4 +11,6 @@
 /// @return 
 bool	execution_pipe(t_infos *infos);
 
+bool	init_pipefd(t_pipe *pipes);
+
 #endif

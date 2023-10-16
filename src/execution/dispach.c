@@ -48,10 +48,7 @@ void	execution_dispach(t_infos *infos)
 {
 	infos->nb_cmd = count_cmd(&infos->cmd);
 	if (infos->nb_cmd > 1)
-	{
 		execution_pipe(infos);
-		return ;
-	}
 	else
 		simple_exec(&infos->cmd);
 	return ;

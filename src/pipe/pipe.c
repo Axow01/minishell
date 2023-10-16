@@ -1,17 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-bool	init_pipefd(t_pipe *pipes)
-{
-	int	i;
-
-	i = 0;
-	while (i < get_infos()->nb_cmd - 1)
-		if (pipe(pipes[i++].p_fd) == -1)
-			return (false);
-	return (true);
-}
-
 void	change_in_out(t_infos *infos, t_pipe *pipes)
 {
 	t_command	*bufc;
@@ -45,9 +34,21 @@ void	close_all_pipes(t_pipe *pipes, int nb_pipes)
 	i = 0;
 	while (i < nb_pipes)
 	{
-		close(pipes[i++].p_fd[0]);
+		close(pipes[i].p_fd[0]);
 		close(pipes[i++].p_fd[1]);
 	}
+	pipes = mms_free(pipes);
+}
+
+void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
+{
+	if (buf->stdin_ == STDIN_FILENO)
+		close(pipes[i].p_fd[0]);
+	if (buf->stdout_ == STDOUT_FILENO)
+		close(pipes[i].p_fd[1]);
+	dup2(buf->stdin_, STDIN_FILENO);
+	dup2(buf->stdout_, STDOUT_FILENO);
+	execve(buf->exec_cmd, buf->cmd_argv, infos->env);
 }
 
 bool	run_all(t_infos *infos, t_pipe *pipes)
@@ -62,18 +63,10 @@ bool	run_all(t_infos *infos, t_pipe *pipes)
 	{
 		pid = fork();
 		if (pid == 0)
-		{
-			if (buf->stdin_ == STDIN_FILENO)
-				close(pipes[i].p_fd[0]);
-			if (buf->stdout_ == STDOUT_FILENO)
-				close(pipes[i].p_fd[1]);
-			dup2(buf->stdin_, STDIN_FILENO);
-			dup2(buf->stdout_, STDOUT_FILENO);
-			execve(buf->exec_cmd, buf->cmd_argv, infos->env);
-		}
-		if (buf->stdin_ != STDIN_FILENO)
+			run_fork(buf, pipes, infos, i);
+		if (buf->stdin_ != STDIN_FILENO && i < infos->nb_cmd - 1)
 			close(pipes[i].p_fd[0]);
-		if (buf->stdout_ != STDOUT_FILENO)
+		if (buf->stdout_ != STDOUT_FILENO && i < infos->nb_cmd - 1)
 			close(pipes[i].p_fd[1]);
 		waitpid(pid, NULL, 0);
 		i++;
