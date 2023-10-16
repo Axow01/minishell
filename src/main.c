@@ -18,7 +18,7 @@ t_infos	*get_infos(void)
 bool	read_line_debug(void)
 {
 	char	*line;
-	char	**cmd;
+	// char	**cmd;
 
 	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
@@ -28,8 +28,9 @@ bool	read_line_debug(void)
 	if (!line)
 		return (false);
 	add_history(line);
-	cmd = ft_split(line, ' ');
-	get_infos()->cmd.cmd = cmd;
+	teststrtok(line);
+	// cmd = ft_split(line, ' ');
+	// get_infos()->cmd.cmd = cmd;
 	return (true);
 }
 
@@ -49,10 +50,11 @@ int	main(int argc, char **argv, char **env)
 	infos->username = get_username(env);
 	while (1)
 	{
-		if (read_line_debug())
-			execution(get_infos());
-		else
-			printf("Error\nreadline NULL\n");
+		read_line_debug();
+		// if (read_line_debug())
+		// 	execution(get_infos());
+		// else
+		// 	printf("Error\nreadline NULL\n");
 	}
 	mms_kill("", false, 0);
 	return (0);
