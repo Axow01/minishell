@@ -5,6 +5,9 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <ncurses.h>
 # include "libftms/inc/libft.h"
 # include "execution.h"
 # include "defines.h"
@@ -12,8 +15,6 @@
 # include "path.h"
 # include "pipe.h"
 # include "parsing.h"
-# include "readline/history.h"
-# include "readline/readline.h"
 
 t_infos	*get_infos(void);
 
