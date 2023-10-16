@@ -37,20 +37,17 @@ OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 $(OBJDIR)/%.o:	%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I. -c $< -o $@
 	
-all:	submodules readline_compile libft $(NAME)
+all:	submodules libft $(NAME)
 
 submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -lreadline -lhistory -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
 	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR)
-
-readline_compile:
-	@cd includes/readline && ./configure && $(MAKE)
 
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -62,7 +59,6 @@ clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)
 	@$(RM)r $(OBJDIR)
-	@cd includes/readline && $(MAKE) distclean
 	
 fclean:	clean	
 	@$(MAKE) -C $(LIBFT_DIR) fclean
