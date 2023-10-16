@@ -29,7 +29,7 @@ char	**path_split(char *path)
 	char	**path_splited;
 
 	path_splited = ft_split(path, ':');
-	path = mms_free(path);
+	mms_free(path);
 	return (path_splited);
 }
 
@@ -46,9 +46,35 @@ char	*get_cmd_path(char **cmd, char **path)
 		temp_path = ft_strjoin(temp_path, cmd[0]);
 		if (access(temp_path, F_OK | X_OK) == 0)
 			return (temp_path);
-		temp_path = mms_free(temp_path);
+		mms_free(temp_path);
 	}
 	return (NULL);
+}
+
+char	*get_username(char **env)
+{
+	char	*username;
+	char	*raw_user;
+	int		i;
+	int		k;
+
+	i = -1;
+	username = NULL;
+	while (env[++i])
+	{
+		if (ft_strncmp(env[i], "USER=", 5) == 0)
+		{
+			raw_user = env[i] + 5;
+			username = mms_alloc(ft_strlen(raw_user) + 3, sizeof(char));
+			username[0] = ' ';
+			k = 0;
+			while (raw_user[++k - 1])
+				username[k] = raw_user[k - 1];
+			username = ft_strjoin("\x1b[32;1m", username);
+			username = ft_strjoin(username, "\x1b[36;1;3m");
+		}
+	}
+	return (username);
 }
 
 char	*get_pwd(char **env)
@@ -65,12 +91,16 @@ char	*get_pwd(char **env)
 		if (ft_strncmp(env[i], "PWD", 3) == 0)
 		{
 			k = 3;
-			pwd = mms_alloc(ft_strlen(env[i] + 4) + 2, sizeof (char));
+			pwd = mms_alloc(ft_strlen(env[i] + 4) + 2
+					+ ft_strlen(get_infos()->username), sizeof (char));
 			while (env[i][++k])
 				pwd[k - 4] = env[i][k];
+			i = -1;
+			while (get_infos()->username[++i])
+				pwd[k++ - 4] = get_infos()->username[i];
 			pwd[k - 4] = '>';
 			tmp = ft_strjoin(pwd, "\x1b[0m");
-			pwd = mms_free(pwd);
+			mms_free(pwd);
 			return (tmp);
 		}
 	}

@@ -1,77 +1,64 @@
 
 #include "../../includes/minishell.h"
 
-bool	cmd_accessible(char **cmd, int modes)
+char	*cmd_accessible(char **cmd, int modes)
 {
 	if (access(cmd[0], modes) == -1)
-		return (false);
-	return (true);
+		return (NULL);
+	return (cmd[0]);
 }
 
-/// @brief This function return the type of the path.
-//				(absolute or command from the environement).
-/// @param cmd The cmd double char pointer.
-/// @return The right path type.
 t_path	check_path_type(char **cmd)
 {
+	if (!cmd[0] || !cmd[0][0])
+		return (0);
 	if (cmd[0][0] == '.' || cmd[0][0] == '/')
 		return (ABSOLUTE_PATH);
 	return (COMMAND);
 }
 
-char	**generate_argv(char **cmd)
+void	clean_cmd_struct(t_command *cmd)
 {
-	char	**argv;
-	int		nb_args;
-	int		i;
+	t_command	*buf;
+	t_command	*prev;
+	int			i;
 
-	nb_args = 2;
-	i = 0;
-	while (cmd[++i])
-		nb_args++;
-	argv = mms_alloc(nb_args, sizeof(char **));
+	buf = cmd->next;
 	i = -1;
-	while (cmd[++i])
-		argv[i] = cmd[i];
-	argv[i] = 0;
-	return (argv);
-}
-
-void	launch_program(char *cmd_absolute, t_infos *infos)
-{
-	pid_t	pid;
-	char	**argv;
-	int		*status;
-
-	if (cmd_absolute)
+	while (cmd->cmd[++i])
+		cmd->cmd[i] = mms_free(cmd->cmd[i]);
+	cmd->exec_cmd = mms_free(cmd->exec_cmd);
+	cmd->next = NULL;
+	while (buf)
 	{
-		status = NULL;
-		argv = generate_argv(infos->cmd);
-		pid = fork();
-		if (pid == 0)
-			execve(cmd_absolute, argv, infos->env);
-		waitpid(pid, status, 0);
-		cmd_absolute = mms_free(cmd_absolute);
-		argv = mms_free(argv);
+		i = -1;
+		while (buf->cmd[++i])
+			buf->cmd[i] = mms_free(buf->cmd[i]);
+		buf->exec_cmd = mms_free(buf->exec_cmd);
+		buf->cmd_argv = NULL;
+		prev = buf;
+		buf = buf->next;
+		prev = mms_free(prev);
 	}
-	else
-		printf("minishell: %s: command not found\n", infos->cmd[0]);
 }
 
 bool	execution(t_infos *infos)
 {
-	if (!infos->cmd || !infos->env)
-		return (false);
-	if (ft_strncmp(infos->cmd[0], "exit", 4) == 0)
-		mms_kill("", true, 0);
-	else if (ft_strncmp(infos->cmd[0], "cd", 2) == 0)
+	t_command	*cmd_buffer;
+
+	if (ft_strncmp(infos->cmd.cmd[0], "exit", 4) == 0)
+		mms_kill(NULL, true, 0);
+	cmd_buffer = &infos->cmd;
+	while (cmd_buffer)
 	{
-		cd(infos->cmd[1], infos->env);
-		return (true);
+		if (check_path_type(cmd_buffer->cmd) == COMMAND)
+			cmd_buffer->exec_cmd = get_cmd_path(cmd_buffer->cmd, infos->path);
+		else
+			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, R_OK | X_OK);
+		cmd_buffer->cmd_argv = cmd_buffer->cmd;
+		cmd_buffer = cmd_buffer->next;
 	}
-	if (check_path_type(infos->cmd) == ABSOLUTE_PATH)
-		launch_program(infos->cmd[0], infos);
-	else
-		launch_program(get_cmd_path(infos->cmd, infos->path), infos);
+	execution_dispach(infos);
+	clean_cmd_struct(&infos->cmd);
 	return (true);
 }

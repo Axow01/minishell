@@ -10,7 +10,6 @@ t_infos	*get_infos(void)
 	if (!infos)
 	{
 		infos = mms_alloc(1, sizeof(t_infos));
-		infos->cmd = NULL;
 		infos->env = NULL;
 	}
 	return (infos);
@@ -19,7 +18,7 @@ t_infos	*get_infos(void)
 bool	read_line_debug(void)
 {
 	char	*line;
-	// char	**cmd;
+	char	**cmd;
 
 	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
@@ -29,8 +28,8 @@ bool	read_line_debug(void)
 	if (!line)
 		return (false);
 	add_history(line);
-	teststrtok(line);
-	// get_infos()->cmd = ft_split(line, ' ');
+	cmd = ft_split(line, ' ');
+	get_infos()->cmd.cmd = cmd;
 	return (true);
 }
 
@@ -41,11 +40,13 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	mms_set_alloc_fn(ft_calloc);
 	infos = get_infos();
-	infos->cmd = argv;
+	// infos->cmd = argv;
+	(void) argv;
 	infos->env = env;
 	if (!infos->env)
 		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
+	infos->username = get_username(env);
 	while (1)
 	{
 		if (read_line_debug())

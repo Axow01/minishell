@@ -12,4 +12,15 @@
 /// @return True if success false if not.
 bool	execution(t_infos *infos);
 
+/// @brief This function dispach the command to the right place, either it's
+///			a redirection or pipe or just a single command.
+/// @param infos The informations structure.
+void	execution_dispach(t_infos *infos);
+
+/// @brief This function return the type of the path.
+//				(absolute or command from the environement).
+/// @param cmd The cmd double char pointer.
+/// @return The right path type.
+t_path	check_path_type(char **cmd);
+
 #endif
