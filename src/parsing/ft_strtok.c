@@ -24,7 +24,6 @@ char *ft_strtok(char *str, const char delim)
             in_single_quote = !in_single_quote;
         if (found && *stock == delim && !in_double_quote && !in_single_quote)
         {
-            get_redirec()->redirec[get_redirec()->index] = ft_stringf("%c", *stock);
             *stock = '\0';
             stock++;
             break;
