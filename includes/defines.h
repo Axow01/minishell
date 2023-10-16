@@ -23,6 +23,7 @@ typedef struct s_command
 typedef struct s_infos
 {
 	t_command	cmd;
+	int8_t		nb_cmd;
 	char		**env;
 	char		*pwd;
 	char		**path;

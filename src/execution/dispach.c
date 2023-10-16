@@ -46,13 +46,13 @@ bool	simple_exec(t_command *cmd)
 
 void	execution_dispach(t_infos *infos)
 {
-	t_command	*buf;
-
-	buf = &infos->cmd;
-	while (buf)
+	infos->nb_cmd = count_cmd(&infos->cmd);
+	if (infos->nb_cmd > 1)
 	{
-		simple_exec(buf);
-		buf = buf->next;
+		execution_pipe(infos);
+		return ;
 	}
+	else
+		simple_exec(&infos->cmd);
 	return ;
 }
