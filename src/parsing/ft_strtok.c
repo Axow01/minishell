@@ -1,40 +1,68 @@
 
 #include "../../includes/minishell.h"
 
-
-//quote[0] = " "
-//quote[1] = ' '
-char    *ft_strtok(char *str, const char delim)
+char *ft_strtok(char *str, const char delim)
 {
-    static char    *stock;
-    char        *output;
-    bool        found;
-    bool        quote[20];
+    static char *stock = NULL;
+    char *output = NULL;
+    bool found = false;
+    bool in_double_quote = false;
+    bool in_single_quote = false;
 
-    if (str)
+    if (str) 
         stock = str;
-    output = 0;
-    found = false;
-    quote[0] = false;
-    quote[1] = false;
-    while (*stock)
+    while (stock && *stock)
     {
-        if (!found && !(*stock == delim))
+        if (!found && *stock != delim)
         {
             found = true;
             output = stock;
         }
-        else if ((!quote[0] && !quote[1]) && *stock == '\"')
-            quote[0] = true;
-        else if ((!quote[0] && !quote[1]) && *stock == '\'')
-            quote[1] = true;
-        else if (((found && *stock == delim) && (!quote[0] && !quote[1])))
+        if (*stock == '\"' && !in_single_quote)
+            in_double_quote = !in_double_quote;
+        else if (*stock == '\'' && !in_double_quote)
+            in_single_quote = !in_single_quote;
+        if (found && *stock == delim && !in_double_quote && !in_single_quote)
         {
-            *stock = 0;
+            get_redirec()->redirec[get_redirec()->index] = ft_stringf("%c", *stock);
+            *stock = '\0';
             stock++;
-            break ;
+            break;
         }
         stock++;
     }
-    return (output);
+    return output;
+}
+
+char *ft_strtok_2(char *str, const char delim)
+{
+    static char *stock = NULL;
+    char *output = NULL;
+    bool found = false;
+    bool in_double_quote = false;
+    bool in_single_quote = false;
+
+    if (str) 
+        stock = str;
+    while (stock && *stock)
+    {
+        if (!found && *stock != delim)
+        {
+            found = true;
+            output = stock;
+        }
+        if (*stock == '\"' && !in_single_quote)
+            in_double_quote = !in_double_quote;
+        else if (*stock == '\'' && !in_double_quote)
+            in_single_quote = !in_single_quote;
+        if (found && *stock == delim && !in_double_quote && !in_single_quote)
+        {
+            get_redirec()->redirec[get_redirec()->index] = ft_stringf("%c", *stock);
+            *stock = '\0';
+            stock++;
+            break;
+        }
+        stock++;
+    }
+    return output;
 }

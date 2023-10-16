@@ -3,7 +3,16 @@
 
 # include "libftms/inc/libft.h"
 
-void	teststrtok(void);
-char    *ft_strtok(char *str, const char delim);
+typedef struct s_temp
+{
+	char	**redirec;
+	int		index;
+
+}			t_temp;
+
+void		teststrtok(char *str);
+char		*ft_strtok(char *str, const char delim);
+char		*ft_strtok_2(char *str, const char delim);
+t_temp		*get_redirec(void);
 
 #endif

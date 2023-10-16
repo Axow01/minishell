@@ -1,12 +1,27 @@
-#include <string.h>
-#include <stdio.h>
+
 #include "../../includes/parsing.h"
+#include <stdio.h>
+#include <string.h>
 
-
-void teststrtok(void)
+t_temp	*get_redirec(void)
 {
-    char *line = "ls -la | wc -l > outfile >> bobfile";
-    char *new = ft_strtok(line, '>');
+	static t_temp	tmp;
 
-    printf("test : %s\n", new);
+	return (&tmp);
+}
+
+void	teststrtok(char *str)
+{
+	char *token;
+	get_redirec()->redirec = mms_alloc(ft_strlen(str), sizeof(char *));
+	token = ft_strtok(str, '|');
+	while (token != NULL)
+	{
+	    printf("val : %s\n", get_redirec()->redirec[get_redirec()->index]);
+		printf("token : %s\n", token);
+		get_redirec()->index += 1;
+		token = ft_strtok(NULL, '|');
+		
+	}
+
 }
