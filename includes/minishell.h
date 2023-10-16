@@ -4,8 +4,8 @@
 
 # include <unistd.h>
 # include <stdio.h>
-# include <readline.h>
-# include <history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libftms/inc/libft.h"
 # include "execution.h"
 # include "defines.h"
