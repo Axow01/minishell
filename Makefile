@@ -26,8 +26,6 @@ PIPE_DIR = pipe
 BUILTINS_DIR = builtins
 SRC		= 	main.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c
 VPATH	=	$(SRC_DIR)
-HISTORYLIB    =    readline/libhistory.a
-READLINELIB    =    readline/libreadline.a
 
 #--- OBJECT ---#
 OBJDIR  =   obj
@@ -43,7 +41,7 @@ submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -lreadline -lhistory -lncurses -o minishell
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -lreadline -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
