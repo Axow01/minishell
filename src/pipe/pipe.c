@@ -54,22 +54,26 @@ void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
 bool	run_all(t_infos *infos, t_pipe *pipes)
 {
 	t_command	*buf;
-	pid_t		pid;
 	int			i;
 
 	buf = &infos->cmd;
 	i = 0;
 	while (buf)
 	{
-		pid = fork();
-		if (pid == 0)
+		buf->pid = fork();
+		if (buf->pid == 0)
 			run_fork(buf, pipes, infos, i);
 		if (buf->stdin_ != STDIN_FILENO && i < infos->nb_cmd - 1)
 			close(pipes[i].p_fd[0]);
 		if (buf->stdout_ != STDOUT_FILENO && i < infos->nb_cmd - 1)
 			close(pipes[i].p_fd[1]);
-		waitpid(pid, NULL, 0);
 		i++;
+		buf = buf->next;
+	}
+	buf = &infos->cmd;
+	while (buf)
+	{
+		buf->pid = waitpid(buf->pid, NULL, 0);
 		buf = buf->next;
 	}
 	return (true);

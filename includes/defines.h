@@ -13,6 +13,7 @@ typedef struct s_pipe
 typedef struct s_command
 {
 	char				**cmd;
+	pid_t				pid;
 	char				*exec_cmd;
 	char				**cmd_argv;
 	int					stdin_;
