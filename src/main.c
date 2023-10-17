@@ -16,13 +16,17 @@ t_infos	*get_infos(void)
 void	add_cmd(char *cmd, int stdin_, int stdout_, t_infos *infos)
 {
 	t_command	*command;
+	t_command	*buf;
 
+	buf = &infos->cmd;
 	command = mms_alloc(1, sizeof(t_command));
 	command->cmd = ft_split(cmd, ' ');
 	command->stdin_ = stdin_;
 	command->stdout_ = stdout_;
 	command->next = NULL;
-	infos->cmd.next = command;
+	while (buf->next)
+		buf = buf->next;
+	buf->next = command;
 }
 
 bool	read_line_debug(void)
@@ -54,24 +58,19 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void) argv;
 	mms_set_alloc_fn(ft_calloc);
-	printf("pid: %d\n", getpid());
 	infos = get_infos();
 	infos->env = env;
 	if (!infos->env)
 		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
 	infos->username = get_username(env);
-	add_cmd("cat", 0, 1, infos);
-	add_cmd("ls", 0, 1, infos);
-	add_cmd("ls", 0, 1, infos);
+	add_cmd("ls", STDIN_FILENO, STDOUT_FILENO, infos);
 	while (1)
 	{
 		if (read_line_debug())
 			execution(get_infos());
 		else
-		{
-			mms_kill("REadline failled!\n", true, 1);
-		}
+			mms_kill("Readline failled!\n", true, 1);
 	}
 	mms_kill("", false, 0);
 	return (0);

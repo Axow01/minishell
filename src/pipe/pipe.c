@@ -48,6 +48,8 @@ void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
 		close(pipes[i].p_fd[1]);
 	dup2(buf->stdin_, STDIN_FILENO);
 	dup2(buf->stdout_, STDOUT_FILENO);
+	close(pipes[i].p_fd[0]);
+	close(pipes[i].p_fd[1]);
 	execve(buf->exec_cmd, buf->cmd_argv, infos->env);
 }
 
@@ -55,25 +57,33 @@ bool	run_all(t_infos *infos, t_pipe *pipes)
 {
 	t_command	*buf;
 	int			i;
+	pid_t		pid;
 
 	buf = &infos->cmd;
 	i = 0;
 	while (buf)
 	{
 		buf->pid = fork();
-		if (buf->pid == 0)
+		if (buf->pid == -1)
+			mms_kill("Fork error!\n", true, 1);
+		if (buf->pid != 0)
+			printf("CMD: %s in:%d out: %d pid: %d\n", buf->cmd[0], buf->stdin_, buf->stdout_, buf->pid);
+		if (buf->pid == 0)// printf("CMD: %s in:%d out: %d\n", buf->cmd[0], buf->stdin_, buf->stdout_);
 			run_fork(buf, pipes, infos, i);
 		if (buf->stdin_ != STDIN_FILENO && i < infos->nb_cmd - 1)
 			close(pipes[i].p_fd[0]);
 		if (buf->stdout_ != STDOUT_FILENO && i < infos->nb_cmd - 1)
 			close(pipes[i].p_fd[1]);
+		printf("CMD: %s executed\n", buf->cmd[0]);
 		i++;
 		buf = buf->next;
 	}
 	buf = &infos->cmd;
 	while (buf)
 	{
-		buf->pid = waitpid(buf->pid, NULL, 0);
+		printf("Waiting on %s pid\n", buf->cmd[0]);
+		pid = waitpid(0, NULL, 0);
+		printf("%s %d finished\n", buf->cmd[0], pid);
 		buf = buf->next;
 	}
 	return (true);
