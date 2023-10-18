@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **env)
 		if (read_line_debug())
 			execution(get_infos());
 		else
-			mms_kill("Readline failled!\n", true, 1);
+			printf_error("Readline Error!\n");
 	}
 	mms_kill("", false, 0);
 	return (0);

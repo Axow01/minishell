@@ -66,6 +66,8 @@ void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
 	printf("ErrorCode: %d\n", execve(buf->exec_cmd, buf->cmd_argv, infos->env));
 }
 
+
+
 bool	run_all(t_infos *infos, t_pipe *pipes)
 {
 	t_command	*buf;
@@ -75,9 +77,19 @@ bool	run_all(t_infos *infos, t_pipe *pipes)
 	i = 0;
 	while (buf)
 	{
+		if (!buf->exec_cmd)
+		{
+			if (check_path_type(buf->cmd) == COMMAND)
+				ft_printf("minishell: %s: command not found\n", buf->cmd[0]);
+			else
+				ft_printf("minishell: %s: No such file or directory\n", buf->cmd[0]);
+			return (false);
+		}
 		buf->pid = fork();
 		if (buf->pid == -1)
-			mms_kill("Fork error!\n", true, 1);
+		{
+			write(STDERR_FILENO, "Failled to create forks\n", 25);
+		}
 		if (buf->pid == 0)
 			run_fork(buf, pipes, infos, i);
 		i++;

@@ -42,7 +42,6 @@ void	wait_for_programs(t_pipe *pipes, t_infos *infos)
 	while (buf)
 	{
 		buf->pid = waitpid(buf->pid, NULL, 0);
-		printf("This %s finished\n", buf->cmd[0]);
 		buf = buf->next;
 	}
 }
