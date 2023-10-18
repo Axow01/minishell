@@ -64,6 +64,8 @@ int	main(int argc, char **argv, char **env)
 		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
 	infos->username = get_username(env);
+	add_cmd("cat", STDIN_FILENO, STDOUT_FILENO, infos);
+	add_cmd("ls", STDIN_FILENO, STDOUT_FILENO, infos);
 	add_cmd("ls", STDIN_FILENO, STDOUT_FILENO, infos);
 	while (1)
 	{

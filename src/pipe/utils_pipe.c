@@ -14,3 +14,35 @@ bool	init_pipefd(t_pipe *pipes)
 			return (false);
 	return (true);
 }
+
+void	close_sp_pid(t_infos *infos, pid_t pid)
+{
+	t_command	*buf;
+
+	buf = &infos->cmd;
+	while (buf)
+	{
+		if (buf->pid == pid)
+		{
+			if (buf->stdout_ != STDOUT_FILENO)
+				close(buf->stdout_);
+			printf("CMD: %s PID: %d\n", buf->cmd[0], buf->pid);
+			return ;
+		}
+		buf = buf->next;
+	}
+}
+
+void	wait_for_programs(t_pipe *pipes, t_infos *infos)
+{
+	t_command	*buf;
+
+	buf = &infos->cmd;
+	(void)pipes;
+	while (buf)
+	{
+		buf->pid = waitpid(buf->pid, NULL, 0);
+		printf("This %s finished\n", buf->cmd[0]);
+		buf = buf->next;
+	}
+}

@@ -35,29 +35,41 @@ void	close_all_pipes(t_pipe *pipes, int nb_pipes)
 	while (i < nb_pipes)
 	{
 		close(pipes[i].p_fd[0]);
-		close(pipes[i++].p_fd[1]);
+		close(pipes[i].p_fd[1]);
+		i++;
 	}
-	pipes = mms_free(pipes);
+}
+
+void	close_all_except(t_pipe *pipes, int read, int writes)
+{
+	int	i;
+
+	i = 0;
+	while (i <= get_infos()->nb_cmd - 1)
+	{
+		if (pipes[i].p_fd[0] != read && pipes[i].p_fd[0] > 0)
+			close(pipes[i].p_fd[0]);
+		if (pipes[i].p_fd[1] != writes && pipes[i].p_fd[1] > 0)
+			close(pipes[i].p_fd[1]);
+		i++;
+	}
 }
 
 void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
 {
-	if (buf->stdin_ == STDIN_FILENO)
-		close(pipes[i].p_fd[0]);
-	if (buf->stdout_ == STDOUT_FILENO)
-		close(pipes[i].p_fd[1]);
-	dup2(buf->stdin_, STDIN_FILENO);
-	dup2(buf->stdout_, STDOUT_FILENO);
-	close(pipes[i].p_fd[0]);
-	close(pipes[i].p_fd[1]);
-	execve(buf->exec_cmd, buf->cmd_argv, infos->env);
+	(void)i;
+	close_all_except(pipes, buf->stdin_, buf->stdout_);
+	if (STDIN_FILENO != buf->stdin_)
+		dup2(buf->stdin_, STDIN_FILENO);
+	if (STDOUT_FILENO != buf->stdout_)
+		dup2(buf->stdout_, STDOUT_FILENO);
+	printf("ErrorCode: %d\n", execve(buf->exec_cmd, buf->cmd_argv, infos->env));
 }
 
 bool	run_all(t_infos *infos, t_pipe *pipes)
 {
 	t_command	*buf;
 	int			i;
-	pid_t		pid;
 
 	buf = &infos->cmd;
 	i = 0;
@@ -66,26 +78,13 @@ bool	run_all(t_infos *infos, t_pipe *pipes)
 		buf->pid = fork();
 		if (buf->pid == -1)
 			mms_kill("Fork error!\n", true, 1);
-		if (buf->pid != 0)
-			printf("CMD: %s in:%d out: %d pid: %d\n", buf->cmd[0], buf->stdin_, buf->stdout_, buf->pid);
-		if (buf->pid == 0)// printf("CMD: %s in:%d out: %d\n", buf->cmd[0], buf->stdin_, buf->stdout_);
+		if (buf->pid == 0)
 			run_fork(buf, pipes, infos, i);
-		if (buf->stdin_ != STDIN_FILENO && i < infos->nb_cmd - 1)
-			close(pipes[i].p_fd[0]);
-		if (buf->stdout_ != STDOUT_FILENO && i < infos->nb_cmd - 1)
-			close(pipes[i].p_fd[1]);
-		printf("CMD: %s executed\n", buf->cmd[0]);
 		i++;
 		buf = buf->next;
 	}
-	buf = &infos->cmd;
-	while (buf)
-	{
-		printf("Waiting on %s pid\n", buf->cmd[0]);
-		pid = waitpid(0, NULL, 0);
-		printf("%s %d finished\n", buf->cmd[0], pid);
-		buf = buf->next;
-	}
+	close_all_pipes(pipes, infos->nb_cmd - 1);
+	wait_for_programs(pipes, infos);
 	return (true);
 }
 
@@ -99,6 +98,6 @@ bool	execution_pipe(t_infos *infos)
 	change_in_out(infos, pipes);
 	if (!run_all(infos, pipes))
 		mms_kill("Failed to execute\n", true, 2);
-	close_all_pipes(pipes, infos->nb_cmd - 1);
+	mms_free(pipes);
 	return (true);
 }
