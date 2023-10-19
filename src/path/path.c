@@ -98,7 +98,7 @@ char	*get_pwd(char **env)
 			i = -1;
 			while (get_infos()->username[++i])
 				pwd[k++ - 4] = get_infos()->username[i];
-			pwd[k - 4] = '>';
+			pwd[k - 4] = '$';
 			tmp = ft_strjoin(pwd, "\x1b[0m");
 			mms_free(pwd);
 			return (tmp);
