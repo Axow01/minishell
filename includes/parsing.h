@@ -13,7 +13,6 @@ typedef struct s_temp
 
 void		teststrtok(char *str);
 char		*ft_strtok(char *str);
-char 		*ft_strtok_redirect(char *str);
-t_temp		*get_redirec(void);
+char		*ft_strtok_redirect(char *str);
 
 #endif
