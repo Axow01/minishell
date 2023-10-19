@@ -82,11 +82,11 @@ void replace_space(char *line, size_t start, size_t end)
 	bool 	in_double_quote;
 
 	i = start;
-	in_single_quote = false;
-	in_double_quote = false;
-	(void)line;
+	// in_single_quote = false;
+	// in_double_quote = false;
 	while (i < end)
 	{
+		printf("test \n");
 		if (line[i] == '\"' && !in_single_quote)
             in_double_quote = !in_double_quote;
         else if (line[i] == '\'' && !in_double_quote)
@@ -190,7 +190,7 @@ size_t count_element(char *line, size_t start, size_t end)
 			{
 				while(line[i] == '\0' && i < end)
 					i++;
-				if (i != end)
+				if (i < end)
 					count++;
 			}
 		}
@@ -229,7 +229,7 @@ int	count_redirection(char *str)
 	return (count);
 }
 
-char *resize_line(char *line)
+char *setup_line(char *line)
 {
 	size_t i;
 	size_t j;
@@ -239,7 +239,7 @@ char *resize_line(char *line)
 	bool in_double_quote;
 
 	new_size = count_redirection(line) + ft_strlen(line) + 1;
-	new_line = mms_alloc(new_size + 1, sizeof(char));
+	new_line = mms_alloc(new_size + 2, sizeof(char));
 
 	i = 0;
 	j = 0;
@@ -253,22 +253,22 @@ char *resize_line(char *line)
 		{
 			if (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
-				new_line[j++] = '\0';
+				new_line[j++] = '9';
 				new_line[j++] = line[i++];
 				new_line[j++] = line[i++];
-				new_line[j++] = '\0';
+				new_line[j++] = '9';
 			}
 			else if (line[i] == '>' || line[i] == '<')
 			{
-				new_line[j++] = '\0';
+				new_line[j++] = '9';
 				new_line[j++] = line[i++];
-				new_line[j++] = '\0';
+				new_line[j++] = '9';
 			}
-			if (ft_isspace(line[i]))
-			{
-				new_line[j++] = '\0';
-				i++;
-			}
+			// if (ft_isspace(line[i]))
+			// {
+			// 	new_line[j++] = '\0';
+			// 	i++;
+			// }
 		}
 		new_line[j++] = line[i++];
 	}
@@ -297,16 +297,21 @@ void controller(char *line)
 	size_t i;
 	size_t end;
 	size_t start;
+	t_command *head;
 
 	i = 0;
+	head = &get_infos()->cmd;
 	while(line[i])
 	{
 		start = i;
-		if (line[i] == '|' || line[i+1] == '\0')
+		if (line[i] == '|')
 		{
 			end = i;
-			count_element(line, start, end);
+			// replace_space(line, start, end);
 			ft_strput(line, end);
+			// printf("count element : %zu\n", count_element(line, start, end));
+			// ft_strput(line, end);
+			return ;
 		}
 		i++;
 	}
@@ -314,10 +319,14 @@ void controller(char *line)
 
 void teststrtok(char *line)
 {
-   char *new;
+	char *new;
+	// size_t len;
 
-   new = resize_line(line);
-   replace_space(new, 0, 20);
-   ft_strput(new, 20);
+	new = setup_line(line);
+	printf("new : %s\n", new);
+	// len = ft_strlen(new);
+	// replace_space(new, 0, len);
+	// ft_strput(new, len);
 
 }
+//echo "yolo bg"> txt.out | wc -l
