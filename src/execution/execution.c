@@ -34,6 +34,10 @@ void	clean_cmd_struct(t_command *cmd)
 		i = -1;
 		while (buf->cmd[++i])
 			buf->cmd[i] = mms_free(buf->cmd[i]);
+		if (buf->stdin_ != STDIN_FILENO)
+			close(buf->stdin_);
+		if (buf->stdout_ != STDOUT_FILENO)
+			close(buf->stdout_);
 		buf->exec_cmd = mms_free(buf->exec_cmd);
 		buf->cmd_argv = NULL;
 		prev = buf;
