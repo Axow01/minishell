@@ -24,7 +24,7 @@ EXECUTION_DIR = execution
 PATH_DIR = path
 PIPE_DIR = pipe
 BUILTINS_DIR = builtins
-SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c
+SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c builtins/export/export.c builtins/export/utils.c
 VPATH	=	$(SRC_DIR)
 
 #--- OBJECT ---#
@@ -45,7 +45,7 @@ ${NAME}:	$(OBJDIR) $(OBJ)
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
-	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR)
+	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR) $(OBJDIR)/$(BUILTINS_DIR)/export
 
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)
