@@ -46,8 +46,8 @@ bool	read_line_debug(void)
 	add_history(line);
 	cmd = ft_split(line, ' ');
 	get_infos()->cmd.cmd = cmd;
-	// get_infos()->cmd.stdout_ = 1;
-	get_infos()->cmd.stdout_ = open("out", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	get_infos()->cmd.stdout_ = 1;
+	//get_infos()->cmd.stdout_ = open("out", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	line = mms_free(line);
 	return (true);
 }
@@ -66,6 +66,7 @@ int	main(int argc, char **argv, char **env)
 	infos->path = path_split(env_to_path(infos->env));
 	infos->username = get_username(env);
 	add_cmd("cat -e", STDIN_FILENO, STDOUT_FILENO, infos);
+	add_cmd("cat -e", STDIN_FILENO, open("outcat", O_CREAT | O_WRONLY | O_TRUNC, 0644), infos);
 	while (1)
 	{
 		if (read_line_debug())
