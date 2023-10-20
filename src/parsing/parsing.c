@@ -242,7 +242,7 @@ char *setup_line(char *line, size_t *len)
 	bool in_single_quote;
 	bool in_double_quote;
 
-	*len = count_redirection(line) + ft_strlen(line);
+	*len = count_redirection(line) * 2 + ft_strlen(line);
 	new_line = mms_alloc(*len + 1, sizeof(char));
 	i = 0;
 	j = 0;
@@ -256,7 +256,7 @@ char *setup_line(char *line, size_t *len)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
-			if (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
+			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
 				new_line[j++] = ' ';
 				new_line[j++] = line[i++];
@@ -334,13 +334,34 @@ void controller(char *line, size_t len)
 			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
 			printf ("element : %lu\n", count_element(line, start, end));
 			printf ("start:%lu e:%lu\n", start, end);
-
-			// get_element(line, start, end, head);
+			get_element(line, start, end, head);
 			head = head->next;
 			start = end + 2;
 		}
 		i++;
 	}
+}
+
+void	print_cmd(t_command *lst)
+{
+	size_t i;
+	size_t j;
+	t_command *head;
+
+	i = 0;
+	head = lst;
+	while (head->next != NULL)
+	{
+		printf("command%lu : \n", i);
+		j = 0;
+		while (head->cmd[j])
+		{
+			printf("token%lu : %s\n", j, head->cmd[j]);
+			j++;
+		}
+		i++;
+		head = head->next;
+	}	
 }
 
 void teststrtok(char *line)
@@ -354,6 +375,7 @@ void teststrtok(char *line)
 	replace_space(new, 0, len);
 	controller(new, len);
 	ft_strput(new, len);
+	print_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
 //echo "yolo bg" > txt.out | wc -l
