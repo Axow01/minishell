@@ -306,7 +306,6 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
     {
         if (line[i] == '\0')
 		{
-			printf("2\n");
 			head->cmd[j++] = &line[ptr];
 			while (line[i] == '\0' && i < end)
 				i++;
@@ -361,7 +360,37 @@ void	print_cmd(t_command *lst)
 		}
 		i++;
 		head = head->next;
-	}	
+	}
+}
+
+void	free_cmd(t_command *lst)
+{
+	t_command *head;
+	t_command *temp;
+	size_t j;
+
+	head = lst;
+	j = 0;
+	while (head->next != NULL)
+	{
+		j = 0;
+		while (head->cmd[j])
+		{
+			mms_free(head->cmd[j]);
+			j++;
+		}
+		head = head->next;
+	}
+	head = lst;
+	head = head->next;
+	while (head->next != NULL)
+	{
+		temp = head;
+		head = head->next;
+		mms_free(temp);
+  	}
+	head = lst;
+	head->next = NULL;
 }
 
 void teststrtok(char *line)
@@ -376,6 +405,7 @@ void teststrtok(char *line)
 	controller(new, len);
 	ft_strput(new, len);
 	print_cmd(&get_infos()->cmd);
+	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
 //echo "yolo bg" > txt.out | wc -l
