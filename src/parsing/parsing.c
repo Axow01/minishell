@@ -168,29 +168,6 @@ void replace_space(char *line, size_t start, size_t end)
 	}
 }
 
-size_t count_element(char *line, size_t start, size_t end)
-{
-	size_t i;
-	size_t count;
-
-	i = start;
-	count = 1;
-	while(line[i] == '\n')
-		i++;
-	while (i < end)
-	{
-			if (line[i] == '\0')
-			{
-				while(line[i] == '\0' && i < end)
-					i++;
-				if (i < end)
-					count++;
-			}
-		i++;
-	}
-	return (count);
-}
-
 int	count_redirection(char *line)
 {
 	size_t i;
@@ -232,9 +209,6 @@ char *setup_line(char *line, size_t *len)
 	bool in_double_quote;
 
 	*len = count_redirection(line) + ft_strlen(line);
-	// printf("strlen : %zu\n", ft_strlen(line));
-	// printf("add : %d\n", count_redirection(line));
-	// printf("len : %zu\n", *len);
 	if (*len == 0)
 		return (NULL);
 	new_line = mms_alloc(*len + 2, sizeof(char));
@@ -309,14 +283,39 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
     }
 }
 
+size_t count_element(char *line, size_t start, size_t end)
+{
+	size_t i;
+	size_t count;
+
+	i = start;
+	count = 1;
+	while(line[i] == '\0' && i < end)
+		i++;
+	while (i < end)
+	{
+			if (line[i] == '\0')
+			{
+				while(line[i] == '\0' && i < end)
+					i++;
+				if (i < end)
+					count++;
+			}
+		i++;
+	}
+	return (count);
+}
+
 void controller(char *line, size_t len)
 {
 	size_t i;
+	size_t j;
 	size_t end;
 	size_t start;
 	t_command *head;
 
 	i = 0;
+	j = 0;
 	start = 0;
 	head = &get_infos()->cmd;
 	while(i <= len)
@@ -325,9 +324,12 @@ void controller(char *line, size_t len)
 		{
 			end = i;
 			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
-			// printf ("element : %lu\n", count_element(line, start, end));
-			// printf ("start:%lu e:%lu\n", start, end);
 			get_element(line, start, end, head);
+			if (head->cmd[j++] == NULL)
+			{
+				printf("minishell : syntax error near unexpected token `|'\n");
+				return ;
+			}
 			head = head->next;
 			start = end + 1;
 		}
@@ -387,6 +389,14 @@ void	free_cmd(t_command *lst)
 	head->next = NULL;
 }
 
+bool ft_isredirec(char *str)
+{
+	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
+		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
+		return (true);
+	return (false);
+}
+
 void teststrtok(char *line)
 {
 	char *new;
@@ -398,6 +408,7 @@ void teststrtok(char *line)
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
+	printf("len : %zu\n", len);
 	ft_strput(new, len);
 	print_cmd(&get_infos()->cmd);
 	free_cmd(&get_infos()->cmd);
