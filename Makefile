@@ -18,13 +18,14 @@ RESET 	= 	\033[0m
 #--- INCLUDE ---#
 INCDIR = includes
 
-#--- SOURCE ---#
+#--- FOLDER ---#
 SRC_DIR	=	src
 EXECUTION_DIR = execution
+PARSINGDIR = parsing
 PATH_DIR = path
 PIPE_DIR = pipe
 BUILTINS_DIR = builtins
-SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c builtins/export/export.c builtins/export/utils.c
+SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c builtins/export/export.c builtins/export/utils.c parsing/ft_strtok.c parsing/parsing.c
 VPATH	=	$(SRC_DIR)
 
 #--- OBJECT ---#
@@ -45,7 +46,7 @@ ${NAME}:	$(OBJDIR) $(OBJ)
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
-	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR) $(OBJDIR)/$(BUILTINS_DIR)/export
+	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR) $(OBJDIR)/$(BUILTINS_DIR)/export $(OBJDIR)/parsing
 
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)

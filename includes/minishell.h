@@ -4,6 +4,7 @@
 
 # include <unistd.h>
 # include <stdio.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <ncurses.h>
@@ -14,6 +15,7 @@
 # include "builtins.h"
 # include "path.h"
 # include "pipe.h"
+# include "parsing.h"
 
 t_infos	*get_infos(void);
 

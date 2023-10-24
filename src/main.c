@@ -1,5 +1,7 @@
 
 #include "../includes/minishell.h"
+#include <string.h>
+#include <stdio.h>
 
 t_infos	*get_infos(void)
 {
@@ -32,7 +34,7 @@ void	add_cmd(char *cmd, int stdin_, int stdout_, t_infos *infos)
 bool	read_line_debug(void)
 {
 	char	*line;
-	char	**cmd;
+	// char	**cmd;
 
 	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
@@ -44,10 +46,9 @@ bool	read_line_debug(void)
 		return (false);
 	mms_add_ptr(line);
 	add_history(line);
-	cmd = ft_split(line, ' ');
-	get_infos()->cmd.cmd = cmd;
-	get_infos()->cmd.stdout_ = 1;
-	line = mms_free(line);
+	teststrtok(line);
+	// cmd = ft_split(line, ' ');
+	// get_infos()->cmd.cmd = cmd;
 	return (true);
 }
 
@@ -69,7 +70,7 @@ int	main(int argc, char **argv, char **env)
 		if (read_line_debug())
 			execution(get_infos());
 		else
-			printf_error("Readline Error!\n");
+			printf("Error\nreadline NULL\n");
 	}
 	mms_kill("", false, 0);
 	return (0);
