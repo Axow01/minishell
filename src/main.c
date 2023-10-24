@@ -49,6 +49,7 @@ bool	read_line_debug(void)
 	teststrtok(line);
 	// cmd = ft_split(line, ' ');
 	// get_infos()->cmd.cmd = cmd;
+	line = mms_free(line);
 	return (true);
 }
 
