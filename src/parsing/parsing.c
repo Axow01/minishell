@@ -132,7 +132,7 @@ void	init_cmd_struct(char *str)
 
 	i = count_tokens(str, '|');
 	head = &get_infos()->cmd;
-	while (i > 0)
+	while (i - 1 > 0)
 	{
 		ft_cmdadd(&head);
 		head = head->next;
@@ -313,6 +313,11 @@ void controller(char *line, size_t len)
 	size_t end;
 	size_t start;
 	t_command *head;
+	bool in_single_quote;
+	bool in_double_quote;
+    in_single_quote = false;
+	in_double_quote = false;
+
 
 	i = 0;
 	j = 0;
@@ -320,10 +325,16 @@ void controller(char *line, size_t len)
 	head = &get_infos()->cmd;
 	while(i <= len)
 	{
-		if (line[i] == '|' || i == len)
+		if (line[i] == '\"' && !in_single_quote)
+            in_double_quote = !in_double_quote;
+        else if (line[i] == '\'' && !in_double_quote)
+            in_single_quote = !in_single_quote;
+		if ((line[i] == '|' && !in_single_quote && !in_double_quote) || i == len)
 		{
 			end = i;
 			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
+			head->stdin_ = STDIN_FILENO;
+			head->stdout_ = STDOUT_FILENO;
 			get_element(line, start, end, head);
 			if (head->cmd[j++] == NULL)
 			{
@@ -345,7 +356,7 @@ void	print_cmd(t_command *lst)
 
 	i = 0;
 	head = lst;
-	while (head->next != NULL)
+	while (head)
 	{
 		printf("command%lu : \n", i);
 		j = 0;
@@ -367,7 +378,7 @@ void	free_cmd(t_command *lst)
 
 	head = lst;
 	j = 0;
-	while (head->next != NULL)
+	while (head)
 	{
 		j = 0;
 		while (head->cmd[j])
@@ -379,7 +390,7 @@ void	free_cmd(t_command *lst)
 	}
 	head = lst;
 	head = head->next;
-	while (head->next != NULL)
+	while (head)
 	{
 		temp = head;
 		head = head->next;
@@ -409,9 +420,9 @@ void teststrtok(char *line)
 	replace_space(new, 0, len);
 	controller(new, len);
 	printf("len : %zu\n", len);
-	ft_strput(new, len);
-	print_cmd(&get_infos()->cmd);
-	free_cmd(&get_infos()->cmd);
+	// ft_strput(new, len);
+	// print_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
 //echo "yolo bg" > txt.out | wc -l
