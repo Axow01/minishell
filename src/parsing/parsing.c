@@ -420,7 +420,7 @@ void teststrtok(char *line)
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
-	printf("len : %zu\n", len);
+	// printf("len : %zu\n", len);
 	// ft_strput(new, len);
 	// print_cmd(&get_infos()->cmd);
 	// free_cmd(&get_infos()->cmd);

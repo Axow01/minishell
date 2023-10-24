@@ -52,7 +52,7 @@ bool	run_all(t_infos *infos, t_pipe *pipes)
 		if (!buf->exec_cmd)
 		{
 			if (check_path_type(buf->cmd) == COMMAND)
-				ft_printf("minishell: %s: command not found\n", buf->cmd[0]);
+				ft_printf("minishell %s: command not found\n", buf->cmd[0]);
 			else
 				ft_printf("minishell: %s: No such file or directory\n", buf->cmd[0]);
 			break ;

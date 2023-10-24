@@ -3,6 +3,8 @@
 
 char	*cmd_accessible(char **cmd, int modes)
 {
+	if (!cmd)
+		return (NULL);
 	if (access(cmd[0], modes) == -1)
 		return (NULL);
 	return (cmd[0]);
@@ -10,7 +12,7 @@ char	*cmd_accessible(char **cmd, int modes)
 
 t_path	check_path_type(char **cmd)
 {
-	if (!cmd[0] || !cmd[0][0])
+	if (!cmd || !cmd[0] || !cmd[0][0])
 		return (0);
 	if (cmd[0][0] == '.' || cmd[0][0] == '/')
 		return (ABSOLUTE_PATH);
@@ -32,11 +34,11 @@ void	clean_cmd_struct(t_command *cmd)
 	while (buf)
 	{
 		i = -1;
-		while (buf->cmd[++i])
+		while (buf->cmd && buf->cmd[++i])
 			buf->cmd[i] = mms_free(buf->cmd[i]);
-		if (buf->stdin_ != STDIN_FILENO)
+		if (buf->stdin_ > 0)
 			close(buf->stdin_);
-		if (buf->stdout_ != STDOUT_FILENO)
+		if (buf->stdout_ > 1)
 			close(buf->stdout_);
 		buf->exec_cmd = mms_free(buf->exec_cmd);
 		buf->cmd_argv = NULL;
