@@ -302,10 +302,11 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
 	while (line[i] == '\0' && i < end)
 		i++;
 	ptr = i;
-    while (i < end)
+    while (i <= end)
     {
         if (line[i] == '\0')
 		{
+
 			head->cmd[j++] = &line[ptr];
 			while (line[i] == '\0' && i < end)
 				i++;
@@ -368,7 +369,7 @@ void controller(char *line, size_t len)
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_element(line, start, end, head);
-			if (!head->cmd[0])
+			if (!head->cmd[0][0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
 				return ;
@@ -455,7 +456,7 @@ void teststrtok(char *line)
 	// execution(get_infos());
 	// printf("len : %zu\n", len);
 	ft_strput(new, len);
-	// print_cmd(&get_infos()->cmd);
+	print_cmd(&get_infos()->cmd);
 	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
