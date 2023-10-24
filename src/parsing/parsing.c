@@ -75,6 +75,27 @@
 // 	return (count);
 // }
 
+bool ft_isinquote(char *str, size_t len)
+{
+	bool in_single_quote;
+	bool in_double_quote;
+	size_t i;
+
+	i = 0;
+    in_single_quote = false;
+	in_double_quote = false;
+	while (i <= len)
+	{
+		if (str[i] == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (str[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+	}
+	if (in_single_quote || in_double_quote)
+		return (true);
+	return (false);
+}
+
 t_command	*ft_cmdnew(void)
 {
 	t_command	*new;
@@ -110,20 +131,6 @@ void	ft_cmdadd(t_command **lst)
 		last->next = new;
 }
 
-int count_tokens(char *line, char delim) {
-    int count;
-	int i;
-
-	i = 0;
-	count = 1;
-    while (line[i]) {
-        if (line[i] == delim) {
-            count++;
-        }
-		i++;
-    }
-    return count;
-}
 
 void	init_cmd_struct(char *str)
 {
@@ -138,10 +145,34 @@ void	init_cmd_struct(char *str)
 		head = head->next;
 		i--;
 	}
+}
+
+int count_tokens(char *line, char delim)
+{
+    int count;
+	int i;
+	bool 	in_single_quote;
+	bool 	in_double_quote;
+
+	in_single_quote = false;
+	in_double_quote = false;
+
 	i = 0;
-	head = &get_infos()->cmd;
-	while (head->next != NULL)
-		head = head->next;
+	count = 1;
+    while (line[i]) {
+		if (line[i] == '\"' && !in_single_quote)
+            in_double_quote = !in_double_quote;
+        else if (line[i] == '\'' && !in_double_quote)
+            in_single_quote = !in_single_quote;
+		if (!in_single_quote && !in_double_quote)
+		{
+			if (line[i] == delim) {
+				count++;
+			}
+		}
+		i++;
+    }
+    return count;
 }
 
 void replace_space(char *line, size_t start, size_t end)
@@ -237,6 +268,7 @@ char *setup_line(char *line, size_t *len)
 				new_line[j++] = line[i++];
 				new_line[j++] = ' ';
 			}
+
 		}
 		new_line[j++] = line[i++];
 	}
@@ -270,7 +302,7 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
 	while (line[i] == '\0' && i < end)
 		i++;
 	ptr = i;
-    while (i <= end)
+    while (i < end)
     {
         if (line[i] == '\0')
 		{
@@ -309,7 +341,7 @@ size_t count_element(char *line, size_t start, size_t end)
 void controller(char *line, size_t len)
 {
 	size_t i;
-	size_t j;
+	// size_t j;
 	size_t end;
 	size_t start;
 	t_command *head;
@@ -320,7 +352,7 @@ void controller(char *line, size_t len)
 
 
 	i = 0;
-	j = 0;
+	// j = 0;
 	start = 0;
 	head = &get_infos()->cmd;
 	while(i <= len)
@@ -336,7 +368,7 @@ void controller(char *line, size_t len)
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_element(line, start, end, head);
-			if (head->cmd[j++] == NULL)
+			if (!head->cmd[0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
 				return ;
@@ -358,10 +390,10 @@ void	print_cmd(t_command *lst)
 	head = lst;
 	while (head)
 	{
+		// printf("in: %d out: %d\n", head->stdin_, head->stdout_);
 		printf("command%lu : \n", i);
 		j = 0;
-		printf("in: %d out: %d\n", head->stdin_, head->stdout_);
-		while (head->cmd[j])
+		while (head->cmd && head->cmd[j])
 		{
 			printf("token%lu : %s\n", j, head->cmd[j]);
 			j++;
@@ -382,7 +414,7 @@ void	free_cmd(t_command *lst)
 	while (head)
 	{
 		j = 0;
-		while (head->cmd[j])
+		while (head->cmd && head->cmd[j])
 		{
 			mms_free(head->cmd[j]);
 			j++;
@@ -420,10 +452,11 @@ void teststrtok(char *line)
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
-	printf("len : %zu\n", len);
-	// ft_strput(new, len);
+	// execution(get_infos());
+	// printf("len : %zu\n", len);
+	ft_strput(new, len);
 	// print_cmd(&get_infos()->cmd);
-	// free_cmd(&get_infos()->cmd);
+	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
 //echo "yolo bg" > txt.out | wc -l
