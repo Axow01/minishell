@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **env)
 		if (read_line_debug())
 			execution(get_infos());
 		else
-			printf("Error\nreadline NULL\n");
+			printf("error\nreadline null\n");
 	}
 	mms_kill("", false, 0);
 	return (0);

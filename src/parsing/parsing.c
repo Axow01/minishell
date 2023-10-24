@@ -132,7 +132,7 @@ void	init_cmd_struct(char *str)
 
 	i = count_tokens(str, '|');
 	head = &get_infos()->cmd;
-	while (i > 0)
+	while (i - 1 > 0)
 	{
 		ft_cmdadd(&head);
 		head = head->next;
@@ -343,10 +343,11 @@ void	print_cmd(t_command *lst)
 
 	i = 0;
 	head = lst;
-	while (head->next != NULL)
+	while (head)
 	{
 		printf("command%lu : \n", i);
 		j = 0;
+		printf("in: %d out: %d\n", head->stdin_, head->stdout_);
 		while (head->cmd[j])
 		{
 			printf("token%lu : %s\n", j, head->cmd[j]);
@@ -400,7 +401,7 @@ void teststrtok(char *line)
 	controller(new, len);
 	ft_strput(new, len);
 	print_cmd(&get_infos()->cmd);
-	free_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
 //echo "yolo bg" > txt.out | wc -l
