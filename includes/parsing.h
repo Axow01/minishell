@@ -10,7 +10,7 @@
 void	teststrtok(char *str);
 char	*ft_strtok(char *str);
 char	*ft_strtok_redirect(char *str);
-int		count_tokens(char *line, char delim);
+int		count_cmd_total(char *line, char delim);
 bool	ft_isinquote(char *str, size_t len);
 
 #endif

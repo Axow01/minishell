@@ -75,6 +75,14 @@
 // 	return (count);
 // }
 
+bool ft_isredirec(char *str)
+{
+	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
+		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
+		return (true);
+	return (false);
+}
+
 bool ft_isinquote(char *str, size_t len)
 {
 	bool in_single_quote;
@@ -137,7 +145,7 @@ void	init_cmd_struct(char *str)
 	int i;
 	t_command *head;
 
-	i = count_tokens(str, '|');
+	i = count_cmd_total(str, '|');
 	head = &get_infos()->cmd;
 	while (i - 1 > 0)
 	{
@@ -147,7 +155,7 @@ void	init_cmd_struct(char *str)
 	}
 }
 
-int count_tokens(char *line, char delim)
+int count_cmd_total(char *line, char delim)
 {
     int count;
 	int i;
@@ -225,6 +233,8 @@ int	count_redirection(char *line)
 			}
 			if (line[i] == '>' || line[i] == '<')
 				count += 2;
+			else if (line[i] == '|')
+				count += 2;
 		}
 		i++;
 	}
@@ -263,6 +273,12 @@ char *setup_line(char *line, size_t *len)
 				new_line[j++] = ' ';
 			}
 			if (line[i] == '>' || line[i] == '<')
+			{
+				new_line[j++] = ' ';
+				new_line[j++] = line[i++];
+				new_line[j++] = ' ';
+			}
+			if (line[i] == '|')
 			{
 				new_line[j++] = ' ';
 				new_line[j++] = line[i++];
@@ -369,7 +385,7 @@ void controller(char *line, size_t len)
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_element(line, start, end, head);
-			if (!head->cmd[0][0])
+			if (head->cmd && head->cmd[0] && !head->cmd[0][0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
 				return ;
@@ -434,19 +450,10 @@ void	free_cmd(t_command *lst)
 	head->next = NULL;
 }
 
-bool ft_isredirec(char *str)
-{
-	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
-		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
-		return (true);
-	return (false);
-}
-
 void teststrtok(char *line)
 {
 	char *new;
 	size_t len;
-
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
@@ -460,6 +467,3 @@ void teststrtok(char *line)
 	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
-//echo "yolo bg" > txt.out | wc -l
-//echo0"yolo bg"00>00txt.out0|0wc0-l0
-//echo >>>>>>>>>>> out .txd
