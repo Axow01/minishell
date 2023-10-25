@@ -207,7 +207,7 @@ void replace_space(char *line, size_t start, size_t end)
 	}
 }
 
-int	count_redirection(char *line)
+size_t	count_redirection(char *line)
 {
 	size_t i;
 	size_t count;
@@ -226,15 +226,15 @@ int	count_redirection(char *line)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
-			// if (line[i] == '|' )
-			// 	count += 2;
+			if (line[i] == '|' )
+				count += 1;
 			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
-				count += 2;
+				count += 1;
 				i += 2;
 			}
 			if (line[i] == '>' || line[i] == '<')
-				count += 2;
+				count += 1;
 		}
 		i++;
 	}
@@ -249,10 +249,13 @@ char *setup_line(char *line, size_t *len)
 	bool in_single_quote;
 	bool in_double_quote;
 
-	*len = count_redirection(line) + ft_strlen(line);
+	*len = count_redirection(line) * 2 + ft_strlen(line) + 2;
+
+	printf("redir : %zu\n", count_redirection(line));
+	printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
 		return (NULL);
-	new_line = mms_alloc(*len + 2, sizeof(char));
+	new_line = mms_alloc(*len + 1, sizeof(char));
 	i = 0;
 	j = 0;
     in_single_quote = false;
@@ -265,12 +268,12 @@ char *setup_line(char *line, size_t *len)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
-			// if (line[i] == '|')
-			// {
-			// 	new_line[j++] = ' ';
-			// 	new_line[j++] = line[i++];
-			// 	new_line[j++] = ' ';
-			// }
+			if (line[i] == '|')
+			{
+				new_line[j++] = ' ';
+				new_line[j++] = line[i++];
+				new_line[j++] = ' ';
+			}
 			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
 				new_line[j++] = ' ';
@@ -317,7 +320,7 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
 	while (line[i] == '\0' && i < end)
 		i++;
 	ptr = i;
-    while (i < end)
+    while (i <= end)
     {
         if (line[i] == '\0')
 		{
@@ -378,6 +381,7 @@ void controller(char *line, size_t len)
 		if ((line[i] == '|' && !in_single_quote && !in_double_quote) || i == len)
 		{
 			end = i;
+			printf("Start: %zu End: %zu\n", start, end);
 			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
@@ -451,6 +455,7 @@ void teststrtok(char *line)
 {
 	char *new;
 	size_t len;
+	printf("line : %s0\n", line);
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
@@ -458,9 +463,9 @@ void teststrtok(char *line)
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
-	ft_strput(new, len);
 	// execution(get_infos());
-	// printf("len : %zu\n", len);
+	ft_strput(new, len);
+	printf("len : %zu\n", len);
 	print_cmd(&get_infos()->cmd);
 	free_cmd(&get_infos()->cmd);
 }
