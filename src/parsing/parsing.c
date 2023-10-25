@@ -226,14 +226,14 @@ int	count_redirection(char *line)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
+			// if (line[i] == '|' )
+			// 	count += 2;
 			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
 				count += 2;
 				i += 2;
 			}
 			if (line[i] == '>' || line[i] == '<')
-				count += 2;
-			else if (line[i] == '|')
 				count += 2;
 		}
 		i++;
@@ -265,6 +265,12 @@ char *setup_line(char *line, size_t *len)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
+			// if (line[i] == '|')
+			// {
+			// 	new_line[j++] = ' ';
+			// 	new_line[j++] = line[i++];
+			// 	new_line[j++] = ' ';
+			// }
 			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
 				new_line[j++] = ' ';
@@ -278,13 +284,6 @@ char *setup_line(char *line, size_t *len)
 				new_line[j++] = line[i++];
 				new_line[j++] = ' ';
 			}
-			if (line[i] == '|')
-			{
-				new_line[j++] = ' ';
-				new_line[j++] = line[i++];
-				new_line[j++] = ' ';
-			}
-
 		}
 		new_line[j++] = line[i++];
 	}
@@ -318,7 +317,7 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
 	while (line[i] == '\0' && i < end)
 		i++;
 	ptr = i;
-    while (i <= end)
+    while (i < end)
     {
         if (line[i] == '\0')
 		{
@@ -358,7 +357,6 @@ size_t count_element(char *line, size_t start, size_t end)
 void controller(char *line, size_t len)
 {
 	size_t i;
-	// size_t j;
 	size_t end;
 	size_t start;
 	t_command *head;
@@ -369,7 +367,6 @@ void controller(char *line, size_t len)
 
 
 	i = 0;
-	// j = 0;
 	start = 0;
 	head = &get_infos()->cmd;
 	while(i <= len)
@@ -457,12 +454,13 @@ void teststrtok(char *line)
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
+	ft_strput(new, len);
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
+	ft_strput(new, len);
 	// execution(get_infos());
 	// printf("len : %zu\n", len);
-	ft_strput(new, len);
 	print_cmd(&get_infos()->cmd);
 	free_cmd(&get_infos()->cmd);
 }
