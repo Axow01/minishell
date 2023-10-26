@@ -98,6 +98,7 @@ bool ft_isinquote(char *str, size_t len)
 			in_double_quote = !in_double_quote;
 		else if (str[i] == '\'' && !in_double_quote)
 			in_single_quote = !in_single_quote;
+		i++;
 	}
 	if (in_single_quote || in_double_quote)
 		return (true);
@@ -226,8 +227,10 @@ size_t	count_redirection(char *line)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
-			if (line[i] == '|' )
-				count += 1;
+			if (line[i] == '|')
+			{
+				count++;
+			}
 			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
 			{
 				count += 1;
@@ -250,9 +253,8 @@ char *setup_line(char *line, size_t *len)
 	bool in_double_quote;
 
 	*len = count_redirection(line) * 2 + ft_strlen(line) + 2;
-
-	printf("redir : %zu\n", count_redirection(line));
-	printf("stlen : %zu\n", ft_strlen(line));
+	// printf("redir : %zu\n", count_redirection(line));
+	// printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
 		return (NULL);
 	new_line = mms_alloc(*len + 1, sizeof(char));
@@ -268,7 +270,7 @@ char *setup_line(char *line, size_t *len)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
-			if (line[i] == '|')
+			if (line[i] == '|' && !ft_isinquote(line, i))
 			{
 				new_line[j++] = ' ';
 				new_line[j++] = line[i++];
@@ -368,7 +370,6 @@ void controller(char *line, size_t len)
     in_single_quote = false;
 	in_double_quote = false;
 
-
 	i = 0;
 	start = 0;
 	head = &get_infos()->cmd;
@@ -381,7 +382,7 @@ void controller(char *line, size_t len)
 		if ((line[i] == '|' && !in_single_quote && !in_double_quote) || i == len)
 		{
 			end = i;
-			printf("Start: %zu End: %zu\n", start, end);
+			// printf("Start: %zu End: %zu\n", start, end);
 			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
@@ -455,18 +456,16 @@ void teststrtok(char *line)
 {
 	char *new;
 	size_t len;
-	printf("line : %s0\n", line);
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
-	ft_strput(new, len);
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
-	// execution(get_infos());
-	ft_strput(new, len);
-	printf("len : %zu\n", len);
-	print_cmd(&get_infos()->cmd);
-	free_cmd(&get_infos()->cmd);
+	execution(get_infos());
+	// ft_strput(new, len);
+	// printf("len : %zu\n", len);
+	// print_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
