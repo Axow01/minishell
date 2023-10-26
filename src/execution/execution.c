@@ -65,7 +65,8 @@ bool	execution(t_infos *infos)
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
 		cmd_buffer = cmd_buffer->next;
 	}
-	execution_dispach(infos);
+	ft_export(2, infos->cmd.cmd_argv, infos->env);
+	// execution_dispach(infos);
 	clean_cmd_struct(&infos->cmd);
 	return (true);
 }
