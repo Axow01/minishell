@@ -68,10 +68,10 @@ int	main(int argc, char **argv, char **env)
 	infos->username = get_username(env);
 	while (1)
 	{
-		if (read_line_debug())
-			execution(get_infos());
-		else
-			printf("error\nreadline null\n");
+		read_line_debug();
+	// 		
+	// 	else
+	// 		printf("error\nreadline null\n");
 	}
 	mms_kill("", false, 0);
 	return (0);

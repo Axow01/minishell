@@ -75,6 +75,42 @@
 // 	return (count);
 // }
 
+bool isredirec(char *str)
+{
+	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
+		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
+		return (true);
+	return (false);
+}
+
+bool isinquote(char *str, size_t len, size_t quote)
+{
+	bool in_single_quote;
+	bool in_double_quote;
+	size_t i;
+
+	i = 0;
+    in_single_quote = false;
+	in_double_quote = false;
+	if (len == 0 || !str)
+		return (false);
+	while (i <= len)
+	{
+		if (str[i] == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (str[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		i++;
+	}
+	if (quote == QUOTE && (in_single_quote || in_double_quote))
+		return (true);
+	else if (quote == SINGLE_QUOTE && in_single_quote)
+		return (true);
+	else if (quote == DOUBLE_QUOTE && in_double_quote)
+		return (true);
+	return (false);
+}
+
 t_command	*ft_cmdnew(void)
 {
 	t_command	*new;
@@ -110,27 +146,13 @@ void	ft_cmdadd(t_command **lst)
 		last->next = new;
 }
 
-int count_tokens(char *line, char delim) {
-    int count;
-	int i;
-
-	i = 0;
-	count = 1;
-    while (line[i]) {
-        if (line[i] == delim) {
-            count++;
-        }
-		i++;
-    }
-    return count;
-}
 
 void	init_cmd_struct(char *str)
 {
 	int i;
 	t_command *head;
 
-	i = count_tokens(str, '|');
+	i = count_cmd_total(str, '|');
 	head = &get_infos()->cmd;
 	while (i - 1 > 0)
 	{
@@ -138,107 +160,110 @@ void	init_cmd_struct(char *str)
 		head = head->next;
 		i--;
 	}
-	i = 0;
-	head = &get_infos()->cmd;
-	while (head->next != NULL)
-		head = head->next;
 }
 
-void replace_space(char *line, size_t start, size_t end)
+int count_cmd_total(char *str, char delim)
+{
+    int count;
+	int i;
+
+	i = 0;
+	count = 1;
+    while (str[i]) {
+		if (!isinquote(str, i, QUOTE))
+		{
+			if (str[i] == delim) {
+				count++;
+			}
+		}
+		i++;
+    }
+    return count;
+}
+
+void replace_space(char *str, size_t start, size_t end)
 {
 	size_t 	i;
-	bool 	in_single_quote;
-	bool 	in_double_quote;
 
 	i = start;
-	in_single_quote = false;
-	in_double_quote = false;
 	while (i < end)
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+		if (!isinquote(str, i, QUOTE))
 		{
-			if (ft_isspace(line[i]))
-				line[i] = '\0';
+			if (ft_isspace(str[i]))
+				str[i] = '\0';
 		}
 		i++;
 	}
 }
 
-int	count_redirection(char *line)
+size_t	count_redirection(char *str)
 {
 	size_t i;
 	size_t count;
-	bool in_single_quote;
-	bool in_double_quote;
 
 	i = 0;
 	count = 0;
-    in_single_quote = false;
-	in_double_quote = false;
-	while (line[i])
+	while (str[i])
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+		if (!isinquote(str, i, QUOTE))
 		{
-			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
+			if (str[i] == '|')
 			{
-				count += 2;
+				count++;
+			}
+			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i], "<<", 2) == 0)
+			{
+				count += 1;
 				i += 2;
 			}
-			if (line[i] == '>' || line[i] == '<')
-				count += 2;
+			if (str[i] == '>' || str[i] == '<')
+				count += 1;
 		}
 		i++;
 	}
 	return (count);
 }
 
-char *setup_line(char *line, size_t *len)
+char *setup_line(char *str, size_t *len)
 {
 	size_t i;
 	size_t j;
 	char *new_line;
-	bool in_single_quote;
-	bool in_double_quote;
 
-	*len = count_redirection(line) + ft_strlen(line);
+	*len = count_redirection(str) * 2 + ft_strlen(str);
+	// printf("redir : %zu\n", count_redirection(line));
+	// printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
 		return (NULL);
-	new_line = mms_alloc(*len + 2, sizeof(char));
+	new_line = mms_alloc(*len + 1, sizeof(char));
 	i = 0;
 	j = 0;
-    in_single_quote = false;
-	in_double_quote = false;
-	while (line[i])
+	while (str[i])
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+		if (!isinquote(str, i, QUOTE))
 		{
-			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
+			if (str[i] == '|' && !isinquote(str, i, QUOTE))
 			{
 				new_line[j++] = ' ';
-				new_line[j++] = line[i++];
-				new_line[j++] = line[i++];
+				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
-			if (line[i] == '>' || line[i] == '<')
+			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i], "<<", 2) == 0)
 			{
 				new_line[j++] = ' ';
-				new_line[j++] = line[i++];
+				new_line[j++] = str[i++];
+				new_line[j++] = str[i++];
+				new_line[j++] = ' ';
+			}
+			if (str[i] == '>' || str[i] == '<')
+			{
+				new_line[j++] = ' ';
+				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
 		}
-		new_line[j++] = line[i++];
+		new_line[j++] = str[i++];
 	}
 	return (new_line);
 }
@@ -274,6 +299,7 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
     {
         if (line[i] == '\0')
 		{
+
 			head->cmd[j++] = &line[ptr];
 			while (line[i] == '\0' && i < end)
 				i++;
@@ -306,37 +332,27 @@ size_t count_element(char *line, size_t start, size_t end)
 	return (count);
 }
 
-void controller(char *line, size_t len)
+void controller(char *str, size_t len)
 {
 	size_t i;
-	size_t j;
 	size_t end;
 	size_t start;
 	t_command *head;
-	bool in_single_quote;
-	bool in_double_quote;
-    in_single_quote = false;
-	in_double_quote = false;
-
 
 	i = 0;
-	j = 0;
 	start = 0;
 	head = &get_infos()->cmd;
 	while(i <= len)
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if ((line[i] == '|' && !in_single_quote && !in_double_quote) || i == len)
+		if ((str[i] == '|' && !isinquote(str, i, QUOTE)) || i == len)
 		{
 			end = i;
-			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
+			// printf("Start: %zu End: %zu\n", start, end);
+			head->cmd = mms_alloc(count_element(str, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
-			get_element(line, start, end, head);
-			if (head->cmd[j++] == NULL)
+			get_element(str, start, end, head);
+			if (head->cmd && head->cmd[0] && !head->cmd[0][0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
 				return ;
@@ -358,10 +374,10 @@ void	print_cmd(t_command *lst)
 	head = lst;
 	while (head)
 	{
+		// printf("in: %d out: %d\n", head->stdin_, head->stdout_);
 		printf("command%lu : \n", i);
 		j = 0;
-		printf("in: %d out: %d\n", head->stdin_, head->stdout_);
-		while (head->cmd[j])
+		while (head->cmd && head->cmd[j])
 		{
 			printf("token%lu : %s\n", j, head->cmd[j]);
 			j++;
@@ -382,7 +398,7 @@ void	free_cmd(t_command *lst)
 	while (head)
 	{
 		j = 0;
-		while (head->cmd[j])
+		while (head->cmd && head->cmd[j])
 		{
 			mms_free(head->cmd[j]);
 			j++;
@@ -401,31 +417,20 @@ void	free_cmd(t_command *lst)
 	head->next = NULL;
 }
 
-bool ft_isredirec(char *str)
-{
-	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
-		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
-		return (true);
-	return (false);
-}
-
 void teststrtok(char *line)
 {
 	char *new;
 	size_t len;
-
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
+	// execution(get_infos());
+	ft_strput(new, len);
 	// printf("len : %zu\n", len);
-	// ft_strput(new, len);
-	// print_cmd(&get_infos()->cmd);
-	// free_cmd(&get_infos()->cmd);
+	print_cmd(&get_infos()->cmd);
+	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
-//echo "yolo bg" > txt.out | wc -l
-//echo0"yolo bg"00>00txt.out0|0wc0-l0
-//echo >>>>>>>>>>> out .txd
