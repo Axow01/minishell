@@ -8,14 +8,13 @@
 # define SINGLE_QUOTE 1
 # define DOUBLE_QUOTE 2
 
-void	teststrtok(char *str);
-char	*ft_strtok(char *str);
-char	*ft_strtok_redirect(char *str);
+void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
-bool	ft_isinquote(char *str, size_t len);
-
-
-bool    isinquote(char *str, size_t len, size_t quote);
-
+void	init_cmd_struct(char *str);
+bool	isinquote(char *str, size_t len, size_t quote);
+bool	isredirec(char *str);
+void	strnput(char *str, size_t len);
+void	free_cmd(t_command *lst);
+void	print_cmd(t_command *lst);
 
 #endif
