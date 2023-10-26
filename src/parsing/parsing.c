@@ -75,6 +75,7 @@
 // 	return (count);
 // }
 
+
 bool isredirec(char *str)
 {
 	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
@@ -210,19 +211,33 @@ size_t	count_redirection(char *str)
 		{
 			if (str[i] == '|')
 			{
-				count++;
+				count += 2;
 			}
 			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i], "<<", 2) == 0)
 			{
-				count += 1;
+				count += 2;
 				i += 2;
 			}
 			if (str[i] == '>' || str[i] == '<')
-				count += 1;
+				count += 2;
 		}
 		i++;
 	}
 	return (count);
+}
+
+size_t ft_dollars_len(char *str, size_t len)
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+			break;
+		i++;
+	}
+	return (i);
 }
 
 char *setup_line(char *str, size_t *len)
@@ -231,7 +246,7 @@ char *setup_line(char *str, size_t *len)
 	size_t j;
 	char *new_line;
 
-	*len = count_redirection(str) * 2 + ft_strlen(str);
+	*len = count_redirection(str) + ft_strlen(str);
 	// printf("redir : %zu\n", count_redirection(line));
 	// printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
@@ -262,10 +277,6 @@ char *setup_line(char *str, size_t *len)
 				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
-		}
-		if (str[i] == '$')
-		{
-			
 		}
 		new_line[j++] = str[i++];
 	}
@@ -304,7 +315,7 @@ void get_element(char *line, size_t start, size_t end, t_command *head)
         if (line[i] == '\0')
 		{
 
-			head->cmd[j++] = &line[ptr];
+			head->cmd[j++] = ft_strdup(&line[ptr]);
 			while (line[i] == '\0' && i < end)
 				i++;
 			ptr = i;
