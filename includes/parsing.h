@@ -15,7 +15,7 @@ int		count_cmd_total(char *line, char delim);
 bool	ft_isinquote(char *str, size_t len);
 
 
-bool isinquote(char *str, size_t len, size_t quote)
+bool    isinquote(char *str, size_t len, size_t quote);
 
 
 #endif

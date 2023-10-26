@@ -162,26 +162,17 @@ void	init_cmd_struct(char *str)
 	}
 }
 
-int count_cmd_total(char *line, char delim)
+int count_cmd_total(char *str, char delim)
 {
     int count;
 	int i;
-	bool 	in_single_quote;
-	bool 	in_double_quote;
-
-	in_single_quote = false;
-	in_double_quote = false;
 
 	i = 0;
 	count = 1;
-    while (line[i]) {
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+    while (str[i]) {
+		if (!isinquote(str, i, QUOTE))
 		{
-			if (line[i] == delim) {
+			if (str[i] == delim) {
 				count++;
 			}
 		}
@@ -190,59 +181,43 @@ int count_cmd_total(char *line, char delim)
     return count;
 }
 
-void replace_space(char *line, size_t start, size_t end)
+void replace_space(char *str, size_t start, size_t end)
 {
 	size_t 	i;
-	bool 	in_single_quote;
-	bool 	in_double_quote;
 
 	i = start;
-	in_single_quote = false;
-	in_double_quote = false;
 	while (i < end)
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+		if (!isinquote(str, i, QUOTE))
 		{
-			if (ft_isspace(line[i]))
-				line[i] = '\0';
+			if (ft_isspace(str[i]))
+				str[i] = '\0';
 		}
 		i++;
 	}
 }
 
-size_t	count_redirection(char *line)
+size_t	count_redirection(char *str)
 {
 	size_t i;
 	size_t count;
-	bool in_single_quote;
-	bool in_double_quote;
 
 	i = 0;
 	count = 0;
-    in_single_quote = false;
-	in_double_quote = false;
-	while (line[i])
+	while (str[i])
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+		if (!isinquote(str, i, QUOTE))
 		{
-			if (line[i] == '|')
+			if (str[i] == '|')
 			{
 				count++;
 			}
-			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
+			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i], "<<", 2) == 0)
 			{
 				count += 1;
 				i += 2;
 			}
-			if (line[i] == '>' || line[i] == '<')
+			if (str[i] == '>' || str[i] == '<')
 				count += 1;
 		}
 		i++;
@@ -250,15 +225,13 @@ size_t	count_redirection(char *line)
 	return (count);
 }
 
-char *setup_line(char *line, size_t *len)
+char *setup_line(char *str, size_t *len)
 {
 	size_t i;
 	size_t j;
 	char *new_line;
-	bool in_single_quote;
-	bool in_double_quote;
 
-	*len = count_redirection(line) * 2 + ft_strlen(line);
+	*len = count_redirection(str) * 2 + ft_strlen(str);
 	// printf("redir : %zu\n", count_redirection(line));
 	// printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
@@ -266,37 +239,31 @@ char *setup_line(char *line, size_t *len)
 	new_line = mms_alloc(*len + 1, sizeof(char));
 	i = 0;
 	j = 0;
-    in_single_quote = false;
-	in_double_quote = false;
-	while (line[i])
+	while (str[i])
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if (!in_single_quote && !in_double_quote)
+		if (!isinquote(str, i, QUOTE))
 		{
-			if (line[i] == '|' && !isinquote(line, i, QUOTE))
+			if (str[i] == '|' && !isinquote(str, i, QUOTE))
 			{
 				new_line[j++] = ' ';
-				new_line[j++] = line[i++];
+				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
-			while (ft_strncmp(&line[i], ">>", 2) == 0 || ft_strncmp(&line[i], "<<", 2) == 0)
+			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i], "<<", 2) == 0)
 			{
 				new_line[j++] = ' ';
-				new_line[j++] = line[i++];
-				new_line[j++] = line[i++];
+				new_line[j++] = str[i++];
+				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
-			if (line[i] == '>' || line[i] == '<')
+			if (str[i] == '>' || str[i] == '<')
 			{
 				new_line[j++] = ' ';
-				new_line[j++] = line[i++];
+				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
 		}
-		new_line[j++] = line[i++];
+		new_line[j++] = str[i++];
 	}
 	return (new_line);
 }
@@ -365,34 +332,26 @@ size_t count_element(char *line, size_t start, size_t end)
 	return (count);
 }
 
-void controller(char *line, size_t len)
+void controller(char *str, size_t len)
 {
 	size_t i;
 	size_t end;
 	size_t start;
 	t_command *head;
-	bool in_single_quote;
-	bool in_double_quote;
-    in_single_quote = false;
-	in_double_quote = false;
 
 	i = 0;
 	start = 0;
 	head = &get_infos()->cmd;
 	while(i <= len)
 	{
-		if (line[i] == '\"' && !in_single_quote)
-            in_double_quote = !in_double_quote;
-        else if (line[i] == '\'' && !in_double_quote)
-            in_single_quote = !in_single_quote;
-		if ((line[i] == '|' && !in_single_quote && !in_double_quote) || i == len)
+		if ((str[i] == '|' && !isinquote(str, i, QUOTE)) || i == len)
 		{
 			end = i;
 			// printf("Start: %zu End: %zu\n", start, end);
-			head->cmd = mms_alloc(count_element(line, start, end) + 1, sizeof(char *));
+			head->cmd = mms_alloc(count_element(str, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
-			get_element(line, start, end, head);
+			get_element(str, start, end, head);
 			if (head->cmd && head->cmd[0] && !head->cmd[0][0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
