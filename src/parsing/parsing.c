@@ -75,7 +75,7 @@
 // 	return (count);
 // }
 
-bool ft_isredirec(char *str)
+bool isredirec(char *str)
 {
 	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0 
 		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
@@ -83,7 +83,7 @@ bool ft_isredirec(char *str)
 	return (false);
 }
 
-bool ft_isinquote(char *str, size_t len)
+bool isinquote(char *str, size_t len, size_t quote)
 {
 	bool in_single_quote;
 	bool in_double_quote;
@@ -92,6 +92,8 @@ bool ft_isinquote(char *str, size_t len)
 	i = 0;
     in_single_quote = false;
 	in_double_quote = false;
+	if (len == 0 || !str)
+		return (false);
 	while (i <= len)
 	{
 		if (str[i] == '\"' && !in_single_quote)
@@ -100,7 +102,11 @@ bool ft_isinquote(char *str, size_t len)
 			in_single_quote = !in_single_quote;
 		i++;
 	}
-	if (in_single_quote || in_double_quote)
+	if (quote == QUOTE && (in_single_quote || in_double_quote))
+		return (true);
+	else if (quote == SINGLE_QUOTE && in_single_quote)
+		return (true);
+	else if (quote == DOUBLE_QUOTE && in_double_quote)
 		return (true);
 	return (false);
 }
@@ -252,7 +258,7 @@ char *setup_line(char *line, size_t *len)
 	bool in_single_quote;
 	bool in_double_quote;
 
-	*len = count_redirection(line) * 2 + ft_strlen(line) + 2;
+	*len = count_redirection(line) * 2 + ft_strlen(line);
 	// printf("redir : %zu\n", count_redirection(line));
 	// printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
@@ -270,7 +276,7 @@ char *setup_line(char *line, size_t *len)
             in_single_quote = !in_single_quote;
 		if (!in_single_quote && !in_double_quote)
 		{
-			if (line[i] == '|' && !ft_isinquote(line, i))
+			if (line[i] == '|' && !isinquote(line, i, QUOTE))
 			{
 				new_line[j++] = ' ';
 				new_line[j++] = line[i++];
@@ -462,10 +468,10 @@ void teststrtok(char *line)
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
-	execution(get_infos());
-	// ft_strput(new, len);
+	// execution(get_infos());
+	ft_strput(new, len);
 	// printf("len : %zu\n", len);
-	// print_cmd(&get_infos()->cmd);
-	// free_cmd(&get_infos()->cmd);
+	print_cmd(&get_infos()->cmd);
+	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
