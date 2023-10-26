@@ -18,6 +18,7 @@ t_key_val	*export_get_key_val(char *raw_input)
 			infos->key = mms_alloc(i + 1, sizeof(char));
 			while (raw_input[++k] != '=')
 				infos->key[k] = raw_input[k];
+			infos->key[k] = 0;
 			break ;
 		}
 		i++;

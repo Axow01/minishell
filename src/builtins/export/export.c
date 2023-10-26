@@ -40,14 +40,14 @@ static size_t	ft_length_d_char(char **dc)
 	return (i);
 }
 
-static char	*check_for_key(char *key, char **env)
+char	*check_for_key(char *key, char **env, size_t n)
 {
 	int	i;
 
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(key + 1, env[i], ft_strlen(key + 1)) == 0)
+		if (ft_strncmp(key, env[i], n) == 0)
 			break ;
 		i++;
 	}
@@ -66,12 +66,11 @@ char	**ft_export(int ac, char **argv, char **env)
 		print_double_char(env);
 	cpy_env = copy_double_char(env, ft_length_d_char(env));
 	vk = export_get_key_val(argv[1]);
-	if (check_for_key(vk->key, cpy_env) == NULL)
+	if (check_for_key(vk->key, cpy_env, ft_strlen(vk->key)) == NULL)
 	{
 		ft_printf("The value is non-existant.\n");
 	}
 	else
-		ft_printf("The value exist.\n");
-	mms_kill("quttings\n", true, 0);
+		ft_printf("The value exist. KEY: %s Value: %s\n", vk->key, vk->value);
 	return (cpy_env);
 }

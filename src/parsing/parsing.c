@@ -431,10 +431,10 @@ void teststrtok(char *line)
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	controller(new, len);
-	// execution(get_infos());
-	ft_strput(new, len);
+	execution(get_infos());
+	// ft_strput(new, len);
 	// printf("len : %zu\n", len);
-	print_cmd(&get_infos()->cmd);
-	free_cmd(&get_infos()->cmd);
+	// print_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l

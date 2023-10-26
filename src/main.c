@@ -68,10 +68,8 @@ int	main(int argc, char **argv, char **env)
 	infos->username = get_username(env);
 	while (1)
 	{
-		read_line_debug();
-	// 		
-	// 	else
-	// 		printf("error\nreadline null\n");
+		if (!read_line_debug())
+			printf_error("ReadLine error!\n");
 	}
 	mms_kill("", false, 0);
 	return (0);
