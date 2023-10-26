@@ -55,6 +55,12 @@ bool	execution(t_infos *infos)
 
 	if (ft_strncmp(infos->cmd.cmd[0], "exit", 4) == 0)
 		mms_kill(NULL, true, 0);
+	if (ft_strncmp(infos->cmd.cmd[0], "export", 6) == 0)
+	{
+		infos->env = ft_export(2, infos->cmd.cmd, infos->env);
+		clean_cmd_struct(&infos->cmd);
+		return (true);
+	}
 	cmd_buffer = &infos->cmd;
 	while (cmd_buffer)
 	{
@@ -65,8 +71,7 @@ bool	execution(t_infos *infos)
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
 		cmd_buffer = cmd_buffer->next;
 	}
-	ft_export(2, infos->cmd.cmd_argv, infos->env);
-	// execution_dispach(infos);
+	execution_dispach(infos);
 	clean_cmd_struct(&infos->cmd);
 	return (true);
 }

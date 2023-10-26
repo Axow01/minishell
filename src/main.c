@@ -38,6 +38,7 @@ bool	read_line_debug(void)
 
 	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
+	get_infos()->username = get_username(get_infos()->env);
 	get_infos()->pwd = get_pwd(get_infos()->env);
 	printf("\x1b[36;49;1;3m");
 	write(STDIN_FILENO, "", 1);
@@ -65,7 +66,6 @@ int	main(int argc, char **argv, char **env)
 	if (!infos->env)
 		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
-	infos->username = get_username(env);
 	while (1)
 	{
 		if (!read_line_debug())
