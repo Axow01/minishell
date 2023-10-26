@@ -51,7 +51,7 @@ char	*check_for_key(char *key, char **env, size_t n)
 			break ;
 		i++;
 	}
-	return (env[i]);
+	return (&env[i][n + 1]);
 }
 
 char	**ft_export(int ac, char **argv, char **env)
@@ -68,9 +68,10 @@ char	**ft_export(int ac, char **argv, char **env)
 	vk = export_get_key_val(argv[1]);
 	if (check_for_key(vk->key, cpy_env, ft_strlen(vk->key)) == NULL)
 	{
-		ft_printf("The value is non-existant.\n");
+		printf("The value is non-existant.\n");
 	}
 	else
-		ft_printf("The value exist. KEY: %s Value: %s\n", vk->key, vk->value);
+		printf("The value exist. KEY: %s Value: %s\n", vk->key, vk->value);
+	printf("%s\n", check_for_key(vk->key, cpy_env, ft_strlen(vk->key)));
 	return (cpy_env);
 }
