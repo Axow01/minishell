@@ -2,9 +2,9 @@
 
 void	print_cmd(t_command *lst)
 {
-	size_t i;
-	size_t j;
-	t_command *head;
+	size_t		i;
+	size_t		j;
+	t_command	*head;
 
 	i = 0;
 	head = lst;
@@ -25,9 +25,9 @@ void	print_cmd(t_command *lst)
 
 void	free_cmd(t_command *lst)
 {
-	t_command *head;
-	t_command *temp;
-	size_t j;
+	t_command	*head;
+	t_command	*temp;
+	size_t		j;
 
 	head = lst;
 	j = 0;
@@ -48,12 +48,12 @@ void	free_cmd(t_command *lst)
 		temp = head;
 		head = head->next;
 		mms_free(temp);
-  	}
+	}
 	head = lst;
 	head->next = NULL;
 }
 
-void strnput(char *str, size_t len)
+void	strnput(char *str, size_t len)
 {
 	size_t i;
 
