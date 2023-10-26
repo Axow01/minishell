@@ -4,7 +4,7 @@
 
 # include "libftms/inc/libft.h"
 
-# define QUOTE 0
+# define QUOTES 0
 # define SINGLE_QUOTE 1
 # define DOUBLE_QUOTE 2
 

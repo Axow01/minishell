@@ -102,7 +102,7 @@ bool isinquote(char *str, size_t len, size_t quote)
 			in_single_quote = !in_single_quote;
 		i++;
 	}
-	if (quote == QUOTE && (in_single_quote || in_double_quote))
+	if (quote == QUOTES && (in_single_quote || in_double_quote))
 		return (true);
 	else if (quote == SINGLE_QUOTE && in_single_quote)
 		return (true);
@@ -170,7 +170,7 @@ int count_cmd_total(char *str, char delim)
 	i = 0;
 	count = 1;
     while (str[i]) {
-		if (!isinquote(str, i, QUOTE))
+		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == delim) {
 				count++;
@@ -188,7 +188,7 @@ void replace_space(char *str, size_t start, size_t end)
 	i = start;
 	while (i < end)
 	{
-		if (!isinquote(str, i, QUOTE))
+		if (!isinquote(str, i, QUOTES))
 		{
 			if (ft_isspace(str[i]))
 				str[i] = '\0';
@@ -206,7 +206,7 @@ size_t	count_redirection(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (!isinquote(str, i, QUOTE))
+		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == '|')
 			{
@@ -241,9 +241,9 @@ char *setup_line(char *str, size_t *len)
 	j = 0;
 	while (str[i])
 	{
-		if (!isinquote(str, i, QUOTE))
+		if (!isinquote(str, i, QUOTES))
 		{
-			if (str[i] == '|' && !isinquote(str, i, QUOTE))
+			if (str[i] == '|' && !isinquote(str, i, QUOTES))
 			{
 				new_line[j++] = ' ';
 				new_line[j++] = str[i++];
@@ -262,6 +262,10 @@ char *setup_line(char *str, size_t *len)
 				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
+		}
+		if (str[i] == '$')
+		{
+			
 		}
 		new_line[j++] = str[i++];
 	}
@@ -344,7 +348,7 @@ void controller(char *str, size_t len)
 	head = &get_infos()->cmd;
 	while(i <= len)
 	{
-		if ((str[i] == '|' && !isinquote(str, i, QUOTE)) || i == len)
+		if ((str[i] == '|' && !isinquote(str, i, QUOTES)) || i == len)
 		{
 			end = i;
 			// printf("Start: %zu End: %zu\n", start, end);
