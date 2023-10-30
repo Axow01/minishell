@@ -14,9 +14,10 @@ typedef struct s_key_val
 /// ==== ///
 
 /// @brief This is the cd function this changes the current directory.
-/// @param new_path The new directory to go.
-/// @param env The env variable.
-void	cd(char *new_path, char **env);
+/// @param ac Number of arguments.
+/// @param args char** arguments.
+/// @param env environement variables char **.
+void	cd(int ac, char **args, char **env);
 
 /// ======== ///
 ///  EXPORT  ///

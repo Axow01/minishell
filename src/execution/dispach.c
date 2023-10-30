@@ -19,10 +19,24 @@ int16_t	count_cmd(t_command *cmd)
 	return (i);
 }
 
+void	check_for_builtins(t_infos *infos)
+{
+	t_command	*cmd;
+
+	cmd = &infos->cmd;
+	if (ft_strcmp(cmd->cmd[0], "export") == 0)
+		infos->env = ft_export(0, cmd->cmd_argv, infos->env);
+	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
+		mms_kill(NULL, true, 0);
+	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
+		cd(ft_length_d_char(cmd->cmd), cmd->cmd_argv, infos->env);
+}
+
 bool	simple_exec(t_command *cmd)
 {
 	pid_t	pid_fork;
 
+	check_for_builtins(get_infos());
 	if (!cmd->exec_cmd)
 	{
 		if (check_path_type(cmd->cmd) == COMMAND)
@@ -44,17 +58,6 @@ bool	simple_exec(t_command *cmd)
 	return (true);
 }
 
-void	check_for_builtins(t_infos *infos)
-{
-	t_command	*cmd;
-
-	cmd = &infos->cmd;
-	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
-		ft_export(0, cmd->cmd_argv, infos->env);
-	else if (ft_strncmp(cmd->cmd[0], "exit", 4) == 0)
-		mms_kill(NULL, true, 0);
-}
-
 void	execution_dispach(t_infos *infos)
 {
 	infos->nb_cmd = count_cmd(&infos->cmd);
@@ -64,3 +67,4 @@ void	execution_dispach(t_infos *infos)
 		simple_exec(&infos->cmd);
 	return ;
 }
+

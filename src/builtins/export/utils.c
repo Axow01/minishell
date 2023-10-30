@@ -47,7 +47,7 @@ char	*check_for_key(char *key, char **env, size_t n)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(key, env[i], n) == 0)
+		if (ft_strncmp(key, env[i], n) == 0 && env[i][n] == '=')
 			break ;
 		i++;
 	}
