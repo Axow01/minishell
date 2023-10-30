@@ -17,7 +17,7 @@ void	print_double_char(char **dc)
 	}
 }
 
-static char	**copy_double_char(char **dc, int n)
+char	**copy_double_char(char **dc, int n)
 {
 	char	**cpy;
 	int		i;
@@ -37,7 +37,7 @@ static char	**copy_double_char(char **dc, int n)
 	return (cpy);
 }
 
-static size_t	ft_length_d_char(char **dc)
+size_t	ft_length_d_char(char **dc)
 {
 	int	i;
 
@@ -70,10 +70,9 @@ char	**ft_export(int ac, char **argv, char **env)
 	char		**cpy_env;
 	t_key_val	*vk;
 	int			i;
-	int			k;
-	int			b;
 
 	cpy_env = NULL;
+	ac = ft_length_d_char(argv);
 	if (ac > 2)
 		printf_error("minishell: ft_export: too much arguments\n");
 	if (ac == 1)
@@ -84,16 +83,9 @@ char	**ft_export(int ac, char **argv, char **env)
 	cpy_env = copy_double_char(env, ft_length_d_char(env));
 	vk = export_get_key_val(argv[1]);
 	i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
-	// Create new when i < 0.
-	cpy_env[i] = mms_free(cpy_env[i]);
-	cpy_env[i] = mms_alloc(ft_strlen(vk->key) + ft_strlen(vk->value) + 2, sizeof(char));
-	k = 0;
-	b = 0;
-	while (vk->key[k])
-		cpy_env[i][b++] = vk->key[k++];
-	cpy_env[i][b++] = '=';
-	k = 0;
-	while (vk->value[k])
-		cpy_env[i][b++] = vk->value[k++];
+	if (i < 0)
+		cpy_env = create_new_variable(vk, cpy_env);
+	else
+		edit_variable(vk, cpy_env, i);
 	return (cpy_env);
 }

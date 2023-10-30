@@ -44,6 +44,17 @@ bool	simple_exec(t_command *cmd)
 	return (true);
 }
 
+void	check_for_builtins(t_infos *infos)
+{
+	t_command	*cmd;
+
+	cmd = &infos->cmd;
+	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
+		ft_export(0, cmd->cmd_argv, infos->env);
+	else if (ft_strncmp(cmd->cmd[0], "exit", 4) == 0)
+		mms_kill(NULL, true, 0);
+}
+
 void	execution_dispach(t_infos *infos)
 {
 	infos->nb_cmd = count_cmd(&infos->cmd);

@@ -53,3 +53,42 @@ char	*check_for_key(char *key, char **env, size_t n)
 	}
 	return (&env[i][n + 1]);
 }
+
+char	**create_new_variable(t_key_val *vk, char **env)
+{
+	int	i;
+	int	k;
+	int	d;
+
+	if (!env)
+		return (env);
+	i = ft_length_d_char(env);
+	k = 0;
+	d = 0;
+	env = copy_double_char(env, i + 1);
+	env[i] = mms_alloc(ft_strlen(vk->key) + ft_strlen(vk->value) + 2, sizeof(char));
+	while (vk->key[k])
+		env[i][d++] = vk->key[k++];
+	k = 0;
+	env[i][d++] = '=';
+	while (vk->value[k])
+		env[i][d++] = vk->value[k++];
+	return (env);
+}
+
+void	edit_variable(t_key_val *vk, char **env, int i)
+{
+	int	k;
+	int	b;
+
+	env[i] = mms_free(env[i]);
+	env[i] = mms_alloc(ft_strlen(vk->key) + ft_strlen(vk->value) + 2, sizeof(char));
+	k = 0;
+	b = 0;
+	while (vk->key[k])
+		env[i][b++] = vk->key[k++];
+	env[i][b++] = '=';
+	k = 0;
+	while (vk->value[k])
+		env[i][b++] = vk->value[k++];
+}

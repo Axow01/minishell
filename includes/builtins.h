@@ -45,4 +45,26 @@ t_key_val	*export_get_key_val(char *raw_input);
 /// @return The value or NULL if non-existant
 char	*check_for_key(char *key, char **env, size_t n);
 
+/// @brief Get the length of a double char pointer.
+/// @param dc **char
+/// @return The size of the **char.
+size_t	ft_length_d_char(char **dc);
+
+/// @brief Copy the double char **.
+/// @param dc  char **.
+/// @param n The size of the double char **
+/// @return return the new double char.
+char	**copy_double_char(char **dc, int n);
+
+/// @brief Create a new variable in the env
+/// @param vk struct
+/// @param env value.
+char	**create_new_variable(t_key_val *vk, char **env);
+
+/// @brief Modify a variable in the env.
+/// @param vk struct.
+/// @param env value.
+/// @param i the position of the value.
+void	edit_variable(t_key_val *vk, char **env, int i);
+
 #endif
