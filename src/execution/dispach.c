@@ -24,11 +24,11 @@ void	check_for_builtins(t_infos *infos)
 	t_command	*cmd;
 
 	cmd = &infos->cmd;
-	if (ft_strcmp(cmd->cmd[0], "export") == 0)
+	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
 		infos->env = ft_export(0, cmd->cmd_argv, infos->env);
-	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
 		mms_kill(NULL, true, 0);
-	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
 		cd(ft_length_d_char(cmd->cmd), cmd->cmd_argv, infos->env);
 }
 

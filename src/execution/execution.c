@@ -52,15 +52,6 @@ bool	execution(t_infos *infos)
 {
 	t_command	*cmd_buffer;
 
-
-	if (ft_strncmp(infos->cmd.cmd[0], "exit", 4) == 0)
-		mms_kill(NULL, true, 0);
-	if (ft_strncmp(infos->cmd.cmd[0], "export", 6) == 0)
-	{
-		infos->env = ft_export(0, infos->cmd.cmd, infos->env);
-		clean_cmd_struct(&infos->cmd);
-		return (true);
-	}
 	cmd_buffer = &infos->cmd;
 	while (cmd_buffer)
 	{

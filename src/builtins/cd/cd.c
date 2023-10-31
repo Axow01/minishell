@@ -49,9 +49,9 @@ void	cd(int ac, char **args, char **env)
 		pwd = args[1];
 	else
 		pwd = new_path(current_dir, args[1]);
-	printf("PATH: %s\n", pwd);
 	if (chdir(pwd) != 0)
 		printf_error("minishell: cd: The path seems wrong\n");
-	update_pwd_env(pwd, get_infos());
+	getcwd(current_dir, PATH_MAX);
+	update_pwd_env(current_dir, get_infos());
 	mms_free(pwd);
 }
