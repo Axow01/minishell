@@ -32,9 +32,26 @@ void	check_for_builtins(t_infos *infos)
 		cd(ft_length_d_char(cmd->cmd), cmd->cmd_argv, infos->env);
 }
 
+void	untrack_cmd(t_command *cmd)
+{
+	int	i;
+
+	i = -1;
+	mms_untrack_ptr(cmd->cmd_argv);
+	mms_untrack_ptr(cmd->exec_cmd);
+	mms_untrack_ptr(cmd);
+	mms_untrack_ptr(get_infos()->env);
+	while (cmd->cmd_argv[++i])
+		mms_untrack_ptr(cmd->cmd_argv[i]);
+	i = -1;
+	while (get_infos()->env[++i])
+		mms_untrack_ptr(get_infos()->env[i]);
+}
+
 bool	simple_exec(t_command *cmd)
 {
 	pid_t	pid_fork;
+	char	**env;
 
 	check_for_builtins(get_infos());
 	if (!cmd->exec_cmd)
@@ -50,9 +67,13 @@ bool	simple_exec(t_command *cmd)
 		return (false);
 	if (pid_fork == 0)
 	{
+		env = get_infos()->env;
 		dup2(cmd->stdin_, STDIN_FILENO);
 		dup2(cmd->stdout_, STDOUT_FILENO);
-		execve(cmd->exec_cmd, cmd->cmd_argv, get_infos()->env);
+		untrack_cmd(cmd);
+		mms_kill(NULL, false, 0);
+		execve(cmd->exec_cmd, cmd->cmd_argv, env);
+		exit(1);
 	}
 	waitpid(pid_fork, NULL, 0);
 	return (true);
