@@ -48,10 +48,10 @@ char	*check_for_key(char *key, char **env, size_t n)
 	while (env[i])
 	{
 		if (ft_strncmp(key, env[i], n) == 0)
-			break ;
+			return (&env[i][n + 1]);
 		i++;
 	}
-	return (&env[i][n + 1]);
+	return (NULL);
 }
 
 char	**ft_export(int ac, char **argv, char **env)

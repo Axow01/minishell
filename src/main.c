@@ -69,7 +69,10 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		if (!read_line_debug())
+		{
 			printf_error("ReadLine error!\n");
+			return (1);
+		}
 	}
 	mms_kill("", false, 0);
 	return (0);

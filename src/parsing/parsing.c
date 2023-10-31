@@ -65,12 +65,12 @@ size_t	count_redirection(char *str)
 	return (count);
 }
 
-size_t ft_dollars_len(char *str, size_t len)
+size_t dollars_key_len(char *str)
 {
 	size_t i;
 
 	i = 0;
-	while (i < len)
+	while (str[i])
 	{
 		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
 			break;
@@ -79,6 +79,35 @@ size_t ft_dollars_len(char *str, size_t len)
 	return (i);
 }
 
+bool dollars_key_exist(char *key, size_t len)
+{
+	if (check_for_key(key, get_infos()->env, len))
+		return (true);
+	return (false);
+}
+
+size_t dollars_count(char *str)
+{
+	size_t i;
+	size_t count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1])
+		{
+			printf("dol : %d\n", dollars_key_exist(&str[i + 1], dollars_key_len(&str[i + 1])));
+			printf("dolen : %zu\n", dollars_key_len(&str[i + 1]));
+			// if (dollars_key_exist(&str[i + 1], dollars_key_len(&str[i + 1])) == true)
+				count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_key_len(&str[i + 1])));
+		}
+		i++;
+	}
+	return (count);
+}
+
+
 char *setup_line(char *str, size_t *len)
 {
 	size_t i;
@@ -86,6 +115,7 @@ char *setup_line(char *str, size_t *len)
 	char *new_line;
 
 	*len = count_redirection(str) + ft_strlen(str);
+	printf("dollars_count: %zu\n", dollars_count(str));
 	// printf("redir : %zu\n", count_redirection(line));
 	// printf("stlen : %zu\n", ft_strlen(line));
 	if (*len == 0)
@@ -117,6 +147,10 @@ char *setup_line(char *str, size_t *len)
 				new_line[j++] = ' ';
 			}
 		}
+		// if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+		// {
+		// 	if (dollars_key_exist(str[i+1]))
+		// }
 		new_line[j++] = str[i++];
 	}
 	return (new_line);
@@ -216,6 +250,7 @@ void parsing(char *line)
 	strnput(new, len);
 	// printf("len : %zu\n", len);
 	print_cmd(&get_infos()->cmd);
+	printf("\n");
 	free_cmd(&get_infos()->cmd);
 }
 //echo "yolo bg">txt.out | wc -l
