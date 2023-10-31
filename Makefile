@@ -66,4 +66,7 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY:	all clean fclean re libft
+leak: all
+	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=$(PWD)/supp.txt ./minishell
+
+.PHONY:	all clean fclean re libft leak
