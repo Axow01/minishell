@@ -120,7 +120,7 @@ size_t dollars_count(char *str)
 			dollars_len = dollars_key_len(&str[i + 1]);
 			// printf("dol : %d\n", dollars_key_exist(&str[i + 1], dollars_len));
 			// printf("dolen : %zu\n", dollars_len);
-			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_len)) - (dollars_len + 1);
+			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_len)) - (dollars_len);
 		}
 		i++;
 	}
@@ -152,7 +152,6 @@ void dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
 			*i += dollars_len + 1;
 		else
 		{
-			new_line[(*j)++] = '$'; 
 			*i += 1;
 		}
 		return ;
@@ -176,6 +175,8 @@ char *setup_line(char *str, size_t *len)
 	j = 0;
 	while (str[i])
 	{
+		while (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+			dollars_token_copy(str, new_line, &i, &j);
 		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == '|' && !isinquote(str, i, QUOTES))
@@ -197,10 +198,6 @@ char *setup_line(char *str, size_t *len)
 				new_line[j++] = str[i++];
 				new_line[j++] = ' ';
 			}
-		}
-		while (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
-		{
-			dollars_token_copy(str, new_line, &i, &j);
 		}
 		new_line[j++] = str[i++];
 	}
