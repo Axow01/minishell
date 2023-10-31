@@ -40,19 +40,19 @@ static size_t	ft_length_d_char(char **dc)
 	return (i);
 }
 
-char	*check_for_key(char *key, char **env, size_t n)
-{
-	int	i;
+// char	*check_for_key(char *key, char **env, size_t n)
+// {
+// 	int	i;
 
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(key, env[i], n) == 0)
-			return (&env[i][n + 1]);
-		i++;
-	}
-	return (NULL);
-}
+// 	i = 0;
+// 	while (env[i])
+// 	{
+// 		if (ft_strncmp(key, env[i], n) == 0)
+// 			return (&env[i][n + 1]);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
 
 char	**ft_export(int ac, char **argv, char **env)
 {
