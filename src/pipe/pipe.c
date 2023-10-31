@@ -32,12 +32,16 @@ void	close_all_pipes(t_pipe *pipes, int nb_pipes)
 void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
 {
 	(void)i;
+	char	**env;
 	close_all_except(pipes, buf->stdin_, buf->stdout_);
 	if (STDIN_FILENO != buf->stdin_)
 		dup2(buf->stdin_, STDIN_FILENO);
 	if (STDOUT_FILENO != buf->stdout_)
 		dup2(buf->stdout_, STDOUT_FILENO);
-	printf("ErrorCode: %d\n", execve(buf->exec_cmd, buf->cmd_argv, infos->env));
+	untrack_cmd(buf);
+	env = infos->env;
+	mms_kill(NULL, false, 0);
+	printf("ErrorCode: %d\n", execve(buf->exec_cmd, buf->cmd_argv, env));
 }
 
 bool	run_all(t_infos *infos, t_pipe *pipes)

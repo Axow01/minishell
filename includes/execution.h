@@ -30,4 +30,8 @@ int16_t	count_cmd(t_command *cmd);
 /// @return true if success false if not.
 bool	simple_exec(t_command *cmd);
 
+/// @brief This remove the nessecary values from libmms tracking.
+/// @param cmd struct.
+void	untrack_cmd(t_command *cmd);
+
 #endif
