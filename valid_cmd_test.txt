@@ -1,47 +1,13 @@
-echo allo >> out.txt | wc -l | echo "$USER BITE"
-echo allo >> out.txt | wc -l
-cat -e | wc -l
-cat -e
-< int.txt cat -e
-echo "sm est le plux bo !" > thefinals.txt
-echo "yolo bg">txt.out | wc -l
-ls
 echo $HOME
-ls | grep .txt
-echo "Hello, World" > hello.txt
-cat < hello.txt
-ls non_existent_folder 2> error.txt
-ls non_existent_folder &> output_and_error.txt
-echo "Append this" >> hello.txt
-ls -l | grep .txt | wc -l
-cd /tmp
-(cd /tmp && ls)
-[ -f hello.txt ] && echo "File exists"
-[ -f non_existent.txt ] || echo "File does not exist"
-[ -f hello.txt ] && echo "File exists" || echo "File does not exist"
-find . -name "*.txt"
-chmod 644 hello.txt
-cat hello.txt
-echo "Start"; ls
-ps aux
-kill -9 [Process-ID]
-echo $USER | tr 'a-z' 'A-Z'
-echo 'Single Quote Test' > single_quote.txt
-echo "Double Quote Test $USER" > double_quote.txt
-cat single_quote.txt | wc -l > line_count.txt
-cat double_quote.txt | grep -o 'Test' | wc -l
-echo $SHELL | awk -F/ '{print $NF}' > shell_name.txt
-cat single_quote.txt double_quote.txt > combined.txt
-sort combined.txt | uniq
-ls -al | awk '{print $9}' > filenames.txt
-ls | grep 'txt' | xargs cat > all_txt_files.txt
-echo "$HOME and $USER" | sed 's/ /_/g'
-find . -name '*.txt' | xargs wc -l
-echo $((2 + 2)) | tee math_result.txt
-echo "BeforePipe" | tr 'B' 'b' > after_pipe.txt
-echo '$USER' > literal_dollar.txt
-echo 'Escape test: "\"' > escape_test.txt
-echo $RANDOM | awk '{print $1 * 2}'
-echo "Uppercase" | tr '[:upper:]' '[:lower:]' > case_change.txt
-cut -d ':' -f 1 /etc/passwd | sort | head -n 5 > top5users.txt
-echo "Use of \$$" > escape_dollar.txt
+echo $USER
+echo $SHELL
+echo ${PATH}
+echo $RANDOM
+echo ${USER:0:3}
+echo $PWD
+echo $#
+echo $@
+echo ${#SHELL}
+echo $RANDOM
+echo $0
+echo $_

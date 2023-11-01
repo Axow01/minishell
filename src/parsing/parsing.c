@@ -173,6 +173,10 @@ char *setup_line(char *str, size_t *len)
 	j = 0;
 	while (str[i])
 	{
+		if (str[i] == '\'' && !isinquote(str, i, DOUBLE_QUOTE))
+			i++;
+		else if (str[i] == '\"' && !isinquote(str, i, SINGLE_QUOTE))
+			i++;
 		while (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 		{
 			new_line[j++] = '$';
@@ -275,7 +279,7 @@ void cmd_maker(char *str, size_t len)
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
-			if (head->cmd && head->cmd[0] && !head->cmd[0][0])
+			if (!head->cmd || !head->cmd[0] || !head->cmd[0][0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
 				return ;
@@ -294,7 +298,7 @@ void parsing(char *line)
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
-	printf("%s\n", new);
+	printf("%s\n", line);
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	cmd_maker(new, len);
