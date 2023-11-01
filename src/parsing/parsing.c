@@ -115,7 +115,7 @@ size_t dollars_count(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1])
+		if (str[i] == '$' && str[i + 1] && !isinquote(str, i, SINGLE_QUOTE))
 		{
 			dollars_len = dollars_key_len(&str[i + 1]);
 			// printf("dol : %d\n", dollars_key_exist(&str[i + 1], dollars_len));
@@ -131,9 +131,7 @@ void dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
 {
 	char *token;
 	size_t dollars_len;
-	size_t k;
 
-	k = 0;
 	dollars_len = dollars_key_len(&str[*i + 1]);
 	if (dollars_key_exist(&str[*i + 1], dollars_len) && str[*i + 1])
 	{
@@ -175,7 +173,12 @@ char *setup_line(char *str, size_t *len)
 	j = 0;
 	while (str[i])
 	{
-		while (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+		while (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+		{
+			new_line[j++] = '$';
+			i += 2;
+		}
+		while (str[i] == '$' && str[i + 1] != '$' && !isinquote(str, i, SINGLE_QUOTE))
 			dollars_token_copy(str, new_line, &i, &j);
 		if (!isinquote(str, i, QUOTES))
 		{
@@ -291,6 +294,7 @@ void parsing(char *line)
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
+	printf("%s\n", new);
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
 	cmd_maker(new, len);

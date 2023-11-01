@@ -1,7 +1,0 @@
-echo allo >> out.txt | wc -l | echo "$USER BITE"
-echo allo >> out.txt | wc -l
-cat -e | wc -l
-cat -e
-< int.txt cat -e
-echo "sm est le plux bo !" > thefinals.txt
-echo "yolo bg">txt.out | wc -l
