@@ -8,7 +8,7 @@ bool	isredirec(char *str)
 	return (false);
 }
 
-bool	isinquote(char *str, size_t len, size_t quote)
+bool	isinquote(char *str, size_t pos, size_t quote)
 {
 	bool in_single_quote;
 	bool in_double_quote;
@@ -17,9 +17,9 @@ bool	isinquote(char *str, size_t len, size_t quote)
 	i = 0;
 	in_single_quote = false;
 	in_double_quote = false;
-	if (len == 0 || !str)
+	if (pos == 0 || !str)
 		return (false);
-	while (i <= len)
+	while (i <= pos)
 	{
 		if (str[i] == '\"' && !in_single_quote)
 			in_double_quote = !in_double_quote;

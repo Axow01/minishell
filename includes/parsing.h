@@ -11,7 +11,7 @@
 void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
 void	init_cmd_struct(char *str);
-bool	isinquote(char *str, size_t len, size_t quote);
+bool	isinquote(char *str, size_t pos, size_t quote);
 bool	isredirec(char *str);
 void	strnput(char *str, size_t len);
 void	free_cmd(t_command *lst);

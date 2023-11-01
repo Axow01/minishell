@@ -156,6 +156,14 @@ void dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
 	}
 }
 
+bool is_coated_quote(char *str, size_t pos)
+{
+	if ((str[pos] == '\'' && !isinquote(str, pos, DOUBLE_QUOTE)) 
+		|| (str[pos] == '\"' && !isinquote(str, pos, SINGLE_QUOTE)))
+			return (true);
+	return (false);
+}
+
 char *setup_line(char *str, size_t *len)
 {
 	size_t i;
@@ -173,10 +181,11 @@ char *setup_line(char *str, size_t *len)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && !isinquote(str, i, DOUBLE_QUOTE))
-			i++;
-		else if (str[i] == '\"' && !isinquote(str, i, SINGLE_QUOTE))
-			i++;
+		// while (is_coated_quote(str, i))
+		// {
+		// 	new_line[j++] = 31;
+		// 	i++;
+		// }
 		while (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 		{
 			new_line[j++] = '$';
@@ -184,6 +193,11 @@ char *setup_line(char *str, size_t *len)
 		}
 		while (str[i] == '$' && str[i + 1] != '$' && !isinquote(str, i, SINGLE_QUOTE))
 			dollars_token_copy(str, new_line, &i, &j);
+		// while (is_coated_quote(str, i))
+		// {
+		// 	new_line[j++] = 31;
+		// 	i++;
+		// }
 		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == '|' && !isinquote(str, i, QUOTES))
@@ -259,6 +273,31 @@ size_t count_token(char *line, size_t start, size_t end)
 	return (count);
 }
 
+void remove_quote(t_command *head)
+{
+	size_t i;
+	size_t j;
+	size_t k;
+	char *new;
+
+	i = 0;
+	while (head && head->cmd && head->cmd[i])
+	{
+		j = 0;
+		k = 0;
+		new = mms_alloc(ft_strlen(head->cmd[i]) + 1, sizeof(char));
+		while (head->cmd[i][j])
+		{
+			if (!is_coated_quote(head->cmd[i], j))
+				new[k++] = head->cmd[i][j];
+			j++;
+		}
+		mms_free(head->cmd[i]);
+		head->cmd[i] = new;
+		i++;
+	}
+}
+
 void cmd_maker(char *str, size_t len)
 {
 	size_t i;
@@ -284,6 +323,7 @@ void cmd_maker(char *str, size_t len)
 				printf("minishell : syntax error near unexpected token `|'\n");
 				return ;
 			}
+			remove_quote(head);
 			head = head->next;
 			start = end + 1;
 		}
