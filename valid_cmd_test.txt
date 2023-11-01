@@ -1,3 +1,4 @@
+''|''
 echo allo >> out.txt | wc -l | echo "$USER BITE"
 echo allo >> out.txt | wc -l
 cat -e | wc -l
@@ -603,12 +604,10 @@ cd .."
 ls hola
 ./Makefile
 ./minishell
-"env | grep SHLVL
+"env" | grep SHLVL
 ./minishell
 env | grep SHLVL
 exit
-env | grep SHLVL"
-"touch hola
 ./hola"
 env|"wc" -l
 env|"wc "-l
@@ -691,11 +690,11 @@ cd .. | pwd
 ifconfig | grep ":"
 ifconfig | grep hola
 whoami | grep $USER
-"whoami | grep $USER > /tmp/bonjour
+whoami | grep $USER > /tmp/bonjour
 cat /tmp/bonjour"
-"whoami | cat -e | cat -e > /tmp/bonjour
+whoami | cat -e | cat -e > /tmp/bonjour
 cat /tmp/bonjour"
-"whereis ls | cat -e | cat -e > /tmp/bonjour
+whereis ls | cat -e | cat -e > /tmp/bonjour
 cat /tmp/bonjour"
 ls | hola
 ls | ls hola
@@ -706,7 +705,7 @@ ls | ls | echo hola | rev
 ls -la | grep "."
 ls -la | grep "'.'"
 echo test.c | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e
-"ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
+ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls
 |ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls"
 echo hola | cat | cat | cat | cat | cat | grep hola
 echo hola | cat
@@ -723,14 +722,14 @@ cat Makefile | grep pr | head -n 5 | cd file_not_exist
 cat Makefile | grep pr | head -n 5 | hello
 export HOLA=bonjour | cat -e | cat -e
 unset HOLA | cat -e
-"export HOLA | echo hola
+export HOLA | echo hola
 env | grep PROUT"
 export | echo hola
 sleep 3 | sleep 3
 time sleep 3 | sleep 3
 sleep 3 | exit
 exit | sleep 3
-"echo hola > a
+echo hola > a
 >>b echo que tal
 cat a | <b cat | cat > c | cat"
 pwd && ls
@@ -759,7 +758,6 @@ cat | echo && ls
 ls || cat | echo
 ls && cat | echo
 export "" && unset ""
-
 (ls)
 ( ( ls ) )
 ( ( ) ls )
@@ -783,22 +781,22 @@ ls"
 (ls||pwd)&&(ls||pwd)
 (lss||pwd)&&(lss||pwd)
 (lss&&pwd)&&(lss&&pwd)
-"(ls && pwd | wc) > hola
-cat hola"
-"(ls && pwd | wc) > hola
 (ls && pwd | wc) > hola
 cat hola"
-"(ls && pwd | wc) >> hola
+(ls && pwd | wc) > hola
+(ls && pwd | wc) > hola
+cat hola"
+(ls && pwd | wc) >> hola
 echo hey&&(ls && pwd | wc) > hola
 cat hola"
 (pwd | wc) < hola
 (ls && pwd | wc) < hola
 (ls -z || pwd | wc) < hola
-"echo hey > hola
+echo hey > hola
 (pwd | wc) < hola"
-"echo hey > hola
+echo hey > hola
 (ls && pwd | wc) < hola"
-"echo hey > hola
+echo hey > hola
 (ls -z || pwd | wc) < hola"
 (ls -z || pwd && ls)
 ls || (cat Makefile|grep srcs) && (pwd|wc)
@@ -811,7 +809,7 @@ cat hola
 cat Docs/hey"
 cd ../.. && pwd && pwd
 (cd ../.. && pwd) && pwd
-"ls -z || cd ../../..&&pwd
+"ls -z || cd ../../..&&pwd"
 pwd"
 "ls -z || (cd ../../..&&pwd)
 pwd"
