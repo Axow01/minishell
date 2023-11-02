@@ -69,7 +69,6 @@ bool	is_valid(char *str)
 		if (str[i])
 			i++;
 	}
-	if (isinquote(str, i, QUOTES))
-		return (printf("%s(\"or')\n", ERROR_QUOTE_MSG), false);
+	
 	return (true);
 }

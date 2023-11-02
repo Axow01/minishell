@@ -196,7 +196,25 @@ void	remove_quote(t_command *head)
 	}
 }
 
-void	cmd_maker(char *str, size_t len)
+bool check_valid_redirection(t_command *head)
+{
+	size_t i;
+
+	i = 0;
+	while (head->cmd[i])
+	{
+		if (head->cmd[i + 1] && head->cmd[i][0])
+			if (isredirec(head->cmd[i]) > 0 && isredirec(head->cmd[i + 1]) > 0)
+			{
+				printf("%s`%s'\n", ERROR_BASE_MSG, head->cmd[i + 1]);
+				return (false);
+			}
+		i++;
+	}
+	return (true);
+}
+
+bool	cmd_maker(char *str, size_t len)
 {
 	size_t		i;
 	size_t		end;
@@ -220,35 +238,39 @@ void	cmd_maker(char *str, size_t len)
 			if (!head->cmd || !head->cmd[0] || !head->cmd[0][0])
 			{
 				printf("minishell : syntax error near unexpected token `|'\n");
-				return ;
+				return false;
 			}
+			if (!check_valid_redirection(head))
+				return false;
 			remove_quote(head);
 			head = head->next;
 			start = end + 1;
 		}
 		i++;
 	}
+	return (true);
 }
 
 void	parsing(char *line)
 {
 	char	*new;
 	size_t	len;
-
-	if (is_valid(line))
+	
+	new = setup_line(line, &len);
+	if (new == NULL)
+		return ;
+	init_cmd_struct(line);
+	replace_space(new, 0, len);
+	if (cmd_maker(new, len))
 	{
-		new = setup_line(line, &len);
-		if (new == NULL)
-			return ;
-		printf("%s\n", line);
-		init_cmd_struct(line);
-		replace_space(new, 0, len);
-		cmd_maker(new, len);
-		// execution(get_infos());
-		strnput(new, len);
-		print_cmd(&get_infos()->cmd);
-		// printf("len : %zu\n", len);
-		printf("\n");
+	// execution(get_infos());
+	printf("%s\n", line);
+	strnput(new, len);
+	print_cmd(&get_infos()->cmd);
+	// printf("len : %zu\n", len);
+	printf("\n");
 	}
+	
 	free_cmd(&get_infos()->cmd);
+	new = mms_free(new);
 }
