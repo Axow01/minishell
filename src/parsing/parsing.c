@@ -230,33 +230,12 @@ void	cmd_maker(char *str, size_t len)
 	}
 }
 
-bool	is_valid_redirection(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (isredirec(&str[i]) > 0)
-		{
-			i += isredirec(&str[i]);
-			while (str[i] && str[i] == ' ')
-				i++;
-			if (str[i] && isredirec(&str[i]) > 0)
-				return (false);
-		}
-		if (str[i])
-			i++;
-	}
-	return (true);
-}
-
 void	parsing(char *line)
 {
 	char	*new;
 	size_t	len;
 
-	if (is_valid_redirection(line))
+	if (is_valid(line))
 	{
 		new = setup_line(line, &len);
 		if (new == NULL)
@@ -271,7 +250,5 @@ void	parsing(char *line)
 		// printf("len : %zu\n", len);
 		printf("\n");
 	}
-	else
-		printf("redirection error\n");
 	free_cmd(&get_infos()->cmd);
 }
