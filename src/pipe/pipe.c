@@ -21,16 +21,6 @@ static void	close_unused_fd(t_command *cmd)
 		close(cmd->previous->c_pipe[1]);
 }
 
-static void	print_args(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-		printf("%s\n", argv[i++]);
-	printf("I: %d\n", i);
-}
-
 static void	run_fork(t_command *buf, t_infos *infos)
 {
 	char	**env;
@@ -45,7 +35,6 @@ static void	run_fork(t_command *buf, t_infos *infos)
 	untrack_cmd(buf);
 	env = infos->env;
 	mms_kill(NULL, false, 0);
-	print_args(buf->cmd_argv);
 	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
 }
 
@@ -73,7 +62,6 @@ static bool	run_all(t_infos *infos)
 	buf = &infos->cmd;
 	while (buf)
 	{
-		print_args(buf->cmd_argv);
 		if ((buf->c_pipe[0] == 0 || buf->c_pipe[1] == 0) && buf->next)
 			init_pipefd(buf);
 		change_in_out(buf);
