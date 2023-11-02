@@ -8,6 +8,14 @@ bool	isredirec(char *str)
 	return (false);
 }
 
+bool is_coated_quote(char *str, size_t pos)
+{
+	if ((str[pos] == '\'' && !isinquote(str, pos, DOUBLE_QUOTE)) 
+		|| (str[pos] == '\"' && !isinquote(str, pos, SINGLE_QUOTE)))
+			return (true);
+	return (false);
+}
+
 bool	isinquote(char *str, size_t pos, size_t quote)
 {
 	bool in_single_quote;

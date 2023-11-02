@@ -38,11 +38,4 @@ char	**ft_export(int ac, char **argv, char **env);
 /// @return 
 t_key_val	*export_get_key_val(char *raw_input);
 
-/// @brief Check if the value exist in the env.
-/// @param key The key to search.
-/// @param env The enviroment.
-/// @param n size to check.
-/// @return The value or NULL if non-existant
-char	*check_for_key(char *key, char **env, size_t n);
-
 #endif
