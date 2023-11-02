@@ -197,7 +197,6 @@ echo "$"HOME
 echo $=HOME
 echo $"HOLA"
 echo $'HOLA'
-echo $DONTEXIST Hola
 echo "hola"
 echo 'hola'
 echo ''hola''
@@ -235,7 +234,6 @@ $HOMEdskjhfkdshfsd
 "$HOMEdskjhfkdshfsd"
 '$HOMEdskjhfkdshfsd'
 $DONTEXIST
-$LESS$VAR
 Ctlr-C
 holaCtlr-C
 cat (faire Ctlr-C apres avoir fait plusieurs fois [ENTREE])
@@ -1177,3 +1175,4 @@ ls *.hola
 cat M*le
 cat M*ee
 cat Make*file
+echo $DONTEXIST Hola

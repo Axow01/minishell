@@ -38,7 +38,6 @@ bool is_coated_quote(char *str, size_t pos);
 /// @return Bool: true if yes: false if not.
 bool	isredirec(char *str);
 
-
 //----------------------//
 //        dollars       //
 //----------------------//

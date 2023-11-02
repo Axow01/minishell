@@ -71,10 +71,10 @@ char *setup_line(char *str, size_t *len)
 	size_t j;
 	char *new_line;
 
-	*len = count_redirection(str) + ft_strlen(str) + dollars_count(str) + 1;
+	*len = count_redirection(str) + ft_strlen(str) + dollars_count(str);
 	// printf("dollars_count: %zu\n", dollars_count(str));
 	// printf("redir : %zu\n", count_redirection(line));
-	printf("stlen : %zu\n", ft_strlen(str));
+	// printf("stlen : %zu\n", ft_strlen(str));
 	if (*len == 0)
 		return (NULL);
 	new_line = mms_alloc(*len + 1, sizeof(char));
@@ -82,14 +82,17 @@ char *setup_line(char *str, size_t *len)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+		while (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 		{
-			new_line[j++] = '$';
-			i += 2;
+			if (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+			{
+				new_line[j++] = '$';
+				i += 2;
+			}
+			else if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+				dollars_token_copy(str, new_line, &i, &j);
 		}
-		else if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
-			dollars_token_copy(str, new_line, &i, &j);
-		else if (!isinquote(str, i, QUOTES))
+		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == '|' && !isinquote(str, i, QUOTES))
 			{
