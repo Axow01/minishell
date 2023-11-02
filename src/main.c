@@ -41,7 +41,6 @@ bool	read_line_debug(void)
 	get_infos()->username = get_username(get_infos()->env);
 	get_infos()->pwd = get_pwd(get_infos()->env);
 	printf("\x1b[36;49;1;3m");
-	write(STDIN_FILENO, "", 1);
 	line = readline(get_infos()->pwd);
 	if (!line)
 		return (false);

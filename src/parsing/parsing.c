@@ -261,7 +261,9 @@ void	parsing(char *line)
 		return ;
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
-	if (cmd_maker(new, len))
+	if (isinquote(line, ft_strlen(line), QUOTES))
+    	printf("%s(\"or')\n", ERROR_QUOTE_MSG);
+	else if (cmd_maker(new, len))
 	{
 	execution(get_infos());
 	// printf("%s\n", line);

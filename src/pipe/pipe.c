@@ -28,7 +28,6 @@ static void	print_args(char **argv)
 	i = 0;
 	while (argv[i])
 		printf("%s\n", argv[i++]);
-	printf("I: %d\n", i);
 }
 
 static void	run_fork(t_command *buf, t_infos *infos)
