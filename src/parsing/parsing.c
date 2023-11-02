@@ -233,18 +233,20 @@ void	cmd_maker(char *str, size_t len)
 bool	is_valid_redirection(char *str)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 0;
 	while (str[i])
 	{
-		j = 0;
-		while (str[i] == '<' || str[i] == '>' || str[i] == ' ')
+		if (isredirec(&str[i]) > 0)
 		{
-			if ()
-			j++;
+			i += isredirec(&str[i]);
+			while (str[i] && str[i] == ' ')
+				i++;
+			if (str[i] && isredirec(&str[i]) > 0)
+				return (false);
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (true);
 }

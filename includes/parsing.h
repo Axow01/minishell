@@ -11,7 +11,6 @@
 void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
 void	init_cmd_struct(char *str);
-bool	isredirec(char *str);
 void	strnput(char *str, size_t len);
 void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
@@ -35,8 +34,9 @@ bool is_coated_quote(char *str, size_t pos);
 
 /// @brief Check if the element is a redirection.
 /// @param str The element.
-/// @return Bool: true if yes: false if not.
-bool	isredirec(char *str);
+/// @return Int: 2 for >>/<<: 1 for </>: 0 is not a redirection.
+int	isredirec(char *str);
+
 
 //----------------------//
 //        dollars       //
