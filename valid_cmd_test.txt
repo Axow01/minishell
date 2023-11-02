@@ -1176,3 +1176,8 @@ cat M*le
 cat M*ee
 cat Make*file
 echo $DONTEXIST Hola
+if (isinquote(str, ft_strlen(str), QUOTES))
+{
+    printf("%s(\"or')\n", ERROR_QUOTE_MSG);
+    return (NULL);
+}
