@@ -47,7 +47,7 @@ bool	read_line_debug(void)
 		return (false);
 	mms_add_ptr(line);
 	add_history(line);
-	teststrtok(line);
+	parsing(line);
 	// cmd = ft_split(line, ' ');
 	// get_infos()->cmd.cmd = cmd;
 	line = mms_free(line);
