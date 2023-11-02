@@ -44,31 +44,3 @@ bool	isinquote(char *str, size_t pos, size_t quote)
 		return (true);
 	return (false);
 }
-
-bool	is_valid(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (isredirec(&str[i]) > 0 && !isinquote(str, i, QUOTES))
-		{
-			i += isredirec(&str[i]);
-			while (str[i] && str[i] == ' ')
-				i++;
-			if (str[i] && isredirec(&str[i]) > 0)
-			{
-				if (isredirec(&str[i]) == 1)
-					printf("%s`%c'\n", ERROR_BASE_MSG, str[i]);
-				else
-					printf("%s`%c%c'\n", ERROR_BASE_MSG, str[i], str[i + 1]);
-				return (false);
-			}
-		}
-		if (str[i])
-			i++;
-	}
-	
-	return (true);
-}

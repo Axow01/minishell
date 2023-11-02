@@ -265,14 +265,13 @@ void	parsing(char *line)
     	printf("%s(\"or')\n", ERROR_QUOTE_MSG);
 	else if (cmd_maker(new, len))
 	{
-	execution(get_infos());
-	// printf("%s\n", line);
-	// strnput(new, len);
-	// print_cmd(&get_infos()->cmd);
-	// printf("len : %zu\n", len);
-	// printf("\n");
+		// execution(get_infos());
+		printf("%s\n", line);
+		strnput(new, len);
+		print_cmd(&get_infos()->cmd);
+		// printf("len : %zu\n", len);
+		printf("\n");
 	}
-	
-	// free_cmd(&get_infos()->cmd);
-	// new = mms_free(new);
+	free_cmd(&get_infos()->cmd);
+	new = mms_free(new);
 }
