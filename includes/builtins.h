@@ -44,7 +44,7 @@ t_key_val	*export_get_key_val(char *raw_input);
 /// @param env The enviroment.
 /// @param n size to check.
 /// @return The value or NULL if non-existant
-char	*check_for_key(char *key, char **env, size_t n);
+char	*check_for_key_export(char *key, char **env, size_t n);
 
 /// @brief Get the length of a double char pointer.
 /// @param dc **char

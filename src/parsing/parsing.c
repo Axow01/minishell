@@ -263,14 +263,14 @@ void	parsing(char *line)
 	replace_space(new, 0, len);
 	if (cmd_maker(new, len))
 	{
-	// execution(get_infos());
-	printf("%s\n", line);
-	strnput(new, len);
-	print_cmd(&get_infos()->cmd);
+	execution(get_infos());
+	// printf("%s\n", line);
+	// strnput(new, len);
+	// print_cmd(&get_infos()->cmd);
 	// printf("len : %zu\n", len);
-	printf("\n");
+	// printf("\n");
 	}
 	
-	free_cmd(&get_infos()->cmd);
-	new = mms_free(new);
+	// free_cmd(&get_infos()->cmd);
+	// new = mms_free(new);
 }

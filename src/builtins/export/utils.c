@@ -40,7 +40,7 @@ t_key_val	*export_get_key_val(char *raw_input)
 	return (infos);
 }
 
-char	*check_for_key(char *key, char **env, size_t n)
+char	*check_for_key_export(char *key, char **env, size_t n)
 {
 	int	i;
 
