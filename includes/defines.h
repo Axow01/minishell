@@ -5,19 +5,16 @@
 # include "libftms/inc/libft.h"
 # include <stdbool.h>
 
-typedef struct s_pipe
-{
-	int	p_fd[2];
-}			t_pipe;
-
 typedef struct s_command
 {
 	char				**cmd;
 	pid_t				pid;
 	char				*exec_cmd;
 	char				**cmd_argv;
+	int					c_pipe[2];
 	int					stdin_;
 	int					stdout_;
+	struct s_command	*previous;
 	struct s_command	*next;
 }		t_command;
 

@@ -48,6 +48,24 @@ void	clean_cmd_struct(t_command *cmd)
 	}
 }
 
+bool	indexing_previous_cmd(t_command *cmd)
+{
+	t_command	*buf;
+	t_command	*temp;
+
+	if (!cmd)
+		return (false);
+	buf = cmd;
+	temp = NULL;
+	while (buf)
+	{
+		buf->previous = temp;
+		temp = buf;
+		buf = buf->next;
+	}
+	return (true);
+}
+
 bool	execution(t_infos *infos)
 {
 	t_command	*cmd_buffer;
@@ -62,6 +80,8 @@ bool	execution(t_infos *infos)
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
 		cmd_buffer = cmd_buffer->next;
 	}
+	if (!indexing_previous_cmd(&infos->cmd))
+		return (false);
 	execution_dispach(infos);
 	clean_cmd_struct(&infos->cmd);
 	return (true);

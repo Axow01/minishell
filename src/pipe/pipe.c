@@ -1,89 +1,104 @@
 
 #include "../../includes/minishell.h"
 
-void	change_in_out(t_infos *infos, t_pipe *pipes)
+static void	change_in_out(t_command *cmd)
 {
-	t_command	*bufc;
-	int			index;
-
-	index = 0;
-	bufc = &infos->cmd;
-	while (bufc)
-	{
-		check_pipes_in_out(bufc, pipes, index);
-		index++;
-		bufc = bufc->next;
-	}
+	if (!cmd)
+		return ;
+	if (cmd->c_pipe[0] > 0 && cmd->c_pipe[1] > 0)
+		cmd->stdout_ = cmd->c_pipe[1];
+	if (cmd->previous && cmd->previous->c_pipe[0] > 0 && cmd->previous->c_pipe[1] > 0)
+		cmd->stdin_ = cmd->previous->c_pipe[0];
 }
 
-void	close_all_pipes(t_pipe *pipes, int nb_pipes)
+static void	close_unused_fd(t_command *cmd)
+{
+	if (!cmd)
+		return ;
+	if (cmd->c_pipe[0] > 0)
+		close(cmd->c_pipe[0]);
+	if (cmd->previous && cmd->previous->c_pipe[1] > 0)
+		close(cmd->previous->c_pipe[1]);
+}
+
+static void	print_args(char **argv)
 {
 	int	i;
 
 	i = 0;
-	while (i < nb_pipes)
-	{
-		close(pipes[i].p_fd[0]);
-		close(pipes[i].p_fd[1]);
-		i++;
-	}
+	while (argv[i])
+		printf("%s\n", argv[i++]);
+	printf("I: %d\n", i);
 }
 
-void	run_fork(t_command *buf, t_pipe *pipes, t_infos *infos, int i)
+static void	run_fork(t_command *buf, t_infos *infos)
 {
-	(void)i;
 	char	**env;
-	close_all_except(pipes, buf->stdin_, buf->stdout_);
-	if (STDIN_FILENO != buf->stdin_)
-		dup2(buf->stdin_, STDIN_FILENO);
-	if (STDOUT_FILENO != buf->stdout_)
+
+	close_unused_fd(buf);
+	if (!check_cmd_valid(buf))
+		mms_kill(NULL, true, 127);
+	if (buf->stdout_ != STDOUT_FILENO)
 		dup2(buf->stdout_, STDOUT_FILENO);
+	if (buf->stdin_ != STDIN_FILENO)
+		dup2(buf->stdin_, STDIN_FILENO);
 	untrack_cmd(buf);
 	env = infos->env;
 	mms_kill(NULL, false, 0);
-	printf("ErrorCode: %d\n", execve(buf->exec_cmd, buf->cmd_argv, env));
+	print_args(buf->cmd_argv);
+	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
 }
 
-bool	run_all(t_infos *infos, t_pipe *pipes)
+static void	close_all_pipes(t_command *cmd)
 {
 	t_command	*buf;
-	int			i;
 
-	buf = &infos->cmd;
-	i = 0;
+	if (!cmd)
+		return ;
+	buf = cmd;
 	while (buf)
 	{
-		if (!buf->exec_cmd)
-		{
-			if (check_path_type(buf->cmd) == COMMAND)
-				ft_printf("minishell %s: command not found\n", buf->cmd[0]);
-			else
-				ft_printf("minishell: %s: No such file or directory\n", buf->cmd[0]);
-			break ;
-		}
+		if (buf->c_pipe[0] > 0)
+			close(buf->c_pipe[0]);
+		if (buf->c_pipe[1] > 0)
+			close(buf->c_pipe[1]);
+		buf = buf->next;
+	}
+}
+
+static bool	run_all(t_infos *infos)
+{
+	t_command	*buf;
+
+	buf = &infos->cmd;
+	while (buf)
+	{
+		print_args(buf->cmd_argv);
+		if ((buf->c_pipe[0] == 0 || buf->c_pipe[1] == 0) && buf->next)
+			init_pipefd(buf);
+		change_in_out(buf);
 		buf->pid = fork();
 		if (buf->pid == -1)
 			write(STDERR_FILENO, "Failled to create forks\n", 25);
 		if (buf->pid == 0)
-			run_fork(buf, pipes, infos, i);
-		i++;
+			run_fork(buf, infos);
+		if (buf->previous)
+		{
+			close(buf->previous->c_pipe[0]);
+			close(buf->previous->c_pipe[1]);
+		}
 		buf = buf->next;
 	}
-	close_all_pipes(pipes, infos->nb_cmd - 1);
-	wait_for_programs(pipes, infos);
+	close_all_pipes(&infos->cmd);
+	wait_for_programs(infos);
 	return (true);
 }
 
 bool	execution_pipe(t_infos *infos)
 {
-	t_pipe	*pipes;
-
-	pipes = mms_alloc(infos->nb_cmd, sizeof(t_pipe));
-	if (!init_pipefd(pipes))
+	if (!init_pipefd(&infos->cmd))
 		mms_kill("Pipe failled to init!\n", true, 2);
-	change_in_out(infos, pipes);
-	if (!run_all(infos, pipes))
+	if (!run_all(infos))
 		mms_kill("Failed to execute\n", true, 2);
-	mms_free(pipes);
 	return (true);
 }
