@@ -272,6 +272,6 @@ void	parsing(char *line)
 		// printf("len : %zu\n", len);
 		printf("\n");
 	}
-	free_cmd(&get_infos()->cmd);
+	clean_cmd_struct();
 	new = mms_free(new);
 }
