@@ -54,8 +54,6 @@ size_t dollars_count(char *str)
 		else if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 		{
 			dollars_len = dollars_key_len(&str[i + 1]);
-			// printf("dol : %d\n", dollars_key_exist(&str[i + 1], dollars_len));
-			// printf("dolen : %zu\n", dollars_len);
 			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_len)) - (dollars_len);
 		}	
 		i++;

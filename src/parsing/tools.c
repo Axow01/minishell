@@ -82,3 +82,23 @@ void	strnput(char *str, size_t len)
 	}
 	ft_putchar_fd('\n', 1);
 }
+
+int	digit_counter(long n)
+{
+	int	i;
+
+	i = 0;
+	if (n == 0)
+		return (1);
+	if (n < 0)
+	{
+		i++;
+		n *= -1;
+	}
+	while (n)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
+}
