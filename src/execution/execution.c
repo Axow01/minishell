@@ -66,6 +66,17 @@ bool	indexing_previous_cmd(t_command *cmd)
 	return (true);
 }
 
+static Builtin_ptr	get_builtin_ptr(t_command *cmd)
+{
+	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
+		return (&ft_export);
+	else if (ft_strncmp(cmd->cmd[0], "cd", 3) == 0)
+		return (&cd);
+	else if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
+		return (NULL);
+	return (NULL);
+}
+
 bool	execution(t_infos *infos)
 {
 	t_command	*cmd_buffer;
@@ -73,11 +84,21 @@ bool	execution(t_infos *infos)
 	cmd_buffer = &infos->cmd;
 	while (cmd_buffer)
 	{
+		cmd_buffer->is_builtin = false;
 		if (check_path_type(cmd_buffer->cmd) == COMMAND)
-			cmd_buffer->exec_cmd = get_cmd_path(cmd_buffer->cmd, infos->path);
+		{
+			if (check_for_builtins(cmd_buffer))
+			{
+				cmd_buffer->is_builtin = true;
+				cmd_buffer->exec_cmd = (char *)get_builtin_ptr(cmd_buffer);
+			}
+			else
+				cmd_buffer->exec_cmd = get_cmd_path(cmd_buffer->cmd, infos->path);
+		}
 		else
 			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, R_OK | X_OK);
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
+		cmd_buffer->arg_count = ft_length_d_char(cmd_buffer->cmd_argv);
 		cmd_buffer = cmd_buffer->next;
 	}
 	if (!indexing_previous_cmd(&infos->cmd))

@@ -23,7 +23,7 @@ void	wait_for_programs(t_infos *infos)
 	buf = &infos->cmd;
 	while (buf)
 	{
-		buf->pid = waitpid(buf->pid, NULL, 0);
+		buf->pid = waitpid(buf->pid, (int *)&infos->latest_error_code, 0);
 		buf = buf->next;
 	}
 }

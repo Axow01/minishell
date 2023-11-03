@@ -18,6 +18,8 @@ t_key_val	*export_get_key_val(char *raw_input)
 	t_key_val	*infos;
 
 	i = 0;
+	if (!raw_input)
+		return (NULL);
 	infos = mms_alloc(1, sizeof(t_key_val));
 	while (raw_input[i])
 	{

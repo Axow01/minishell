@@ -34,8 +34,8 @@ bool	simple_exec(t_command *cmd);
 /// @param cmd struct.
 void	untrack_cmd(t_command *cmd);
 
-/// @brief Free all cmd struct.
-/// @param cmd The cmd struct.
-void	clean_cmd_struct(t_command *cmd);
+/// @brief Checks for builtins, and if found run the function of the builtins.
+/// @param cmd structure.
+bool	check_for_builtins(t_command *cmd);
 
 #endif

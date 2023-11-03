@@ -65,20 +65,19 @@ static int	get_env_index(char *key, char **env, size_t n)
 	return (i);
 }
 
-char	**ft_export(int ac, char **argv, char **env)
+void	ft_export(int ac, char **argv, char **env)
 {
 	char		**cpy_env;
 	t_key_val	*vk;
 	int			i;
 
 	cpy_env = NULL;
-	ac = ft_length_d_char(argv);
 	if (ac > 2)
 		printf_error("minishell: ft_export: too much arguments\n");
 	if (ac == 1)
 	{
 		print_double_char(env);
-		return (env);
+		return ;
 	}
 	cpy_env = copy_double_char(env, ft_length_d_char(env));
 	vk = export_get_key_val(argv[1]);
@@ -87,5 +86,5 @@ char	**ft_export(int ac, char **argv, char **env)
 		cpy_env = create_new_variable(vk, cpy_env);
 	else
 		edit_variable(vk, cpy_env, i);
-	return (cpy_env);
+	get_infos()->env = cpy_env;
 }
