@@ -1,8 +1,8 @@
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
-# include "libftms/inc/libft.h"
 # include "defines.h"
+# include "libftms/inc/libft.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <sys/wait.h>
@@ -33,5 +33,9 @@ bool	simple_exec(t_command *cmd);
 /// @brief This remove the nessecary values from libmms tracking.
 /// @param cmd struct.
 void	untrack_cmd(t_command *cmd);
+
+/// @brief Free all cmd struct.
+/// @param cmd The cmd struct.
+void	clean_cmd_struct(t_command *cmd);
 
 #endif

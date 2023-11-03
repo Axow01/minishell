@@ -196,19 +196,38 @@ void	remove_quote(t_command *head)
 	}
 }
 
-bool check_valid_redirection(t_command *head)
+bool	check_valid_redirec(t_command *head)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (head->cmd[i])
 	{
 		if (head->cmd[i + 1] && head->cmd[i][0])
-			if (isredirec(head->cmd[i]) > 0 && isredirec(head->cmd[i + 1]) > 0)
+			if (isredirec(head->cmd[i]) && isredirec(head->cmd[i + 1]))
 			{
 				printf("%s`%s'\n", ERROR_BASE_MSG, head->cmd[i + 1]);
 				return (false);
 			}
+		i++;
+	}
+	if (i > 0 && head->cmd[i - 1] && isredirec(head->cmd[i - 1]))
+		return (printf("%s`newline'\n", ERROR_BASE_MSG), false);
+
+	return (true);
+}
+
+bool	redirec_maker(t_command *head)
+{
+	size_t	i;
+	char *str;
+
+	i = 0;
+	while (head->cmd[i])
+	{
+		str = head->cmd[i];
+		if (head->cmd[i + 1] && str[0] && isredirec(str))
+
 		i++;
 	}
 	return (true);
@@ -230,18 +249,15 @@ bool	cmd_maker(char *str, size_t len)
 		{
 			end = i;
 			// printf("Start: %zu End: %zu\n", start, end);
-			head->cmd = mms_alloc(count_token(str, start, end) + 1,
-					sizeof(char *));
+			head->cmd = mms_alloc(count_token(str, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
 			if (!head->cmd || !head->cmd[0] || !head->cmd[0][0])
-			{
-				printf("minishell : syntax error near unexpected token `|'\n");
-				return false;
-			}
-			if (!check_valid_redirection(head))
-				return false;
+				return (printf("%s`|'\n", ERROR_BASE_MSG), false);
+			if (!check_valid_redirec(head))
+				return (false);
+			
 			remove_quote(head);
 			head = head->next;
 			start = end + 1;
@@ -255,14 +271,14 @@ void	parsing(char *line)
 {
 	char	*new;
 	size_t	len;
-	
+
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
-	if (isinquote(line, ft_strlen(line), QUOTES))
-    	printf("%s(\"or')\n", ERROR_QUOTE_MSG);
+	if (isinquote(line, ft_strlen(line) - 1, QUOTES))
+		printf("%s(\"or')\n", ERROR_QUOTE_MSG);
 	else if (cmd_maker(new, len))
 	{
 		// execution(get_infos());
@@ -272,6 +288,6 @@ void	parsing(char *line)
 		// printf("len : %zu\n", len);
 		printf("\n");
 	}
-	clean_cmd_struct();
+	clean_cmd_struct(&get_infos()->cmd);
 	new = mms_free(new);
 }

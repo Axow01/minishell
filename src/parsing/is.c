@@ -1,12 +1,11 @@
 #include "minishell.h"
 
-int	isredirec(char *str)
+bool	isredirec(char *str)
 {
-	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0)
-		return (2);
-	else if (ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
-		return (1);
-	return (0);
+	if (ft_strncmp(str, ">>", 2) == 0 || ft_strncmp(str, "<<", 2) == 0
+		|| ft_strncmp(str, ">", 1) == 0 || ft_strncmp(str, "<", 1) == 0)
+		return (true);
+	return (false);
 }
 
 bool	is_coated_quote(char *str, size_t pos)
