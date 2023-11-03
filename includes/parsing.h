@@ -38,7 +38,7 @@ bool	is_coated_quote(char *str, size_t pos);
 /// @brief Check if the element is a redirection.
 /// @param str The element.
 /// @return Bool: true if yes: false if not.
-bool	isredirec(char *str);
+int	isredirec(char *str);
 
 /// @brief Check if redirection is valid and quote was closed.
 /// @param str The string.

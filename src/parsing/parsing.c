@@ -204,14 +204,14 @@ bool	check_valid_redirec(t_command *head)
 	while (head->cmd[i])
 	{
 		if (head->cmd[i + 1] && head->cmd[i][0])
-			if (isredirec(head->cmd[i]) && isredirec(head->cmd[i + 1]))
+			if (isredirec(head->cmd[i]) > 0 && isredirec(head->cmd[i + 1]) > 0)
 			{
 				printf("%s`%s'\n", ERROR_BASE_MSG, head->cmd[i + 1]);
 				return (false);
 			}
 		i++;
 	}
-	if (i > 0 && head->cmd[i - 1] && isredirec(head->cmd[i - 1]))
+	if (i > 0 && head->cmd[i - 1] && isredirec(head->cmd[i - 1]) > 0)
 		return (printf("%s`newline'\n", ERROR_BASE_MSG), false);
 
 	return (true);
@@ -220,17 +220,34 @@ bool	check_valid_redirec(t_command *head)
 bool	redirec_maker(t_command *head)
 {
 	size_t	i;
-	char *str;
+	int fd;
 
 	i = 0;
+	fd = 0;
 	while (head->cmd[i])
 	{
-		str = head->cmd[i];
-		if (head->cmd[i + 1] && str[0] && isredirec(str))
-
+		if (head->cmd[i][0] && isredirec(head->cmd[i]) > 0)
+		{
+			if (fd > 3)
+				close(fd);
+			if (isredirec(head->cmd[i]) == 1 && head->cmd[i][0] == '>')
+			{
+				fd = open(head->cmd[i + 1], O_CREAT | O_RDWR);
+			}
+			else if (isredirec(head->cmd[i]) == 1 && head->cmd[i][0] == '<')
+			{
+				fd = open(head->cmd[i + 1], O_RDWR);
+			}
+			else if (isredirec(head->cmd[i]) == 2 && head->cmd[i][0] == '>')
+			{
+				fd = open(head->cmd[i + 1], O_CREAT | O_APPEND | O_RDWR);
+			}
+		}
 		i++;
 	}
-	return (true);
+	if (fd > 0)
+		return (true);
+	return (false);
 }
 
 bool	cmd_maker(char *str, size_t len)
