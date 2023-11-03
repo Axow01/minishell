@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (!read_line_debug())
 			break ;
+		printf("Latest error code: %d\n", infos->latest_error_code);
 	}
 	mms_kill("", false, 0);
 	return (0);

@@ -21,23 +21,6 @@ static void	close_unused_fd(t_command *cmd)
 		close(cmd->previous->c_pipe[1]);
 }
 
-static void	run_fork(t_command *buf, t_infos *infos)
-{
-	char	**env;
-
-	close_unused_fd(buf);
-	if (!check_cmd_valid(buf))
-		mms_kill(NULL, true, 127);
-	if (buf->stdout_ != STDOUT_FILENO)
-		dup2(buf->stdout_, STDOUT_FILENO);
-	if (buf->stdin_ != STDIN_FILENO)
-		dup2(buf->stdin_, STDIN_FILENO);
-	untrack_cmd(buf);
-	env = infos->env;
-	mms_kill(NULL, false, 0);
-	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
-}
-
 static void	close_all_pipes(t_command *cmd)
 {
 	t_command	*buf;
@@ -54,6 +37,34 @@ static void	close_all_pipes(t_command *cmd)
 		buf = buf->next;
 	}
 }
+
+static void	run_fork(t_command *buf, t_infos *infos)
+{
+	char	**env;
+
+	close_unused_fd(buf);
+	if (!check_cmd_valid(buf))
+		mms_kill(NULL, true, 127);
+	if (buf->stdin_ < 0 || buf->stdout_ < 0)
+	{
+		close_all_pipes(&infos->cmd);
+		mms_kill(NULL, true, 69);
+	}
+	if (buf->stdout_ != STDOUT_FILENO)
+		dup2(buf->stdout_, STDOUT_FILENO);
+	if (buf->stdin_ != STDIN_FILENO)
+		dup2(buf->stdin_, STDIN_FILENO);
+	env = infos->env;
+	if (buf->is_builtin)
+	{
+		((Builtin_ptr)buf->exec_cmd)(buf->arg_count, buf->cmd_argv, env);
+		mms_kill(NULL, true, 1);
+	}
+	untrack_cmd(buf);
+	mms_kill(NULL, false, 0);
+	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
+}
+
 
 static bool	run_all(t_infos *infos)
 {

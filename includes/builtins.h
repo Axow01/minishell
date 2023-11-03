@@ -31,8 +31,7 @@ void	print_double_char(char **dc);
 /// @param ac number of arguments.
 /// @param argv Arguments.
 /// @param env ENV.
-/// @return the new env.
-char	**ft_export(int ac, char **argv, char **env);
+void	ft_export(int ac, char **argv, char **env);
 
 /// @brief Separate the key and the value splited on the '=' char.
 /// @param raw_input A string formatted like this "$KEY=VALUE"

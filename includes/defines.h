@@ -5,6 +5,8 @@
 # include "libftms/inc/libft.h"
 # include <stdbool.h>
 
+typedef void	(*Builtin_ptr)(int, char **, char **);
+
 typedef struct s_command
 {
 	char				**cmd;
@@ -12,20 +14,23 @@ typedef struct s_command
 	char				*exec_cmd;
 	char				**cmd_argv;
 	int					c_pipe[2];
+	int8_t				arg_count;
 	int					stdin_;
 	int					stdout_;
+	bool				is_builtin;
 	struct s_command	*previous;
 	struct s_command	*next;
 }		t_command;
 
 typedef struct s_infos
 {
-	t_command	cmd;
-	int8_t		nb_cmd;
-	char		**env;
-	char		*pwd;
-	char		**path;
-	char		*username;
+	t_command		cmd;
+	int8_t			nb_cmd;
+	char			**env;
+	char			*pwd;
+	char			**path;
+	char			*username;
+	unsigned char	latest_error_code;
 }		t_infos;
 
 typedef enum e_path

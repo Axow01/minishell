@@ -27,7 +27,7 @@ static void	update_pwd_env(char *pwd, t_infos *infos)
 	args[0] = ft_stringf("export");
 	args[1] = ft_stringf("PWD=%s", pwd);
 	args[2] = NULL;
-	infos->env = ft_export(0, args, infos->env);
+	ft_export(0, args, infos->env);
 	mms_free(args[0]);
 	mms_free(args[1]);
 }
