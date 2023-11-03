@@ -139,7 +139,7 @@ void	get_token(char *line, size_t start, size_t end, t_command *head)
 	{
 		if (line[i] == '\0')
 		{
-			head->cmd[j++] = ft_strdup(&line[ptr]);
+			head->tmp[j++] = ft_strdup(&line[ptr]);
 			while (line[i] == '\0' && i < end)
 				i++;
 			ptr = i;
@@ -179,19 +179,19 @@ void	remove_quote(t_command *head)
 	char	*new;
 
 	i = 0;
-	while (head && head->cmd && head->cmd[i])
+	while (head && head->tmp && head->tmp[i])
 	{
 		j = 0;
 		k = 0;
-		new = mms_alloc(ft_strlen(head->cmd[i]) + 1, sizeof(char));
-		while (head->cmd[i][j])
+		new = mms_alloc(ft_strlen(head->tmp[i]) + 1, sizeof(char));
+		while (head->tmp[i][j])
 		{
-			if (!is_coated_quote(head->cmd[i], j))
-				new[k++] = head->cmd[i][j];
+			if (!is_coated_quote(head->tmp[i], j))
+				new[k++] = head->tmp[i][j];
 			j++;
 		}
-		mms_free(head->cmd[i]);
-		head->cmd[i] = new;
+		mms_free(head->tmp[i]);
+		head->tmp[i] = new;
 		i++;
 	}
 }
@@ -201,53 +201,94 @@ bool	check_valid_redirec(t_command *head)
 	size_t	i;
 
 	i = 0;
-	while (head->cmd[i])
+	while (head->tmp[i])
 	{
-		if (head->cmd[i + 1] && head->cmd[i][0])
-			if (isredirec(head->cmd[i]) > 0 && isredirec(head->cmd[i + 1]) > 0)
+		if (head->tmp[i + 1] && head->tmp[i][0])
+			if (isredirec(head->tmp[i]) > 0 && isredirec(head->tmp[i + 1]) > 0)
 			{
-				printf("%s`%s'\n", ERROR_BASE_MSG, head->cmd[i + 1]);
+				printf("%s`%s'\n", ERROR_BASE_MSG, head->tmp[i + 1]);
 				return (false);
 			}
 		i++;
 	}
-	if (i > 0 && head->cmd[i - 1] && isredirec(head->cmd[i - 1]) > 0)
+	if (i > 0 && head->tmp[i - 1] && isredirec(head->tmp[i - 1]) > 0)
 		return (printf("%s`newline'\n", ERROR_BASE_MSG), false);
 
 	return (true);
 }
 
-bool	redirec_maker(t_command *head)
+void	fd_maker(t_command *head)
 {
 	size_t	i;
 	int fd;
 
 	i = 0;
 	fd = 0;
-	while (head->cmd[i])
+	while (head->tmp[i])
 	{
-		if (head->cmd[i][0] && isredirec(head->cmd[i]) > 0)
+		if (head->tmp[i][0] && isredirec(head->tmp[i]) > 0)
 		{
-			if (fd > 3)
+			if (fd > 2)
 				close(fd);
-			if (isredirec(head->cmd[i]) == 1 && head->cmd[i][0] == '>')
+			if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->cmd[i + 1], O_CREAT | O_RDWR);
+				fd = open(head->tmp[i + 1], O_CREAT | O_RDWR);
+				head->stdout_ = fd;
 			}
-			else if (isredirec(head->cmd[i]) == 1 && head->cmd[i][0] == '<')
+			else if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '<')
 			{
-				fd = open(head->cmd[i + 1], O_RDWR);
+				fd = open(head->tmp[i + 1], O_RDWR);
+				head->stdin_ = fd;
 			}
-			else if (isredirec(head->cmd[i]) == 2 && head->cmd[i][0] == '>')
+			else if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->cmd[i + 1], O_CREAT | O_APPEND | O_RDWR);
+				fd = open(head->tmp[i + 1], O_CREAT | O_APPEND | O_RDWR);
+				head->stdout_ = fd;
 			}
+			printf("FD: %d\n", fd);
+			if (fd < 0)
+				break;
 		}
 		i++;
 	}
-	if (fd > 0)
-		return (true);
-	return (false);
+	if (fd < 0)
+		printf("minishell: %s: %s", head->tmp[i + 1], ERROR_DIR_MSG);
+}
+
+size_t count_nonerdt_token(char **token)
+{
+	size_t i;
+	size_t count;
+
+	i  = 0;
+	count = 0;
+	while (token && token[i])
+	{
+		if (isredirec(token[i]))
+			i++;
+		else 
+			count ++;
+		i++;
+	}
+	return (count);
+}
+
+void tmp_to_cmd(t_command *head)
+{
+	size_t i;
+	size_t j;
+
+	i = 0;
+	j = 0;
+	head->cmd = mms_alloc(count_nonerdt_token(head->tmp) + 1, sizeof(char *));
+	while (head->tmp && head->tmp[i])
+	{
+		if (isredirec(head->tmp[i]))
+			i++;
+		else 
+			head->cmd[j++] = head->tmp[i];
+		i++;
+	}
 }
 
 bool	cmd_maker(char *str, size_t len)
@@ -266,16 +307,17 @@ bool	cmd_maker(char *str, size_t len)
 		{
 			end = i;
 			// printf("Start: %zu End: %zu\n", start, end);
-			head->cmd = mms_alloc(count_token(str, start, end) + 1, sizeof(char *));
+			head->tmp = mms_alloc(count_token(str, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
-			if (!head->cmd || !head->cmd[0] || !head->cmd[0][0])
+			if (!head->tmp || !head->tmp[0] || !head->tmp[0][0])
 				return (printf("%s`|'\n", ERROR_BASE_MSG), false);
 			if (!check_valid_redirec(head))
 				return (false);
-			
+			fd_maker(head);
 			remove_quote(head);
+			tmp_to_cmd(head);
 			head = head->next;
 			start = end + 1;
 		}
@@ -305,6 +347,6 @@ void	parsing(char *line)
 		// printf("len : %zu\n", len);
 		printf("\n");
 	}
-	clean_cmd_struct(&get_infos()->cmd);
+	free_cmd(&get_infos()->cmd);
 	new = mms_free(new);
 }

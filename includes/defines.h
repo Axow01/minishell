@@ -8,6 +8,7 @@
 typedef struct s_command
 {
 	char				**cmd;
+	char				**tmp;
 	pid_t				pid;
 	char				*exec_cmd;
 	char				**cmd_argv;

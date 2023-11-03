@@ -10,6 +10,7 @@
 
 # define ERROR_BASE_MSG "minishell: syntax error near unexpected token "
 # define ERROR_QUOTE_MSG "minishell: syntax error quote not closed "
+# define ERROR_DIR_MSG "No such file or directory"
 
 void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
@@ -32,13 +33,13 @@ bool	isinquote(char *str, size_t pos, size_t quote);
 /// @brief Check if the quote was a contoring quote.
 /// @param str The string.
 /// @param pos Pos of the char in the string. (i)
-/// @return Bool: true if yes: false if not.
+/// @return Int: 1 for >/<: 2 gor >>/<<: 0 if not.
 bool	is_coated_quote(char *str, size_t pos);
 
 /// @brief Check if the element is a redirection.
 /// @param str The element.
 /// @return Bool: true if yes: false if not.
-int	isredirec(char *str);
+int		isredirec(char *str);
 
 /// @brief Check if redirection is valid and quote was closed.
 /// @param str The string.

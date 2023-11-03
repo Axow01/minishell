@@ -10,14 +10,22 @@ void	print_cmd(t_command *lst)
 	head = lst;
 	while (head)
 	{
-		// printf("in: %d out: %d\n", head->stdin_, head->stdout_);
-		printf("command%lu : \n", i);
+		printf("in: %d out: %d\n", head->stdin_, head->stdout_);
+		printf("tmp: command%lu : \n", i);
+		j = 0;
+		while (head->tmp && head->tmp[j])
+		{
+			printf("tmp: token%lu : %s\n", j, head->tmp[j]);
+			j++;
+		}
+		printf("cmd: command%lu : \n", i);
 		j = 0;
 		while (head->cmd && head->cmd[j])
 		{
-			printf("token%lu : %s\n", j, head->cmd[j]);
+			printf("cmd: token%lu : %s\n", j, head->cmd[j]);
 			j++;
 		}
+		printf("\n");
 		i++;
 		head = head->next;
 	}
@@ -33,6 +41,12 @@ void	free_cmd(t_command *lst)
 	j = 0;
 	while (head)
 	{
+		j = 0;
+		while (head->tmp && head->tmp[j])
+		{
+			mms_free(head->tmp[j]);
+			j++;
+		}
 		j = 0;
 		while (head->cmd && head->cmd[j])
 		{
