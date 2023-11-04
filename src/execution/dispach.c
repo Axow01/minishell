@@ -80,6 +80,10 @@ bool	simple_exec(t_command *cmd)
 		return (false);
 	if (pid_fork == 0)
 		simple_exec_run_fork(cmd);
+	if (cmd->stdout_ < 0)
+		close(cmd->stdout_);
+	if (cmd->stdin_ < 0)
+		close(cmd->stdin_);
 	waitpid(pid_fork, (int *)&get_infos()->latest_error_code, 0);
 	return (true);
 }
