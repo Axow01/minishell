@@ -78,7 +78,7 @@ char	*setup_line(char *str, size_t *len)
 	// printf("dollars_count: %zu\n", dollars_count(str));
 	// printf("redir : %zu\n", count_redirection(line));
 	// printf("stlen : %zu\n", ft_strlen(str));
-	printf("stlen : %zu\n", *len);
+	// printf("stlen : %zu\n", *len);
 	if (*len == 0)
 		return (NULL);
 	new_line = mms_alloc(*len + 1, sizeof(char));
@@ -94,7 +94,10 @@ char	*setup_line(char *str, size_t *len)
 				new_line[j++] = '$';
 				i += 2;
 			}
-			if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+			else if (str[i] == '$' && str[i + 1] == '?' && !isinquote(str, i,
+					SINGLE_QUOTE))
+				dollars_qmark(new_line, &i, &j);
+			else if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 				dollars_token_copy(str, new_line, &i, &j);
 		}
 		if (str[i] && !isinquote(str, i, QUOTES))
@@ -233,17 +236,17 @@ void	fd_maker(t_command *head)
 				close(fd);
 			if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->tmp[i + 1], O_CREAT | O_RDWR);
+				fd = open(head->tmp[i + 1], O_CREAT | O_WRONLY, 0644);
 				head->stdout_ = fd;
 			}
 			else if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '<')
 			{
-				fd = open(head->tmp[i + 1], O_RDWR);
+				fd = open(head->tmp[i + 1], O_RDONLY, 0644);
 				head->stdin_ = fd;
 			}
 			else if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->tmp[i + 1], O_CREAT | O_APPEND | O_RDWR);
+				fd = open(head->tmp[i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
 				head->stdout_ = fd;
 			}
 			printf("FD: %d\n", fd);
@@ -253,7 +256,10 @@ void	fd_maker(t_command *head)
 		i++;
 	}
 	if (fd < 0)
-		printf("minishell: %s: %s", head->tmp[i + 1], ERROR_DIR_MSG);
+	{
+		printf("minishell: %s: %s\n", head->tmp[i + 1], ERROR_DIR_MSG);
+		get_infos()->latest_error_code = 10;
+	}
 }
 
 size_t count_nonerdt_token(char **token)
@@ -341,13 +347,13 @@ void	parsing(char *line)
 		printf("%s(\"or')\n", ERROR_QUOTE_MSG);
 	else if (cmd_maker(new, len))
 	{
-		// execution(get_infos());
-		printf("%s\n", line);
-		strnput(new, len);
-		print_cmd(&get_infos()->cmd);
+		execution(get_infos());
+		// printf("%s\n", line);
+		// strnput(new, len);
+		// print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
-		printf("\n");
+		// printf("\n");
 	}
-	free_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 	new = mms_free(new);
 }

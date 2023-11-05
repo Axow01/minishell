@@ -38,7 +38,7 @@ bool	read_line_debug(void)
 
 	if (get_infos()->pwd)
 		get_infos()->pwd = mms_free(get_infos()->pwd);
-	get_infos()->username = get_username(get_infos()->env);
+	get_infos()->username = get_username(get_infos()->env); 
 	get_infos()->pwd = get_pwd(get_infos()->env);
 	printf("\x1b[36;49;1;3m");
 	line = readline(get_infos()->pwd);
@@ -47,8 +47,6 @@ bool	read_line_debug(void)
 	mms_add_ptr(line);
 	add_history(line);
 	parsing(line);
-	// cmd = ft_split(line, ' ');
-	// get_infos()->cmd.cmd = cmd;
 	line = mms_free(line);
 	return (true);
 }
@@ -69,7 +67,6 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (!read_line_debug())
 			break ;
-		printf("Latest error code: %d\n", infos->latest_error_code);
 	}
 	mms_kill("", false, 0);
 	return (0);

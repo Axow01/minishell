@@ -55,6 +55,12 @@ bool	is_valid(char *str);
 //        dollars       //
 //----------------------//
 
+/// @brief Change the $? into a error number 
+/// @param new the string
+/// @param i 
+/// @param j 
+void dollars_qmark(char *new, size_t *i, size_t *j);
+
 /// @brief Check if the value exist in the env.
 /// @param key The key to search.
 /// @param env The enviroment.

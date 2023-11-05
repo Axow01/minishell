@@ -97,3 +97,20 @@ void dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
 		return ;
 	}
 }
+
+void dollars_qmark(char *new, size_t *i, size_t *j)
+{
+	size_t k;
+	char *errc;
+
+	k = 0;
+	errc = ft_itoa(get_infos()->latest_error_code);
+	while (errc[k])
+	{
+		new[*j] = errc[k];
+		*j += 1;
+		k++;
+	}
+	*i += 2;
+	errc = mms_free(errc);
+}
