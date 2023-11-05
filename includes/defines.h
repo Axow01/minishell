@@ -31,6 +31,7 @@ typedef struct s_infos
 	char			*pwd;
 	char			**path;
 	char			*username;
+	char			*git_branch;
 	unsigned char	latest_error_code;
 }		t_infos;
 

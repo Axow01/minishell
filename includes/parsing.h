@@ -91,4 +91,20 @@ size_t	dollars_count(char *str);
 /// @param j pos j.
 void	dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j);
 
+//----------------------//
+//        string        //
+//----------------------//
+
+/// @brief Count the number of a specific char.
+/// @param str The string.
+/// @param c The char.
+/// @return Size_t the number of this char.
+size_t	char_count(char *str, char c);
+
+/// @brief Delete all specific char in a string.
+/// @param str The string
+/// @param c The char.
+/// @return The new string without they chars and free str.
+char	*ft_del_char(char *str, char c);
+
 #endif
