@@ -51,48 +51,21 @@ bool	read_line_debug(void)
 	return (true);
 }
 
-char	*get_branch(void)
-{
-	char	*git_dir;
-	char	*new;
-	char	*temp;
-	int		fd;
-	size_t	i;
-
-	fd = 0;
-	git_dir = ft_strdup(".git/HEAD");
-	while (access(git_dir, F_OK) != 0 && char_count(git_dir,
-			'/') < char_count(get_infos()->pwd, '/'))
-		git_dir = ft_stringf("%s%s", "../", git_dir);
-	if (access(git_dir, F_OK) == 0)
-	{
-		fd = open(git_dir, O_RDONLY);
-		temp = get_next_line(fd);
-		i = ft_strlen(temp) - 1;
-		while (temp[i] && temp[i] != '/')
-			i--;
-		new = ft_del_char(ft_strdup(&temp[i + 1]), '\n');
-		mms_free(temp);
-		mms_free(git_dir);
-		close(fd);
-		return (new);
-	}
-	return (NULL);
-}
-
 bool	read_line(void)
 {
 	char	*str;
 	char	*line;
 	t_infos	*infos;
+	size_t	count;
 
+	count = 0;
 	infos = get_infos();
 	if (infos->pwd)
 		infos->pwd = mms_free(get_infos()->pwd);
 	infos->username = check_for_key("USER", get_infos()->env, 4);
 	infos->pwd = check_for_key("PWD", get_infos()->env, 3);
-	infos->git_branch = get_branch();
-	str = ft_stringf("\x1b[36;49;1;3m%s \x1b[34mgit:\x1b[31m(%s) \x1b[32;1m%s\x1b[38;5;249m > ", infos->pwd, infos->git_branch, infos->username);
+	infos->git_branch = get_branch(&count);
+	str = draw_prompt(count);
 	line = readline(str);
 	if (!line)
 		return (false);

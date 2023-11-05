@@ -12,6 +12,13 @@
 # define ERROR_QUOTE_MSG "minishell: syntax error quote not closed "
 # define ERROR_DIR_MSG "No such file or directory"
 
+# define BLUE "\x1b[34m"
+# define LBLUE "\x1b[36;49;1;3m"
+# define RED "\x1b[31m"
+# define GRN "\x1b[32;1m"
+# define GRY "\x1b[38;5;249m"
+# define YLW "\x1b[33m"
+
 void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
 void	init_cmd_struct(char *str);
@@ -19,10 +26,28 @@ void	strnput(char *str, size_t len);
 void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 
+//----------------------//
+//        prompt        //
+//----------------------//
+
+/// @brief Get the git branch name.
+/// @param count return the number of folder.  
+/// @return Branch name.
+char	*get_branch(size_t *count);
+
+/// @brief Draw prompt.
+/// @param  
+/// @return 
+char	*draw_prompt(size_t count);
+
+//----------------------//
+//        degit         //
+//----------------------//
+
 /// @brief Count how many degit have in a number.
 /// @param n The number in long long (cast in long).
 /// @return Int: how many number.
-int	digit_counter(long long n);
+int		digit_counter(long long n);
 
 //----------------------//
 //          is          //
@@ -55,11 +80,11 @@ bool	is_valid(char *str);
 //        dollars       //
 //----------------------//
 
-/// @brief Change the $? into a error number 
-/// @param new the string
-/// @param i 
-/// @param j 
-void dollars_qmark(char *new, size_t *i, size_t *j);
+/// @brief Change the $? into a error number.
+/// @param new the string.
+/// @param i
+/// @param j
+void	dollars_qmark(char *new, size_t *i, size_t *j);
 
 /// @brief Check if the value exist in the env.
 /// @param key The key to search.
