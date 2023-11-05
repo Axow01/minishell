@@ -44,21 +44,28 @@ size_t dollars_count(char *str)
 	size_t i;
 	size_t count;
 	size_t dollars_len;
+	char *errc;
 
 	i = 0;
 	count = 0;
+	errc = ft_itoa(get_infos()->latest_error_code);
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
-			i += 2;
+			i++;
+		else if (str[i] == '$' && str[i + 1] == '?' && !isinquote(str, i, SINGLE_QUOTE))
+        {
+            count += ft_strlen(errc);
+            i++;
+        }
 		else if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 		{
-			printf("ff: %zu\n", count);
 			dollars_len = dollars_key_len(&str[i + 1]);
-			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_len));
+			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_len))  - dollars_len;
 		}	
 		i++;
 	}
+	errc = mms_free(errc);
 	return (count);
 }
 

@@ -83,9 +83,9 @@ void	strnput(char *str, size_t len)
 	ft_putchar_fd('\n', 1);
 }
 
-int	digit_counter(long n)
+int	digit_counter(long long n)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (n == 0)

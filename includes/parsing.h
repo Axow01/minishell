@@ -20,9 +20,9 @@ void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 
 /// @brief Count how many degit have in a number.
-/// @param n The number
+/// @param n The number in long long (cast in long).
 /// @return Int: how many number.
-int		digit_counter(long n);
+int	digit_counter(long long n);
 
 //----------------------//
 //          is          //
