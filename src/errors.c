@@ -45,7 +45,10 @@ int	printf_error(const char *fmt, ...)
 	while (fmt[i])
 	{
 		if (fmt[i] == '%')
+		{
 			total += format_char(fmt[++i], va);
+			i++;
+		}
 		else
 		{
 			write(STDERR_FILENO, &fmt[i], 1);

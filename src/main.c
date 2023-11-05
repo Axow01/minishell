@@ -92,7 +92,7 @@ bool	read_line(void)
 	infos->username = check_for_key("USER", get_infos()->env, 4);
 	infos->pwd = check_for_key("PWD", get_infos()->env, 3);
 	infos->git_branch = get_branch();
-	str = ft_stringf("\x1b[36;49;1;3m%s \x1b[34mgit:\x1b[31m() \x1b[32;1m%s\x1b[38;5;249m > ", infos->pwd, infos->username);
+	str = ft_stringf("\x1b[36;49;1;3m%s \x1b[34mgit:\x1b[31m(%s) \x1b[32;1m%s\x1b[38;5;249m > ", infos->pwd, infos->git_branch, infos->username);
 	line = readline(str);
 	if (!line)
 		return (false);
