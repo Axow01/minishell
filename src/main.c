@@ -59,6 +59,7 @@ bool	read_line(void)
 	size_t	count;
 
 	count = 0;
+	rl_bind_key('\t', rl_complete);
 	infos = get_infos();
 	if (infos->pwd)
 		infos->pwd = mms_free(get_infos()->pwd);
@@ -70,7 +71,8 @@ bool	read_line(void)
 	if (!line)
 		return (false);
 	mms_add_ptr(line);
-	add_history(line);
+	if (*line)
+		add_history(line);
 	parsing(line);
 	line = mms_free(line);
 	return (true);
