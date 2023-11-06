@@ -12,7 +12,6 @@ static char *find_git(size_t *count)
     if (access(git_dir, F_OK) == 0)
     {
         *count = char_count(git_dir,'/') - 1;
-		printf("%zu\n", *count);
         return (git_dir);
     }
     return (NULL);
@@ -44,6 +43,28 @@ char	*get_branch(size_t *count)
 	return (NULL);
 }
 
+size_t pwd_trim(char *pwd, size_t nb)
+{
+	size_t i;
+	size_t count;
+
+	i = ft_strlen(pwd);
+	count = 0;
+	while (i > 0)
+	{
+		if (pwd[i] == '/')
+			count++;
+		if (count == nb)
+		{
+			if (i > 0)
+				i++;
+			break;
+		}
+		i--;
+	}
+	return (i);
+}
+
 char *draw_prompt(size_t count)
 {
     char *new;
@@ -52,19 +73,22 @@ char *draw_prompt(size_t count)
     size_t i;
 
     i = 0;
-    cursor = ft_strdup("➜");
+    cursor = ft_strdup("❯");
     while (i < count)
     {
-        cursor = ft_stringf("%s%s", cursor, "➜");
+        cursor = ft_stringf("%s%s", cursor, "❯");
         i++;
     }
 	infos = get_infos();
     new = NULL;
     if (!infos->git_branch || infos->git_branch[0] == '\0')
-        new = ft_stringf(LBLUE"%s"YLW " ~ " GRY RESET, infos->pwd);
+        new = ft_stringf(LBLUE"%s"GRN" [%s] "YLW"➜ "RESET,
+			&infos->pwd[pwd_trim(infos->pwd, 2)], infos->username);
     else
     {
-		new = ft_stringf(LBLUE"%s"BLUE " git:" RED "(%s)" YLW "%s "GRY RESET, infos->pwd, infos->git_branch, cursor);
+		new = ft_stringf(LBLUE"%s"BLUE " git:" RED "(%s)" YLW "%s"GRN" [%s] "YLW"➜ "RESET,
+			&infos->pwd[pwd_trim(infos->pwd, 2)], infos->git_branch, cursor, infos->username);
     }
     return (new);
 }
+// ➜

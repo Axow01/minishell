@@ -18,7 +18,7 @@
 # define GRN "\x1b[32;1m"
 # define GRY "\x1b[38;5;249m"
 # define YLW "\x1b[33m"
-#define RESET "\x1b[0m"
+# define RESET "\x1b[0m"
 
 void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
