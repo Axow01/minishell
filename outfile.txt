@@ -1,0 +1,17 @@
+Makefile
+README.md
+Untitled Diagram.drawio
+a.txt
+file.txt
+includes
+invalid_cmd_test.txt
+minishell
+notes.md
+obj
+out.txt
+outfile.txt
+src
+supp.txt
+test
+test_dollars.txt
+valid_cmd_test.txt

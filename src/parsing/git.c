@@ -1,7 +1,6 @@
 #include "minishell.h"
 
-
-static char *find_git(size_t *count)
+static char	*find_git(size_t *count)
 {
 	char	*git_dir;
 
@@ -83,11 +82,11 @@ char *draw_prompt(size_t count)
     new = NULL;
     if (!infos->git_branch || infos->git_branch[0] == '\0')
         new = ft_stringf(LBLUE"%s"GRN" [%s] "YLW"➜ "RESET,
-			&infos->pwd[pwd_trim(infos->pwd, 2)], infos->username);
+			&infos->pwd[pwd_trim(infos->pwd, P)], infos->username);
     else
     {
 		new = ft_stringf(LBLUE"%s"BLUE " git:" RED "(%s)" YLW "%s"GRN" [%s] "YLW"➜ "RESET,
-			&infos->pwd[pwd_trim(infos->pwd, 2)], infos->git_branch, cursor, infos->username);
+			&infos->pwd[pwd_trim(infos->pwd, P)], infos->git_branch, cursor, infos->username);
     }
     return (new);
 }

@@ -18,62 +18,65 @@ char	*check_for_key(char *key, char **env, size_t len)
 	return (NULL);
 }
 
-size_t dollars_key_len(char *str)
+size_t	dollars_key_len(char *str)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (str[i])
 	{
 		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
-			break;
+			break ;
 		i++;
 	}
 	return (i);
 }
 
-bool dollars_key_exist(char *key, size_t len)
+bool	dollars_key_exist(char *key, size_t len)
 {
 	if (check_for_key(key, get_infos()->env, len) && len > 0)
 		return (true);
 	return (false);
 }
 
-size_t dollars_count(char *str)
+size_t	dollars_count(char *str)
 {
-	size_t i;
-	size_t count;
-	size_t dollars_len;
-	char *errc;
+	size_t	i;
+	size_t	count;
+	size_t	dollars_len;
+	char	*errc;
 
 	i = 0;
 	count = 0;
 	errc = ft_itoa(get_infos()->latest_error_code);
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i, SINGLE_QUOTE))
+		if (str[i] == '$' && str[i + 1] == '$' && !isinquote(str, i,
+				SINGLE_QUOTE))
 			i++;
-		else if (str[i] == '$' && str[i + 1] == '?' && !isinquote(str, i, SINGLE_QUOTE))
-        {
-            count += ft_strlen(errc);
-            i++;
-        }
+		else if (str[i] == '$' && str[i + 1] == '?' && !isinquote(str, i,
+				SINGLE_QUOTE))
+		{
+			count += ft_strlen(errc);
+			i++;
+		}
 		else if (str[i] == '$' && !isinquote(str, i, SINGLE_QUOTE))
 		{
 			dollars_len = dollars_key_len(&str[i + 1]);
-			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env, dollars_len))  - dollars_len;
-		}	
+			count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env,
+						dollars_len)) - dollars_len;
+		}
 		i++;
 	}
 	errc = mms_free(errc);
 	return (count);
 }
 
-void dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
+void	dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
 {
-	char *token;
-	size_t dollars_len;
-	size_t k;
+	char	*token;
+	size_t	dollars_len;
+	size_t	k;
 
 	dollars_len = dollars_key_len(&str[*i + 1]);
 	k = 0;
@@ -98,7 +101,7 @@ void dollars_token_copy(char *str, char *new_line, size_t *i, size_t *j)
 	}
 }
 
-void dollars_qmark(char *new, size_t *i, size_t *j)
+void	dollars_qmark(char *new, size_t *i, size_t *j)
 {
 	size_t k;
 	char *errc;

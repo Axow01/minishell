@@ -8,6 +8,8 @@
 # define SINGLE_QUOTE 1
 # define DOUBLE_QUOTE 2
 
+# define P 3
+
 # define ERROR_BASE_MSG "minishell: syntax error near unexpected token "
 # define ERROR_QUOTE_MSG "minishell: syntax error quote not closed "
 # define ERROR_DIR_MSG "No such file or directory"
@@ -26,19 +28,58 @@ void	init_cmd_struct(char *str);
 void	strnput(char *str, size_t len);
 void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
+char	*setup_line(char *str, size_t *len);
+
+//----------------------//
+//        token         //
+//----------------------//
+
+/// @brief Count all none redirection.
+/// @param token All token.
+/// @return Then number of none redirection token.
+size_t	count_nonerdt_token(char **token);
+
+/// @brief Get all token in a cmd.
+/// @param line The line.
+/// @param start The start line.
+/// @param end The end line.
+/// @param head The struct.
+void	get_token(char *line, size_t start, size_t end, t_command *head);
+
+/// @brief Count how many token in a cmd.
+/// @param line The cmd line.
+/// @param start The start of that cmd line.
+/// @param end The end of that cmd line.
+/// @return Size_t: the number of token.
+size_t	count_token(char *line, size_t start, size_t end);
+
+//----------------------//
+//      redirection     //
+//----------------------//
+
+/// @brief Count how many redirection have in a line.
+/// @param str The string.
+/// @return Size_t: number of redirection.
+size_t	count_redirection(char *str);
+
+/// @brief Open fd of a command.
+void	fd_maker(t_command *head);
+
+/// @brief Check if redirection is good.
+/// @param head The struct.
+/// @return Bool: true if yes: false if not.
+bool	check_valid_redirec(t_command *head);
 
 //----------------------//
 //        prompt        //
 //----------------------//
 
 /// @brief Get the git branch name.
-/// @param count return the number of folder.  
+/// @param count return the number of folder.
 /// @return Branch name.
 char	*get_branch(size_t *count);
 
 /// @brief Draw prompt.
-/// @param  
-/// @return 
 char	*draw_prompt(size_t count);
 
 //----------------------//
@@ -132,5 +173,15 @@ size_t	char_count(char *str, char c);
 /// @param c The char.
 /// @return The new string without they chars and free str.
 char	*ft_del_char(char *str, char c);
+
+/// @brief Remouve coated quote.
+/// @param head The struct
+void	remove_quote(t_command *head);
+
+/// @brief Replace all space by a '\0'.
+/// @param str The string.
+/// @param start The start.
+/// @param end The end.
+void	replace_space(char *str, size_t start, size_t end);
 
 #endif

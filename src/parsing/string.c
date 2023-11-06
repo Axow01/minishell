@@ -44,3 +44,44 @@ char	*ft_del_char(char *str, char c)
 	}
 	return (mms_free(str), new);
 }
+
+void	remove_quote(t_command *head)
+{
+	size_t i;
+	size_t j;
+	size_t k;
+	char *new;
+
+	i = 0;
+	while (head && head->tmp && head->tmp[i])
+	{
+		j = 0;
+		k = 0;
+		new = mms_alloc(ft_strlen(head->tmp[i]) + 1, sizeof(char));
+		while (head->tmp[i][j])
+		{
+			if (!is_coated_quote(head->tmp[i], j))
+				new[k++] = head->tmp[i][j];
+			j++;
+		}
+		mms_free(head->tmp[i]);
+		head->tmp[i] = new;
+		i++;
+	}
+}
+
+void	replace_space(char *str, size_t start, size_t end)
+{
+	size_t	i;
+
+	i = start;
+	while (i < end)
+	{
+		if (!isinquote(str, i, QUOTES))
+		{
+			if (ft_isspace(str[i]))
+				str[i] = '\0';
+		}
+		i++;
+	}
+}
