@@ -29,6 +29,7 @@ void	strnput(char *str, size_t len);
 void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 char	*setup_line(char *str, size_t *len);
+void	heredoc(t_command *head);
 
 //----------------------//
 //        token         //
@@ -182,7 +183,7 @@ void	remove_quote(t_command *head);
 /// @param token The token
 /// @param new The new line.
 /// @return The new line.
-char	*remove_quote_token(char *token)
+char	*remove_quote_token(char *token);
 
 /// @brief Replace all space by a '\0'.
 /// @param str The string.
