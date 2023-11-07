@@ -50,8 +50,8 @@ int	printf_error(const char *fmt, ...)
 		{
 			write(STDERR_FILENO, &fmt[i], 1);
 			total++;
-			i++;
 		}
+		i++;
 	}
 	va_end(va);
 	return (total);

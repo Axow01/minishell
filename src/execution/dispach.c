@@ -95,5 +95,9 @@ void	execution_dispach(t_infos *infos)
 		execution_pipe(infos);
 	else
 		simple_exec(&infos->cmd);
+	if (WIFEXITED(infos->latest_error_code))
+		infos->latest_error_code = WEXITSTATUS(infos->latest_error_code);
+	else if (WIFSIGNALED(infos->latest_error_code))
+		infos->latest_error_code = (128 + WTERMSIG(infos->latest_error_code));
 }
 

@@ -31,7 +31,7 @@ typedef struct s_infos
 	char			*pwd;
 	char			**path;
 	char			*username;
-	unsigned char	latest_error_code;
+	int				latest_error_code;
 }		t_infos;
 
 typedef enum e_path
