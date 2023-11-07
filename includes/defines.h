@@ -41,4 +41,10 @@ typedef enum e_path
 	COMMAND = 1
 }	t_path;
 
+typedef struct s_heredoc
+{
+	char *str;
+	struct s_heredoc	*next;
+}	t_heredoc;
+
 #endif
