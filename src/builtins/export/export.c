@@ -73,15 +73,13 @@ void	ft_export(int ac, char **argv, char **env)
 	int			ac_i;
 
 	ac_i = 0;
-	cpy_env = NULL;
+	cpy_env = env;
+	vk = NULL;
 	if (ac == 1)
-	{
 		print_double_char(env);
-		return ;
-	}
-	while (argv[++ac_i])
+	while (argv[++ac_i] && ac > 1)
 	{
-		cpy_env = copy_double_char(env, ft_length_d_char(env));
+		cpy_env = copy_double_char(cpy_env, ft_length_d_char(cpy_env));
 		vk = export_get_key_val(argv[ac_i]);
 		i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
 		if (i < 0)
@@ -89,5 +87,5 @@ void	ft_export(int ac, char **argv, char **env)
 		else
 			edit_variable(vk, cpy_env, i);
 	}
-	get_infos()->env = cpy_env;
+	clean_vk(vk, cpy_env);
 }

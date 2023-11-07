@@ -76,6 +76,8 @@ static Builtin_ptr	get_builtin_ptr(t_command *cmd)
 		return (&ft_exit_minishell);
 	else if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
 		return (&ft_pwd);
+	else if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
+		return (&ft_echo);
 	return (NULL);
 }
 

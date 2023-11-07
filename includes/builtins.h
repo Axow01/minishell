@@ -23,6 +23,10 @@ void	cd(int ac, char **args, char **env);
 ///  EXPORT  ///
 /// ======== ///
 
+/// @brief Free all the value in vk
+/// @param vk 
+void	clean_vk(t_key_val *vk, char **cpy_env);
+
 /// @brief Prints a double char ** (used for the env).
 /// @param dc char**
 void	print_double_char(char **dc);
@@ -86,5 +90,15 @@ void	ft_exit_minishell(int argc, char **argv, char **env);
 /// @param argv 
 /// @param env 
 void	ft_pwd(int argc, char **argv, char **env);
+
+/// ========== ///
+///    ECHO    ///
+/// ========== ///
+
+/// @brief The fckin echo cmd
+/// @param argc 
+/// @param argv 
+/// @param env 
+void	ft_echo(int argc, char **argv, char **env);
 
 #endif
