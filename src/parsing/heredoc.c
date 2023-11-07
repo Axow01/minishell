@@ -41,7 +41,7 @@ bool	heredoc_read(char *delimiter, int fd)
 		do_dollar = true;
 	while (true)
 	{
-		line = readline(">");
+		line = readline("heredoc> ");
 		if (!line)
 			return (false);
 		mms_add_ptr(line);
@@ -51,21 +51,24 @@ bool	heredoc_read(char *delimiter, int fd)
 		if (!new)
 			return (false);
 		ft_putendl_fd(new, fd);
+		mms_free(new);
 	}
 	return (true);
 }
 
 void heredoc_clean(void)
 {
-	size_t i;
+	int i;
+	char *fname;
 
-	i = get_infos();
+	i = get_infos()->nb_heredoc;
 	while (i >= 0)
 	{
-		unlink(ft_stringf());
+		fname = ft_stringf("%s%s%d", "/tmp", "/heredoc", i);
+		unlink(fname);
+		fname = mms_free(fname);
 		i--;
 	}
-	
 }
 
 void heredoc(t_command *head)
@@ -88,7 +91,8 @@ void heredoc(t_command *head)
 				infos->nb_heredoc++;
 				if (head->stdin_ > 2)
 					close(fd);
-				fd = open(fnum, O_CREAT | O_WRONLY, 0644);
+				fd = open(fnum, O_CREAT | O_RDWR, 0644);
+				printf("fd:%d\n", fd);
 				head->stdin_ = fd;
 				fnum = mms_free(fnum);
 				if (fd < 0)

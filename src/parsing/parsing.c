@@ -67,6 +67,7 @@ bool	cmd_maker(char *str, size_t len)
 				return (false);
 			fd_maker(head);
 			heredoc(head);
+			printf("in: %d out: %d\n", head->stdin_, head->stdout_);
 			remove_quote(head);
 			tmp_to_cmd(head);
 			head = head->next;
@@ -91,13 +92,14 @@ void	parsing(char *line)
 		printf("%s(\"or')\n", ERROR_QUOTE_MSG);
 	else if (cmd_maker(new, len))
 	{
-		// execution(get_infos());
-		printf("%s\n", line);
-		strnput(new, len);
-		print_cmd(&get_infos()->cmd);
+		execution(get_infos());
+		heredoc_clean();
+		// printf("%s\n", line);
+		// strnput(new, len);
+		// print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
-		printf("\n");
+		// printf("\n");
 	}
-	free_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 	new = mms_free(new);
 }

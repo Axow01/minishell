@@ -30,6 +30,7 @@ void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 char	*setup_line(char *str, size_t *len);
 void	heredoc(t_command *head);
+void    heredoc_clean(void);
 
 //----------------------//
 //        token         //

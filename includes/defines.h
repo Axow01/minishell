@@ -27,7 +27,7 @@ typedef struct s_infos
 {
 	t_command		cmd;
 	int8_t			nb_cmd;
-	size_t			nb_heredoc;
+	int				nb_heredoc;
 	char			**env;
 	char			*pwd;
 	char			**path;
