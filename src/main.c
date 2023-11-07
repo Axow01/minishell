@@ -81,7 +81,6 @@ bool	read_line(void)
 int	main(int argc, char **argv, char **env)
 {
 	t_infos	*infos;
-	char *test;
 
 	(void)argc;
 	(void)argv;
@@ -91,10 +90,6 @@ int	main(int argc, char **argv, char **env)
 	if (!infos->env)
 		mms_kill("minishell: could not retreive env\n", true, 1);
 	infos->path = path_split(env_to_path(infos->env));
-
-	test = ft_stringf("this is test%s %s %s\n", "bonjour", "aurevoir", "bonsoir");
-	printf("%s", test);
-	exit(1);
 	while (1)
 	{
 		if (!read_line())
