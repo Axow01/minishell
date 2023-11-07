@@ -17,15 +17,15 @@ static int	string_conv_printerror(char *str)
 	return (write(STDERR_FILENO, str, ft_strlen(str)));
 }
 
-static int	format_char(char c, va_list va)
+static int	format_char(char c, va_list *va)
 {
 	int	total;
 
 	total = 0;
 	if (c == 'd')
-		total += number_conv_printerror(va_arg(va, int));
+		total += number_conv_printerror(va_arg(*va, int));
 	else if (c == 's')
-		total += string_conv_printerror(va_arg(va, char *));
+		total += string_conv_printerror(va_arg(*va, char *));
 	else
 		total += write(STDOUT_FILENO, &c, 1);
 	return (total);
@@ -45,10 +45,7 @@ int	printf_error(const char *fmt, ...)
 	while (fmt[i])
 	{
 		if (fmt[i] == '%')
-		{
-			total += format_char(fmt[++i], va);
-			i++;
-		}
+			total += format_char(fmt[++i], &va);
 		else
 		{
 			write(STDERR_FILENO, &fmt[i], 1);

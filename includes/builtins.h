@@ -67,4 +67,14 @@ char	**create_new_variable(t_key_val *vk, char **env);
 /// @param i the position of the value.
 void	edit_variable(t_key_val *vk, char **env, int i);
 
+/// ======== ///
+///   EXIT   ///
+/// ======== ///
+
+/// @brief Exit the shell.
+/// @param argc the arguements count.
+/// @param argv the arguments. 
+/// @param env the env (but it's not used in exit).
+void	ft_exit_minishell(int argc, char **argv, char **env);
+
 #endif
