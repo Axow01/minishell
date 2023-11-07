@@ -178,6 +178,12 @@ char	*ft_del_char(char *str, char c);
 /// @param head The struct
 void	remove_quote(t_command *head);
 
+/// @brief Remouve coated quote for one token.
+/// @param token The token
+/// @param new The new line.
+/// @return The new line.
+char	*remove_quote_token(char *token)
+
 /// @brief Replace all space by a '\0'.
 /// @param str The string.
 /// @param start The start.

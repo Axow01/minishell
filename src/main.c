@@ -31,25 +31,25 @@ void	add_cmd(char *cmd, int stdin_, int stdout_, t_infos *infos)
 	buf->next = command;
 }
 
-bool	read_line_debug(void)
-{
-	char	*line;
+// bool	read_line_debug(void)
+// {
+// 	char	*line;
 
-	// char	**cmd;
-	if (get_infos()->pwd)
-		get_infos()->pwd = mms_free(get_infos()->pwd);
-	get_infos()->username = get_username(get_infos()->env);
-	get_infos()->pwd = get_pwd(get_infos()->env);
-	printf("\x1b[36;49;1;3m");
-	line = readline(get_infos()->pwd);
-	if (!line)
-		return (false);
-	mms_add_ptr(line);
-	add_history(line);
-	parsing(line);
-	line = mms_free(line);
-	return (true);
-}
+// 	// char	**cmd;
+// 	if (get_infos()->pwd)
+// 		get_infos()->pwd = mms_free(get_infos()->pwd);
+// 	get_infos()->username = get_username(get_infos()->env);
+// 	get_infos()->pwd = get_pwd(get_infos()->env);
+// 	printf("\x1b[36;49;1;3m");
+// 	line = readline(get_infos()->pwd);
+// 	if (!line)
+// 		return (false);
+// 	mms_add_ptr(line);
+// 	add_history(line);
+// 	parsing(line);
+// 	line = mms_free(line);
+// 	return (true);
+// }
 
 bool	read_line(void)
 {
@@ -68,6 +68,7 @@ bool	read_line(void)
 	infos->git_branch = get_branch(&count);
 	str = draw_prompt(count);
 	line = readline(str);
+	str = mms_free(str);
 	if (!line)
 		return (false);
 	mms_add_ptr(line);

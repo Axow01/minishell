@@ -84,8 +84,5 @@ void	fd_maker(t_command *head)
 		i++;
 	}
 	if (fd < 0)
-	{
 		printf("minishell: %s: %s\n", head->tmp[i + 1], ERROR_DIR_MSG);
-		get_infos()->latest_error_code = 10;
-	}
 }
