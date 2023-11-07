@@ -27,6 +27,8 @@ bool	check_for_builtins(t_command *cmd)
 		return (true);
 	if (ft_strncmp(cmd->cmd[0], "exit", 5) == 0)
 		return (true);
+	if (ft_strncmp(cmd->cmd[0], "pwd", 4) == 0)
+		return (true);
 	return (false);
 }
 

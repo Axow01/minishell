@@ -77,4 +77,14 @@ void	edit_variable(t_key_val *vk, char **env, int i);
 /// @param env the env (but it's not used in exit).
 void	ft_exit_minishell(int argc, char **argv, char **env);
 
+/// ========= ///
+///    PWD    ///
+/// ========= ///
+
+/// @brief This is the pwd cmd.
+/// @param argc 
+/// @param argv 
+/// @param env 
+void	ft_pwd(int argc, char **argv, char **env);
+
 #endif
