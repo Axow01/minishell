@@ -70,21 +70,24 @@ void	ft_export(int ac, char **argv, char **env)
 	char		**cpy_env;
 	t_key_val	*vk;
 	int			i;
+	int			ac_i;
 
+	ac_i = 0;
 	cpy_env = NULL;
-	if (ac > 2)
-		printf_error("minishell: ft_export: too much arguments\n");
 	if (ac == 1)
 	{
 		print_double_char(env);
 		return ;
 	}
-	cpy_env = copy_double_char(env, ft_length_d_char(env));
-	vk = export_get_key_val(argv[1]);
-	i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
-	if (i < 0)
-		cpy_env = create_new_variable(vk, cpy_env);
-	else
-		edit_variable(vk, cpy_env, i);
+	while (argv[++ac_i])
+	{
+		cpy_env = copy_double_char(env, ft_length_d_char(env));
+		vk = export_get_key_val(argv[ac_i]);
+		i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
+		if (i < 0)
+			cpy_env = create_new_variable(vk, cpy_env);
+		else
+			edit_variable(vk, cpy_env, i);
+	}
 	get_infos()->env = cpy_env;
 }
