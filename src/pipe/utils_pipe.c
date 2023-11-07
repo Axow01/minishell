@@ -23,7 +23,11 @@ void	wait_for_programs(t_infos *infos)
 	buf = &infos->cmd;
 	while (buf)
 	{
-		buf->pid = waitpid(buf->pid, (int *)&infos->latest_error_code, 0);
+		buf->pid = waitpid(buf->pid, &infos->latest_error_code, 0);
 		buf = buf->next;
 	}
+	if (WIFEXITED(infos->latest_error_code))
+		infos->latest_error_code = WEXITSTATUS(infos->latest_error_code);
+	else if (WIFSIGNALED(infos->latest_error_code))
+		infos->latest_error_code = (128 + WTERMSIG(infos->latest_error_code));
 }

@@ -32,7 +32,7 @@ typedef struct s_infos
 	char			**path;
 	char			*username;
 	char			*git_branch;
-	unsigned char	latest_error_code;
+	int				latest_error_code;
 }		t_infos;
 
 typedef enum e_path

@@ -95,9 +95,9 @@ void	parsing(char *line)
 		// printf("%s\n", line);
 		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
-		// printf("len : %zu\n", len);
+		// // printf("len : %zu\n", len);
 		// printf("\n");
 	}
-	free_cmd(&get_infos()->cmd);
+	// free_cmd(&get_infos()->cmd);
 	new = mms_free(new);
 }
