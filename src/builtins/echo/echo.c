@@ -10,8 +10,8 @@ static bool	echo_newline(char *str)
 		return (true);
 	while (str[i])
 	{
-		if (str[i] == '-' && str[i + 1] == 'n' 
-				&& (str[i + 2] == ' ' || str[i + 2] == 0))
+		if (str[i] == '-' && str[i + 1] == 'n'
+			&& (str[i + 2] == ' ' || str[i + 2] == 0))
 			return (false);
 		i++;
 	}

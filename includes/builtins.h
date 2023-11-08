@@ -101,4 +101,15 @@ void	ft_pwd(int argc, char **argv, char **env);
 /// @param env 
 void	ft_echo(int argc, char **argv, char **env);
 
+
+/// ===== ///
+///  ENV  ///
+/// ===== ///
+
+/// @brief The env command.
+/// @param argc 
+/// @param argv 
+/// @param env 
+void	ft_env(int argc, char **argv, char **env);
+
 #endif
