@@ -92,7 +92,6 @@ void heredoc(t_command *head)
 				if (head->stdin_ > 2)
 					close(fd);
 				fd = open(fnum, O_CREAT | O_RDWR, 0644);
-				printf("fd:%d\n", fd);
 				head->stdin_ = fd;
 				fnum = mms_free(fnum);
 				if (fd < 0)
