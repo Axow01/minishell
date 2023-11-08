@@ -60,7 +60,7 @@ static void	simple_exec_run_fork(t_command *cmd)
 
 	env = get_infos()->env;
 	if (cmd->stdin_ < 0 || cmd->stdout_ < 0)
-		mms_kill(NULL, true, 69);
+		mms_kill(NULL, true, 1);
 	dup2(cmd->stdin_, STDIN_FILENO);
 	dup2(cmd->stdout_, STDOUT_FILENO);
 	untrack_cmd(cmd);

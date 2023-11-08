@@ -29,6 +29,8 @@ void	strnput(char *str, size_t len);
 void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 char	*setup_line(char *str, size_t *len);
+void	heredoc(t_command *head);
+void    heredoc_clean(void);
 
 //----------------------//
 //        token         //
@@ -177,6 +179,12 @@ char	*ft_del_char(char *str, char c);
 /// @brief Remouve coated quote.
 /// @param head The struct
 void	remove_quote(t_command *head);
+
+/// @brief Remouve coated quote for one token.
+/// @param token The token
+/// @param new The new line.
+/// @return The new line.
+char	*remove_quote_token(char *token);
 
 /// @brief Replace all space by a '\0'.
 /// @param str The string.

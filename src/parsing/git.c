@@ -4,16 +4,16 @@ static char	*find_git(size_t *count)
 {
 	char	*git_dir;
 
-    git_dir = ft_strdup(".git/HEAD");
+	git_dir = ft_strdup(".git/HEAD");
 	while (access(git_dir, F_OK) != 0 && char_count(git_dir,
 			'/') < char_count(get_infos()->pwd, '/'))
-		git_dir = ft_stringf("%s%s", "../", git_dir);
-    if (access(git_dir, F_OK) == 0)
-    {
-        *count = char_count(git_dir,'/') - 1;
-        return (git_dir);
-    }
-    return (NULL);
+		git_dir = ft_stringf("%s%S", "../", git_dir);
+	if (access(git_dir, F_OK) == 0)
+	{
+		*count = char_count(git_dir, '/') - 1;
+		return (git_dir);
+	}
+	return (NULL);
 }
 
 char	*get_branch(size_t *count)
@@ -42,10 +42,10 @@ char	*get_branch(size_t *count)
 	return (NULL);
 }
 
-size_t pwd_trim(char *pwd, size_t nb)
+size_t	pwd_trim(char *pwd, size_t nb)
 {
-	size_t i;
-	size_t count;
+	size_t	i;
+	size_t	count;
 
 	i = ft_strlen(pwd);
 	count = 0;
@@ -57,37 +57,37 @@ size_t pwd_trim(char *pwd, size_t nb)
 		{
 			if (i > 0)
 				i++;
-			break;
+			break ;
 		}
 		i--;
 	}
 	return (i);
 }
 
-char *draw_prompt(size_t count)
+char	*draw_prompt(size_t count)
 {
-    char *new;
-    char *cursor;
+	char	*new;
+	char	*cursor;
 	t_infos	*infos;
-    size_t i;
+	size_t	i;
 
-    i = 0;
-    cursor = ft_strdup("❯");
-    while (i < count)
-    {
-        cursor = ft_stringf("%s%s", cursor, "❯");
-        i++;
-    }
+	i = 0;
+	cursor = ft_strdup("❯");
+	while (i < count)
+	{
+		cursor = ft_stringf("%S%s", cursor, "❯");
+		i++;
+	}
 	infos = get_infos();
-    new = NULL;
-    if (!infos->git_branch || infos->git_branch[0] == '\0')
-        new = ft_stringf(LBLUE"%s"GRN" [%s] "YLW"➜ "RESET,
-			&infos->pwd[pwd_trim(infos->pwd, P)], infos->username);
-    else
-    {
-		new = ft_stringf(LBLUE"%s"BLUE " git:" RED "(%s)" YLW "%s"GRN" [%s] "YLW"➜ "RESET,
+	new = NULL;
+	if (!infos->git_branch || infos->git_branch[0] == '\0')
+		new = ft_stringf(LBLUE "%s" GRN " [%s] " YLW "➜ " RESET,
+							&infos->pwd[pwd_trim(infos->pwd, P)],
+							infos->username);
+	else
+	{
+		new = ft_stringf(LBLUE "%s" BLUE " git:" RED "(%s)" YLW "%s" GRN " [%s] " YLW "➜ " RESET,
 			&infos->pwd[pwd_trim(infos->pwd, P)], infos->git_branch, cursor, infos->username);
-    }
-    return (new);
+	}
+	return (new);
 }
-// ➜

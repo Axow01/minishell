@@ -31,7 +31,7 @@ void	tmp_to_cmd(t_command *head)
 	i = 0;
 	j = 0;
 	head->cmd = mms_alloc(count_nonerdt_token(head->tmp) + 1,
-		sizeof(char *));
+							sizeof(char *));
 	while (head->tmp && head->tmp[i])
 	{
 		if (isredirec(head->tmp[i]))
@@ -57,8 +57,7 @@ bool	cmd_maker(char *str, size_t len)
 		if ((str[i] == '|' && !isinquote(str, i, QUOTES)) || i == len)
 		{
 			end = i;
-			head->tmp = mms_alloc(count_token(str, start, end) + 1,
-					sizeof(char *));
+			head->tmp = mms_alloc(count_token(str, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
@@ -92,10 +91,11 @@ void	parsing(char *line)
 	else if (cmd_maker(new, len))
 	{
 		execution(get_infos());
+		// heredoc_clean();
 		// printf("%s\n", line);
 		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
-		// // printf("len : %zu\n", len);
+		// printf("len : %zu\n", len);
 		// printf("\n");
 	}
 	// free_cmd(&get_infos()->cmd);
