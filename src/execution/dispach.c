@@ -31,6 +31,10 @@ bool	check_for_builtins(t_command *cmd)
 		return (true);
 	if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
 		return (true);
+	if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
+		return (true);
+	if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
+		return (true);
 	return (false);
 }
 

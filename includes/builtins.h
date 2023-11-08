@@ -27,6 +27,13 @@ void	cd(int ac, char **args, char **env);
 /// @param vk 
 void	clean_vk(t_key_val *vk, char **cpy_env);
 
+/// @brief Get the index of the key.
+/// @param key 
+/// @param env 
+/// @param n 
+/// @return 
+int		get_env_index(char *key, char **env, size_t n);
+
 /// @brief Prints a double char ** (used for the env).
 /// @param dc char**
 void	print_double_char(char **dc);
@@ -111,5 +118,15 @@ void	ft_echo(int argc, char **argv, char **env);
 /// @param argv 
 /// @param env 
 void	ft_env(int argc, char **argv, char **env);
+
+/// ======= ///
+///  UNSET  ///
+/// ======= ///
+
+/// @brief The unset command.
+/// @param argc 
+/// @param argv 
+/// @param env 
+void	ft_unset(int argc, char **argv, char **env);
 
 #endif

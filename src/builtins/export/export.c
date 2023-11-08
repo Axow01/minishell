@@ -49,7 +49,7 @@ size_t	ft_length_d_char(char **dc)
 	return (i);
 }
 
-static int	get_env_index(char *key, char **env, size_t n)
+int	get_env_index(char *key, char **env, size_t n)
 {
 	int	i;
 

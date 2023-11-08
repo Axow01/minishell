@@ -79,7 +79,9 @@ static Builtin_ptr	get_builtin_ptr(t_command *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "echo", 5) == 0)
 		return (&ft_echo);
 	else if (ft_strncmp(cmd->cmd[0], "env", 4) == 0)
-		return (&ft_echo);
+		return (&ft_env);
+	else if (ft_strncmp(cmd->cmd[0], "unset", 6) == 0)
+		return (&ft_unset);
 	return (NULL);
 }
 

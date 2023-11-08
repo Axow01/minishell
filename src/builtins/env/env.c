@@ -10,7 +10,10 @@ void	ft_env(int argc, char **argv, char **env)
 	if (!env)
 		return ;
 	if (argc != 1)
+	{
 		printf_error("minishell: ft_env: too much arguments\n");
+		return ;
+	}
 	(void)argv;
 	while (env[++i])
 		printf("%s\n", env[i]);
