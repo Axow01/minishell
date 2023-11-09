@@ -3,17 +3,13 @@
 # define PARSING_H
 
 # include "libftms/inc/libft.h"
-
 # define QUOTES 0
+# define FNUMBER 3
 # define SINGLE_QUOTE 1
 # define DOUBLE_QUOTE 2
-
-# define FNUMBER 3
-
 # define ERROR_BASE_MSG "minishell: syntax error near unexpected token "
 # define ERROR_QUOTE_MSG "minishell: syntax error quote not closed "
 # define ERROR_DIR_MSG "No such file or directory"
-
 # define BLUE "\x1b[34m"
 # define LBLUE "\x1b[36;49;1;3m"
 # define RED "\x1b[31m"

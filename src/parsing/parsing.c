@@ -63,8 +63,8 @@ bool	cmd_maker(char *str, size_t len)
 			get_token(str, start, end, head);
 			if (!head->tmp || !head->tmp[0] || !head->tmp[0][0])
 			{
-				printf("%s`|'\n", ERROR_BASE_MSG);
-				return (false);
+				get_infos()->latest_error_code = 258;
+				return (printf("%s`|'\n", ERROR_BASE_MSG), false);
 			}
 			if (!check_valid_redirec(head))
 				return (false);
