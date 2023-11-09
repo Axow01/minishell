@@ -38,17 +38,12 @@ bool	check_valid_redirec(t_command *head)
 	{
 		if (head->tmp[i + 1] && head->tmp[i][0])
 			if (isredirec(head->tmp[i]) > 0 && isredirec(head->tmp[i + 1]) > 0)
-			{
-				get_infos()->latest_error_code = 258;
-				printf("%s`%s'\n", ERROR_BASE_MSG, head->tmp[i + 1]);
-				return (false);
-			}
+				return (printf_error(258, "%s`%s'\n", ERROR_BASE_MSG, head->tmp[i + 1]), false);
 		i++;
 	}
 	if (i > 0 && head->tmp[i - 1] && isredirec(head->tmp[i - 1]) > 0)
 	{
-		get_infos()->latest_error_code = 258;
-		return (printf("%s`newline'\n", ERROR_BASE_MSG), false);
+		return (printf_error(258, "%s`newline'\n", ERROR_BASE_MSG), false);
 	}
 	return (true);
 }

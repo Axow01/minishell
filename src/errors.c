@@ -31,7 +31,7 @@ static int	format_char(char c, va_list *va)
 	return (total);
 }
 
-int	printf_error(int8_t error_code, char *fmt, ...)
+int	printf_error(int16_t error_code, char *fmt, ...)
 {
 	int		total;
 	int		i;

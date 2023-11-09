@@ -9,8 +9,7 @@ void	ft_pwd(int argc, char **argv, char **env)
 	(void)env;
 	if (argc != 1)
 	{
-		printf_error("minishell: ft_pwd: too many arguments\n");
-		get_infos()->latest_error_code = 1;
+		printf_error(1, "minishell: ft_pwd: too many arguments\n");
 		return ;
 	}
 	pwd = mms_alloc(PATH_MAX + 1, sizeof(char));

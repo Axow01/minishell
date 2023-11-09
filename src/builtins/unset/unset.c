@@ -62,13 +62,12 @@ void	ft_unset(int argc, char **argv, char **env)
 	cpy_env = env;
 	if (!cpy_env)
 	{
-		printf_error("minishell: ft_unset: env error\n");
+		printf_error(1, "minishell: ft_unset: env error\n");
 		return ;
 	}
 	if (argc < 2)
 	{
-		get_infos()->latest_error_code = 1;
-		printf_error("minishell: ft_unset: not enough arguments\n");
+		printf_error(1, "minishell: ft_unset: not enough arguments\n");
 		return ;
 	}
 	index = mms_alloc(argc, sizeof(int));

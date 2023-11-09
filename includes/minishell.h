@@ -24,6 +24,6 @@ char	*get_username(char **env);
 /// @brief This is like printf but for errors, s,d only.
 /// @param fmt The string with some modifier like %s %d. 
 /// @return The total written bytes.
-int		printf_error(int8_t error_code, char *fmt, ...);
+int		printf_error(int16_t error_code, char *fmt, ...);
 
 #endif
