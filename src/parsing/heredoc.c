@@ -75,8 +75,9 @@ void heredoc(t_command *head)
 {
 	size_t i;
 	int fd;
-	char *fnum;
+	char *fname;
 	t_infos *infos;
+	pid_t pid;
 
 	i = 0;
 	fd = 0;
@@ -87,18 +88,27 @@ void heredoc(t_command *head)
 		{
 			if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '<')
 			{
-				fnum = ft_stringf("%s%s%d", "/tmp", "/heredoc", infos->nb_heredoc);
+				fname = ft_stringf("/tmp/heredoc%d", infos->nb_heredoc);
 				infos->nb_heredoc++;
-				if (head->stdin_ > 2)
+				if (fd > STDIN_FILENO)
 					close(fd);
-				fd = open(fnum, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
-				if (fd < 0)
-					break;
-				heredoc_read(head->tmp[i + 1], fd);
-				close(fd);
-				fd = open(fnum, O_RDONLY);
+				pid = fork();
+				if (pid == -1)
+					break ;
+				else if (pid == 0)
+				{
+					// ft_setup_signal(HEREDOC);
+					fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
+					if (fd < 0)
+						mms_kill(NULL, true, 0);
+					heredoc_read(head->tmp[i + 1], fd);
+					close(fd);
+					mms_kill(NULL, true, 0);
+				}
+				waitpid(pid, &get_infos()->latest_error_code, 0);
+				fd = open(fname, O_RDONLY);
 				head->stdin_ = fd;
-				fnum = mms_free(fnum);
+				fname = mms_free(fname);
 			}
 		}
 		i++;

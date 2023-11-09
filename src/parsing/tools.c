@@ -102,3 +102,16 @@ int	digit_counter(long long n)
 	}
 	return (i);
 }
+
+void	**ft_sfree_2d(void **ptr)
+{
+	void	**temp;
+
+	if (!ptr)
+		return (NULL);
+	temp = ptr;
+	while (*ptr)
+		mms_free(*ptr++);
+	mms_free(temp);
+	return (NULL);
+}

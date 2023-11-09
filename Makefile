@@ -30,6 +30,8 @@ SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/
 			parsing/parsing.c parsing/linked_list.c parsing/is.c parsing/tools.c parsing/dollars.c parsing/string.c parsing/git.c parsing/redirection.c parsing/token.c parsing/setup_line.c \
 			parsing/quote.c parsing/heredoc.c signals/signals.c
 VPATH	=	$(SRC_DIR)
+HISTORYLIB    =    readline/libhistory.a
+READLINELIB    =    readline/libreadline.a
 
 #--- OBJECT ---#
 OBJDIR  =   obj
@@ -45,7 +47,7 @@ submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -lreadline -lncurses -o minishell
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
@@ -56,6 +58,9 @@ libft:
 
 run:	all
 	@./$(NAMES)
+
+readline:
+	@cd includes/readline && ./configure && $(MAKE)
 	
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
@@ -66,6 +71,7 @@ fclean:	clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(NAME)$(GREEN) object files and executable successfully removed 🗑.$(RESET)"
+	@cd includes/readline && $(MAKE) distclean
 
 re:	fclean all
 

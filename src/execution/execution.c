@@ -27,15 +27,15 @@ void	clean_cmd_struct(t_command *cmd)
 
 	buf = cmd->next;
 	i = -1;
-	while (cmd->cmd[++i])
-		cmd->cmd[i] = mms_free(cmd->cmd[i]);
+	cmd->cmd = (char **)ft_sfree_2d((void **)cmd->cmd);
+	cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
 	cmd->exec_cmd = mms_free(cmd->exec_cmd);
 	cmd->next = NULL;
 	while (buf)
 	{
 		i = -1;
-		while (buf->cmd && buf->cmd[++i])
-			buf->cmd[i] = mms_free(buf->cmd[i]);
+		cmd->cmd = (char **)ft_sfree_2d((void **)cmd->cmd);
+		cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
 		if (buf->stdin_ > 0)
 			close(buf->stdin_);
 		if (buf->stdout_ > 1)
