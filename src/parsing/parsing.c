@@ -62,7 +62,10 @@ bool	cmd_maker(char *str, size_t len)
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
 			if (!head->tmp || !head->tmp[0] || !head->tmp[0][0])
-				return (printf("%s`|'\n", ERROR_BASE_MSG), false);
+			{
+				printf("%s`|'\n", ERROR_BASE_MSG);
+				return (false);
+			}
 			if (!check_valid_redirec(head))
 				return (false);
 			fd_maker(head);
@@ -99,6 +102,7 @@ void	parsing(char *line)
 		// printf("len : %zu\n", len);
 		// printf("\n");
 	}
-	// free_cmd(&get_infos()->cmd);
+	else
+		free_cmd(&get_infos()->cmd);
 	new = mms_free(new);
 }
