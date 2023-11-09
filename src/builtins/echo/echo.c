@@ -31,4 +31,5 @@ void	ft_echo(int argc, char **argv, char **env)
 		write(1, argv[i], ft_strlen(argv[i]));
 	if (echo_newline(argv[1]))
 		write(1, "\n", 1);
+	get_infos()->latest_error_code = 0;
 }

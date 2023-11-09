@@ -38,14 +38,13 @@ bool	check_valid_redirec(t_command *head)
 	{
 		if (head->tmp[i + 1] && head->tmp[i][0])
 			if (isredirec(head->tmp[i]) > 0 && isredirec(head->tmp[i + 1]) > 0)
-			{
-				printf("%s`%s'\n", ERROR_BASE_MSG, head->tmp[i + 1]);
-				return (false);
-			}
+				return (printf_error(258, "%s`%s'\n", ERROR_BASE_MSG, head->tmp[i + 1]), false);
 		i++;
 	}
 	if (i > 0 && head->tmp[i - 1] && isredirec(head->tmp[i - 1]) > 0)
-		return (printf("%s`newline'\n", ERROR_BASE_MSG), false);
+	{
+		return (printf_error(258, "%s`newline'\n", ERROR_BASE_MSG), false);
+	}
 	return (true);
 }
 
@@ -64,7 +63,7 @@ void	fd_maker(t_command *head)
 				close(fd);
 			if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->tmp[i + 1], O_CREAT | O_WRONLY, 0644);
+				fd = open(head->tmp[i + 1], O_RDWR | O_TRUNC | O_CREAT, S_IRWXU);
 				head->stdout_ = fd;
 			}
 			else if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '<')
@@ -74,8 +73,7 @@ void	fd_maker(t_command *head)
 			}
 			else if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->tmp[i + 1], O_CREAT | O_APPEND | O_WRONLY,
-						0644);
+				fd = open(head->tmp[i + 1], O_RDWR | O_APPEND | O_CREAT, S_IRWXU);
 				head->stdout_ = fd;
 			}
 			if (fd < 0)
