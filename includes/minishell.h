@@ -26,4 +26,8 @@ char	*get_username(char **env);
 /// @return The total written bytes.
 int		printf_error(int16_t error_code, char *fmt, ...);
 
+/// @brief Configure the signal system.
+/// @param type 
+void	ft_setup_signal(int type);
+
 #endif

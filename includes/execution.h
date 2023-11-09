@@ -38,4 +38,7 @@ void	untrack_cmd(t_command *cmd);
 /// @param cmd structure.
 bool	check_for_builtins(t_command *cmd);
 
+/// @brief Clean struct.
+void	clean_cmd_struct(t_command *cmd);
+
 #endif
