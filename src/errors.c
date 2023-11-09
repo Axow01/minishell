@@ -31,7 +31,7 @@ static int	format_char(char c, va_list *va)
 	return (total);
 }
 
-int	printf_error(const char *fmt, ...)
+int	printf_error(int8_t error_code, char *fmt, ...)
 {
 	int		total;
 	int		i;
@@ -42,6 +42,7 @@ int	printf_error(const char *fmt, ...)
 	if (!fmt || !*fmt)
 		return (0);
 	va_start(va, fmt);
+	get_infos()->latest_error_code = error_code;
 	while (fmt[i])
 	{
 		if (fmt[i] == '%')
