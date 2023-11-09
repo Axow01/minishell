@@ -47,7 +47,7 @@ submodules:
 	@git submodule update --init --recursive
 	
 ${NAME}:	$(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -lreadline -lncurses -o minishell
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
@@ -59,19 +59,19 @@ libft:
 run:	all
 	@./$(NAMES)
 
-readline_compile:
+readline:
 	@cd includes/readline && ./configure && $(MAKE)
 	
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)
 	@$(RM)r $(OBJDIR)
-	@cd includes/readline && $(MAKE) distclean
 	
 fclean:	clean	
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(NAME)$(GREEN) object files and executable successfully removed 🗑.$(RESET)"
+	@cd includes/readline && $(MAKE) distclean
 
 re:	fclean all
 
