@@ -82,12 +82,12 @@ char	*draw_prompt(size_t count)
 	new = NULL;
 	if (!infos->git_branch || infos->git_branch[0] == '\0')
 		new = ft_stringf(LBLUE "%s" GRN " [%s] " YLW "➜ " RESET,
-							&infos->pwd[pwd_trim(infos->pwd, P)],
+							&infos->pwd[pwd_trim(infos->pwd, FNUMBER)],
 							infos->username);
 	else
 	{
 		new = ft_stringf(LBLUE "%s" BLUE " git:" RED "(%s)" YLW "%s" GRN " [%s] " YLW "➜ " RESET,
-			&infos->pwd[pwd_trim(infos->pwd, P)], infos->git_branch, cursor, infos->username);
+			&infos->pwd[pwd_trim(infos->pwd, FNUMBER)], infos->git_branch, cursor, infos->username);
 	}
 	return (new);
 }
