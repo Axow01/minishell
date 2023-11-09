@@ -30,20 +30,20 @@ static void not_inquote_side(char *str, char *new_line, size_t *i, size_t *j)
 
 static void dollars_side(char *str, char *new_line, size_t *i, size_t *j)
 {
-    while (str[*i] == '$' && !isinquote(str, *i, SINGLE_QUOTE))
-    {
-        if (str[*i] == '$' && str[*i + 1] == '$' && !isinquote(str, *i,
-                SINGLE_QUOTE))
-        {
-            new_line[(*j)++] = '$';
-            i += 2;
-        }
-        else if (str[*i] == '$' && str[*i + 1] == '?' && !isinquote(str, *i,
-                    SINGLE_QUOTE))
-            dollars_qmark(new_line, i, j);
-        else if (str[*i] == '$' && !isinquote(str, *i, SINGLE_QUOTE))
-            dollars_token_copy(str, new_line, i, j);
-    }
+	while (str[*i] == '$' && !isinquote(str, *i, SINGLE_QUOTE))
+	{
+		if (str[*i] == '$' && str[*i + 1] == '$' && !isinquote(str, *i,
+				SINGLE_QUOTE))
+		{
+			new_line[(*j)++] = '$';
+			*i += 2;
+		}
+		else if (str[*i] == '$' && str[*i + 1] == '?' && !isinquote(str, *i,
+					SINGLE_QUOTE))
+			dollars_qmark(new_line, i, j);
+		else if (str[*i] == '$' && !isinquote(str, *i, SINGLE_QUOTE))
+			dollars_token_copy(str, new_line, i, j);
+	}
 }
 
 char	*setup_line(char *str, size_t *len)
