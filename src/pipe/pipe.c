@@ -47,13 +47,13 @@ static void	run_fork(t_command *buf, t_infos *infos)
 	char	**env;
 
 	close_unused_fd(buf);
-	if (!check_cmd_valid(buf))
-		mms_kill(NULL, true, 127);
 	if (buf->stdin_ < 0 || buf->stdout_ < 0)
 	{
 		close_all_pipes(&infos->cmd);
-		mms_kill(NULL, true, 69);
+		mms_kill(NULL, true, 1);
 	}
+	if (!check_cmd_valid(buf))
+		mms_kill(NULL, true, 127);
 	if (buf->stdout_ != STDOUT_FILENO)
 		dup2(buf->stdout_, STDOUT_FILENO);
 	if (buf->stdin_ != STDIN_FILENO)

@@ -13,7 +13,7 @@ char	*cmd_accessible(char **cmd, int modes)
 t_path	check_path_type(char **cmd)
 {
 	if (!cmd || !cmd[0] || !cmd[0][0])
-		return (0);
+		return (-1);
 	if (cmd[0][0] == '.' || cmd[0][0] == '/')
 		return (ABSOLUTE_PATH);
 	return (COMMAND);
