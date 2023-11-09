@@ -91,13 +91,14 @@ void heredoc(t_command *head)
 				infos->nb_heredoc++;
 				if (head->stdin_ > 2)
 					close(fd);
-				fd = open(fnum, O_CREAT | O_RDWR, 0644);
-				printf("fd:%d\n", fd);
-				head->stdin_ = fd;
-				fnum = mms_free(fnum);
+				fd = open(fnum, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 				if (fd < 0)
 					break;
 				heredoc_read(head->tmp[i + 1], fd);
+				close(fd);
+				fd = open(fnum, O_RDONLY);
+				head->stdin_ = fd;
+				fnum = mms_free(fnum);
 			}
 		}
 		i++;

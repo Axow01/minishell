@@ -64,7 +64,7 @@ void	fd_maker(t_command *head)
 				close(fd);
 			if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->tmp[i + 1], O_CREAT | O_WRONLY, 0644);
+				fd = open(head->tmp[i + 1], O_RDWR | O_TRUNC | O_CREAT, S_IRWXU);
 				head->stdout_ = fd;
 			}
 			else if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '<')
@@ -74,8 +74,7 @@ void	fd_maker(t_command *head)
 			}
 			else if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '>')
 			{
-				fd = open(head->tmp[i + 1], O_CREAT | O_APPEND | O_WRONLY,
-						0644);
+				fd = open(head->tmp[i + 1], O_RDWR | O_APPEND | O_CREAT, S_IRWXU);
 				head->stdout_ = fd;
 			}
 			if (fd < 0)

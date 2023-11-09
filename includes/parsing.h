@@ -8,7 +8,7 @@
 # define SINGLE_QUOTE 1
 # define DOUBLE_QUOTE 2
 
-# define P 3
+# define FNUMBER 3
 
 # define ERROR_BASE_MSG "minishell: syntax error near unexpected token "
 # define ERROR_QUOTE_MSG "minishell: syntax error quote not closed "

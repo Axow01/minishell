@@ -62,10 +62,14 @@ bool	cmd_maker(char *str, size_t len)
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
 			if (!head->tmp || !head->tmp[0] || !head->tmp[0][0])
-				return (printf("%s`|'\n", ERROR_BASE_MSG), false);
+			{
+				printf("%s`|'\n", ERROR_BASE_MSG);
+				return (false);
+			}
 			if (!check_valid_redirec(head))
 				return (false);
 			fd_maker(head);
+			heredoc(head);
 			remove_quote(head);
 			tmp_to_cmd(head);
 			head = head->next;
@@ -91,13 +95,14 @@ void	parsing(char *line)
 	else if (cmd_maker(new, len))
 	{
 		execution(get_infos());
-		// heredoc_clean();
+		heredoc_clean();
 		// printf("%s\n", line);
 		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
 		// printf("\n");
 	}
-	// free_cmd(&get_infos()->cmd);
+	else
+		free_cmd(&get_infos()->cmd);
 	new = mms_free(new);
 }
