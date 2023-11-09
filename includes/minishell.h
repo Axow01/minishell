@@ -26,4 +26,9 @@ char	*get_username(char **env);
 /// @return The total written bytes.
 int		printf_error(int16_t error_code, char *fmt, ...);
 
+/// @brief Freed a double pointer.
+/// @param ptr the pointer casting in good type.
+/// @return a NULL void pointer.
+void	**ft_sfree_2d(void **ptr);
+
 #endif

@@ -36,6 +36,16 @@ typedef struct s_infos
 	int				latest_error_code;
 }		t_infos;
 
+char *bob;
+int i;
+
+i = 0;
+while (1)
+{
+	bob = mms_alloc_garbage(1, ft_stringf("allo%d", i));
+}
+
+
 typedef enum e_path
 {
 	ABSOLUTE_PATH = 0,
