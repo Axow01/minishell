@@ -5,10 +5,10 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <ncurses.h>
 # include <fcntl.h>
+# include "readline/readline.h"
+# include "readline/history.h"
 # include "libftms/inc/libft.h"
 # include "execution.h"
 # include "defines.h"

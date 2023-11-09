@@ -30,6 +30,8 @@ SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/
 			parsing/parsing.c parsing/linked_list.c parsing/is.c parsing/tools.c parsing/dollars.c parsing/string.c parsing/git.c parsing/redirection.c parsing/token.c parsing/setup_line.c \
 			parsing/quote.c parsing/heredoc.c 
 VPATH	=	$(SRC_DIR)
+HISTORYLIB    =    readline/libhistory.a
+READLINELIB    =    readline/libreadline.a
 
 #--- OBJECT ---#
 OBJDIR  =   obj
@@ -56,11 +58,15 @@ libft:
 
 run:	all
 	@./$(NAMES)
+
+readline_compile:
+	@cd includes/readline && ./configure && $(MAKE)
 	
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)
 	@$(RM)r $(OBJDIR)
+	@cd includes/readline && $(MAKE) distclean
 	
 fclean:	clean	
 	@$(MAKE) -C $(LIBFT_DIR) fclean
