@@ -2,6 +2,7 @@
 #include "../includes/minishell.h"
 #include <stdio.h>
 #include <string.h>
+#include <termios.h>
 
 t_infos	*get_infos(void)
 {
@@ -31,26 +32,6 @@ void	add_cmd(char *cmd, int stdin_, int stdout_, t_infos *infos)
 	buf->next = command;
 }
 
-// bool	read_line_debug(void)
-// {
-// 	char	*line;
-
-// 	// char	**cmd;
-// 	if (get_infos()->pwd)
-// 		get_infos()->pwd = mms_free(get_infos()->pwd);
-// 	get_infos()->username = get_username(get_infos()->env);
-// 	get_infos()->pwd = get_pwd(get_infos()->env);
-// 	printf("\x1b[36;49;1;3m");
-// 	line = readline(get_infos()->pwd);
-// 	if (!line)
-// 		return (false);
-// 	mms_add_ptr(line);
-// 	add_history(line);
-// 	parsing(line);
-// 	line = mms_free(line);
-// 	return (true);
-// }
-
 bool	read_line(void)
 {
 	char	*str;
@@ -59,7 +40,6 @@ bool	read_line(void)
 	size_t	count;
 
 	count = 0;
-	rl_bind_key('\t', rl_complete);
 	infos = get_infos();
 	if (infos->pwd)
 		infos->pwd = mms_free(get_infos()->pwd);
@@ -82,9 +62,9 @@ bool	read_line(void)
 int	main(int argc, char **argv, char **env)
 {
 	t_infos	*infos;
-
 	(void)argc;
 	(void)argv;
+	rl_catch_signals = 0;
 	mms_set_alloc_fn(ft_calloc);
 	infos = get_infos();
 	infos->env = env;
