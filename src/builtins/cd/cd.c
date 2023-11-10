@@ -51,7 +51,10 @@ void	cd(int ac, char **args, char **env)
 	if (ac == 1 || !args[1])
 		pwd = home_dir;
 	else if (ac > 1 && args[1][0] == '-')
+	{
 		pwd = old_pwd;
+		printf("%s\n", pwd);
+	}
 	else if (check_path_type(&args[1]) == ABSOLUTE_PATH)
 		pwd = args[1];
 	else
