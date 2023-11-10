@@ -71,7 +71,7 @@ void heredoc_clean(void)
 	}
 }
 
-void heredoc(t_command *head)
+bool heredoc(t_command *head)
 {
 	size_t i;
 	int fd;
@@ -106,6 +106,8 @@ void heredoc(t_command *head)
 					mms_kill(NULL, true, 0);
 				}
 				waitpid(pid, &get_infos()->latest_error_code, 0);
+				if (get_infos()->latest_error_code == 1)
+					return (mms_free(fname), false);
 				fd = open(fname, O_RDONLY);
 				head->stdin_ = fd;
 				fname = mms_free(fname);
@@ -113,4 +115,5 @@ void heredoc(t_command *head)
 		}
 		i++;
 	}
+	return (true);
 }

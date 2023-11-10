@@ -69,7 +69,8 @@ bool	cmd_maker(char *str, size_t len)
 			if (!check_valid_redirec(head))
 				return (false);
 			fd_maker(head);
-			heredoc(head);
+			if (!heredoc(head))
+				return (false);
 			remove_quote(head);
 			tmp_to_cmd(head);
 			head = head->next;
