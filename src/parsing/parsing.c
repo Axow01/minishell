@@ -95,8 +95,9 @@ void	parsing(char *line)
 		printf("%s(\"or')\n", ERROR_QUOTE_MSG);
 	else if (cmd_maker(new, len))
 	{
+		get_infos()->child = true;
 		execution(get_infos());
-		heredoc_clean();
+		get_infos()->child = false;
 		// printf("%s\n", line);
 		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
@@ -104,6 +105,7 @@ void	parsing(char *line)
 		// printf("\n");
 	}
 	else
-		free_cmd(&get_infos()->cmd);
+		clean_cmd_struct(&get_infos()->cmd);
+	heredoc_clean();
 	new = mms_free(new);
 }

@@ -4,6 +4,8 @@
 void	sig_parent_handle(int signal)
 {
 	(void)signal;
+	if (get_infos()->child)
+		return ;
 	write(0, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -14,10 +16,16 @@ void	sig_parent_handle(int signal)
 void	sig_child_handle(int signal)
 {
 	(void)signal;
-	mms_kill("\n", true, 0);
+	mms_kill(NULL, true, 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	sig_heredoc_handle(int signal)
+{
+	(void)signal;
+	mms_kill("\n", true, 28);
 }
 
 void	ft_setup_signal(int type)
@@ -34,7 +42,7 @@ void	ft_setup_signal(int type)
 	}
 	else if (HEREDOC)
 	{
-		signal(SIGINT, &sig_child_handle);
+		signal(SIGINT, &sig_heredoc_handle);
 		signal(SIGQUIT, SIG_IGN);
 	}
 }

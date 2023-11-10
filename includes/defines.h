@@ -35,6 +35,7 @@ typedef struct s_infos
 	t_command		cmd;
 	int8_t			nb_cmd;
 	int				nb_heredoc;
+	bool			child;
 	char			**env;
 	char			*pwd;
 	char			**path;

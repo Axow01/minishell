@@ -61,10 +61,10 @@ run:	all
 
 readline:
 	@cd includes/readline && ./configure && $(MAKE)
-
-remove_readline:
-	@cd includes/readline && $(MAKE) distclean
 	
+readline_remove: fclean
+	@cd includes/readline && $(MAKE) distclean
+
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)

@@ -92,6 +92,7 @@ bool heredoc(t_command *head)
 				infos->nb_heredoc++;
 				if (fd > STDIN_FILENO)
 					close(fd);
+				get_infos()->child = true;
 				pid = fork();
 				if (pid == -1)
 					break ;
@@ -100,15 +101,18 @@ bool heredoc(t_command *head)
 					ft_setup_signal(HEREDOC);
 					fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 					if (fd < 0)
-						mms_kill(NULL, true, 0);
+						mms_kill(NULL, true, 1);
 					heredoc_read(head->tmp[i + 1], fd);
 					close(fd);
 					mms_kill(NULL, true, 0);
 				}
 				waitpid(pid, &get_infos()->latest_error_code, 0);
-				printf("%d\n", get_infos()->latest_error_code);
-				if (get_infos()->latest_error_code == 1)
-					return (mms_free(fname), false);
+				if (WEXITSTATUS(get_infos()->latest_error_code) == 28)
+				{
+					mms_free(fname);
+					return (false);
+				}
+				get_infos()->child = false;
 				fd = open(fname, O_RDONLY);
 				head->stdin_ = fd;
 				fname = mms_free(fname);

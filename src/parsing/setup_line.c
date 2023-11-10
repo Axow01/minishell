@@ -58,7 +58,7 @@ char	*setup_line(char *str, size_t *len)
 	new_line = mms_alloc(*len + 1, sizeof(char));
 	i = 0;
 	j = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		dollars_side(str, new_line, &i, &j);
 		not_inquote_side(str, new_line, &i, &j);
