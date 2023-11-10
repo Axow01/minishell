@@ -62,7 +62,7 @@ run:	readline all
 
 readline:
 	@cd includes/readline && ./configure && $(MAKE)
-	
+	@$(MAKE)
 readline_remove: fclean
 	@cd includes/readline && $(MAKE) distclean
 
