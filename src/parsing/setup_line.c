@@ -62,7 +62,8 @@ char	*setup_line(char *str, size_t *len)
 	{
 		dollars_side(str, new_line, &i, &j);
 		not_inquote_side(str, new_line, &i, &j);
-		new_line[j++] = str[i++];
+		if (str[i])
+			new_line[j++] = str[i++];
 	}
 	return (new_line);
 }

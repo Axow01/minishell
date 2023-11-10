@@ -56,7 +56,7 @@ $(OBJDIR):
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)
 
-run:	all
+run:	readline all
 	@./$(NAMES)
 
 readline:
