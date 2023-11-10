@@ -66,7 +66,7 @@ static void	simple_exec_run_fork(t_command *cmd)
 	dup2(cmd->stdout_, STDOUT_FILENO);
 	untrack_cmd(cmd);
 	mms_kill(NULL, false, 0);
-	clear_history();
+	rl_clear_history();
 	execve(cmd->exec_cmd, cmd->cmd_argv, env);
 	exit(1);
 }

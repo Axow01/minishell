@@ -32,7 +32,7 @@ datarootdir = ${prefix}/share
 srcdir = .
 VPATH = ..
 topdir = ..
-BUILD_DIR = /Users/oboucher/Project/minishell/includes/readline
+BUILD_DIR = /Users/olivierboucher/Project/c/minishell/includes/readline
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -49,7 +49,7 @@ LN = ln
 
 SHELL = /bin/sh
 
-host_os = darwin19.6.0
+host_os = darwin22.6.0
 host_vendor = apple
 
 prefix = /usr/local

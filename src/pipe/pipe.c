@@ -66,6 +66,7 @@ static void	run_fork(t_command *buf, t_infos *infos)
 		mms_kill(NULL, true, 1);
 	}
 	untrack_cmd(buf);
+	rl_clear_history();
 	mms_kill(NULL, false, 0);
 	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
 }
