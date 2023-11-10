@@ -55,7 +55,7 @@ size_t	dollars_count(char *str)
 				SINGLE_QUOTE))
 			i++;
 		else if (str[i] == '$' && str[i + 1] == '?' && !isinquote(str, i,
-				SINGLE_QUOTE))
+					SINGLE_QUOTE))
 		{
 			count += ft_strlen(errc);
 			i++;
