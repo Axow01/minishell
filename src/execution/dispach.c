@@ -58,6 +58,7 @@ static void	simple_exec_run_fork(t_command *cmd)
 {
 	char	**env;
 
+	ft_setup_signal(CHILD);
 	env = get_infos()->env;
 	if (cmd->stdin_ < 0 || cmd->stdout_ < 0)
 		mms_kill(NULL, true, 1);

@@ -97,7 +97,7 @@ void heredoc(t_command *head)
 					break ;
 				else if (pid == 0)
 				{
-					// ft_setup_signal(HEREDOC);
+					ft_setup_signal(HEREDOC);
 					fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 					if (fd < 0)
 						mms_kill(NULL, true, 0);
@@ -106,6 +106,8 @@ void heredoc(t_command *head)
 					mms_kill(NULL, true, 0);
 				}
 				waitpid(pid, &get_infos()->latest_error_code, 0);
+				if (get_infos()->latest_error_code == 1)
+					return (mms_free(fname), false);
 				fd = open(fname, O_RDONLY);
 				head->stdin_ = fd;
 				fname = mms_free(fname);
