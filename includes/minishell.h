@@ -31,4 +31,8 @@ int		printf_error(int16_t error_code, char *fmt, ...);
 /// @return a NULL void pointer.
 void	**ft_sfree_2d(void **ptr);
 
+/// @brief Configure the signal system.
+/// @param type 
+void	ft_setup_signal(int type);
+
 #endif

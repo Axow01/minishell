@@ -7,6 +7,13 @@
 
 typedef void	(*Builtin_ptr)(int, char **, char **);
 
+typedef enum e_type
+{
+	CHILD,
+	PARENT,
+	HEREDOC 
+}	t_type;
+
 typedef struct s_command
 {
 	char				**cmd;
