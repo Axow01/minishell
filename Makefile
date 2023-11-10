@@ -61,6 +61,9 @@ run:	all
 
 readline:
 	@cd includes/readline && ./configure && $(MAKE)
+
+remove_readline:
+	@cd includes/readline && $(MAKE) distclean
 	
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
@@ -71,7 +74,6 @@ fclean:	clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 	@echo "$(NAME)$(GREEN) object files and executable successfully removed 🗑.$(RESET)"
-	@cd includes/readline && $(MAKE) distclean
 
 re:	fclean all
 
