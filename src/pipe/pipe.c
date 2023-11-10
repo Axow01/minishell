@@ -46,6 +46,7 @@ static void	run_fork(t_command *buf, t_infos *infos)
 {
 	char	**env;
 
+	ft_setup_signal(CHILD);
 	close_unused_fd(buf);
 	if (buf->stdin_ < 0 || buf->stdout_ < 0)
 	{

@@ -3,16 +3,21 @@
 
 void	sig_parent_handle(int signal)
 {
-	// char	nl_;
-
-	// nl_ = -1;
 	(void)signal;
-	// write(1, "\n", 1);
 	write(0, "\n", 1);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 	clean_cmd_struct(&get_infos()->cmd);
-	// rl_newline('0', 0);
+}
+
+void	sig_child_handle(int signal)
+{
+	(void)signal;
+	mms_kill("\n", true, 0);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	ft_setup_signal(int type)
@@ -24,12 +29,12 @@ void	ft_setup_signal(int type)
 	}
 	else if (CHILD)
 	{
-		signal(SIGINT, );
-		signal(SIGQUIT, );
+		signal(SIGINT, &sig_child_handle);
+		signal(SIGQUIT, &sig_child_handle);
 	}
 	else if (HEREDOC)
 	{
-		signal(SIGINT, );
+		signal(SIGINT, &sig_child_handle);
 		signal(SIGQUIT, SIG_IGN);
 	}
 }

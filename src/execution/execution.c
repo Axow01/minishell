@@ -23,17 +23,14 @@ void	clean_cmd_struct(t_command *cmd)
 {
 	t_command	*buf;
 	t_command	*prev;
-	int			i;
 
 	buf = cmd->next;
-	i = -1;
 	cmd->cmd = (char **)ft_sfree_2d((void **)cmd->cmd);
 	cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
 	cmd->exec_cmd = mms_free(cmd->exec_cmd);
 	cmd->next = NULL;
 	while (buf)
 	{
-		i = -1;
 		cmd->cmd = (char **)ft_sfree_2d((void **)cmd->cmd);
 		cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
 		if (buf->stdin_ > 0)
