@@ -36,6 +36,8 @@ void	ft_echo(int argc, char **argv, char **env)
 
 	i = 0;
 	(void)env;
+	if (!argv)
+		return ;
 	if (argv[1] && !echo_newline(argv[1]))
 		i = echo_newline_count(argv);
 	while (argv[++i])
