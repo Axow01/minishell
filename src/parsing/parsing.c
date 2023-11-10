@@ -98,10 +98,10 @@ void	parsing(char *line)
 		// printf("%s\n", line);
 		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
+		// printf("len : %zu\n", len);
 		get_infos()->child = true;
 		execution(get_infos());
 		get_infos()->child = false;
-		// printf("len : %zu\n", len);
 		// printf("\n");
 	}
 	else

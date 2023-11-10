@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 static bool	echo_newline(char *str)
@@ -6,16 +5,29 @@ static bool	echo_newline(char *str)
 	int	i;
 
 	i = 0;
-	if (!str)
-		return (true);
-	while (str[i])
+	if (str && str[i] == '-' && str[i + 1] == 'n')
 	{
-		if (str[i] == '-' && str[i + 1] == 'n'
-			&& (str[i + 2] == ' ' || str[i + 2] == 0))
-			return (false);
 		i++;
+		while (str[i] == 'n')
+			i++;
+		if (str[i] == '\0')
+			return (false);
 	}
 	return (true);
+}
+
+int	echo_newline_count(char **argv)
+{
+	int	i;
+
+	i = 1;
+	while (argv[i])
+	{
+		if (echo_newline(argv[i]))
+			break ;
+		i++;
+	}
+	return (i - 1);
 }
 
 void	ft_echo(int argc, char **argv, char **env)
@@ -24,12 +36,19 @@ void	ft_echo(int argc, char **argv, char **env)
 
 	i = 0;
 	(void)env;
-	(void)argc;
-	if (!echo_newline(argv[1]) && argv[1])
-		i++;
+	if (argv[1] && !echo_newline(argv[1]))
+		i = echo_newline_count(argv);
 	while (argv[++i])
-		write(1, argv[i], ft_strlen(argv[i]));
+	{
+		if (i != argc - 1)
+		{
+			ft_putstr_fd(argv[i], 1);
+			ft_putchar_fd(' ', 1);
+		}
+		else
+			ft_putstr_fd(argv[i], 1);
+	}
 	if (echo_newline(argv[1]))
-		write(1, "\n", 1);
+		ft_putchar_fd('\n', 1);
 	get_infos()->latest_error_code = 0;
 }
