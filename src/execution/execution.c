@@ -89,6 +89,7 @@ bool	execution(t_infos *infos)
 	cmd_buffer = &infos->cmd;
 	while (cmd_buffer)
 	{
+		infos->path = path_split(env_to_path(infos->env));
 		cmd_buffer->is_builtin = false;
 		if (check_path_type(cmd_buffer->cmd) == COMMAND)
 		{
