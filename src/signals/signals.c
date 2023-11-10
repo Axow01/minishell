@@ -22,14 +22,14 @@ void	ft_setup_signal(int type)
 		signal(SIGINT, &sig_parent_handle);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	// else if (CHILD)
-	// {
-	// 	signal(SIGINT, );
-	// 	signal(SIGQUIT, );
-	// }
-	// else if (HEREDOC)
-	// {
-	// 	signal(SIGINT, );
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
+	else if (CHILD)
+	{
+		signal(SIGINT, );
+		signal(SIGQUIT, );
+	}
+	else if (HEREDOC)
+	{
+		signal(SIGINT, );
+		signal(SIGQUIT, SIG_IGN);
+	}
 }
