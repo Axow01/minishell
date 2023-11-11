@@ -62,6 +62,7 @@ bool	read_line(void)
 int	main(int argc, char **argv, char **env)
 {
 	t_infos	*infos;
+
 	(void)argc;
 	(void)argv;
 	rl_catch_signals = 0;

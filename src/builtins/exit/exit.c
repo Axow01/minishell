@@ -18,7 +18,7 @@ void	ft_exit_minishell(int argc, char **argv, char **env)
 
 	(void)env;
 	if (argc == 1)
-		exit(get_infos()->latest_error_code);
+		mms_kill(NULL, true, get_infos()->latest_error_code);
 	if (!is_num(argv[1]))
 	{
 		printf_error(1, "minishell: ft_exit: The argument n:%s seems wrong\n",
@@ -26,5 +26,5 @@ void	ft_exit_minishell(int argc, char **argv, char **env)
 		return ;
 	}
 	n = ft_atoi(argv[1]);
-	exit((unsigned char)n);
+	mms_kill(NULL, true, (unsigned char)n);
 }
