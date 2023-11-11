@@ -13,13 +13,14 @@ static void	no_equal(t_key_val *vk, char *raw_input)
 
 t_key_val	*export_get_key_val(char *raw_input)
 {
+	int			k;
+	int			i;
 	t_key_val	*infos;
 
-	i = 0;
 	if (!raw_input)
 		return (NULL);
 	infos = mms_alloc(1, sizeof(t_key_val));
-	initiate_keys(raw_input, infos);
+	i = initiate_keys(raw_input, infos);
 	if (!infos->key)
 		no_equal(infos, raw_input);
 	infos->value = mms_alloc(ft_strlen(&raw_input[i + 1]) + 1, sizeof(char));

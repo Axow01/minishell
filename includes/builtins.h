@@ -44,7 +44,7 @@ void	print_double_char(char **dc);
 /// @param env ENV.
 void	ft_export(int ac, char **argv, char **env);
 
-void	initiate_keys(char *raw_input, t_key_val *infos);
+int	initiate_keys(char *raw_input, t_key_val *infos);
 
 /// @brief Separate the key and the value splited on the '=' char.
 /// @param raw_input A string formatted like this "$KEY=VALUE"
