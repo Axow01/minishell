@@ -1,24 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-/// @brief This count the number of commands in the t_command's structure.
-/// @param cmd command struct.
-/// @return the number of command in it.
-int16_t	count_cmd(t_command *cmd)
-{
-	int			i;
-	t_command	*buf;
-
-	buf = cmd;
-	i = 0;
-	while (buf)
-	{
-		i++;
-		buf = buf->next;
-	}
-	return (i);
-}
-
 bool	check_for_builtins(t_command *cmd)
 {
 	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
@@ -78,7 +60,8 @@ bool	simple_exec(t_command *cmd)
 	if (cmd->is_builtin)
 	{
 		if ((Builtin_ptr)cmd->exec_cmd)
-			((Builtin_ptr)cmd->exec_cmd)(cmd->arg_count, cmd->cmd_argv, get_infos()->env);
+			((Builtin_ptr)cmd->exec_cmd)(cmd->arg_count, cmd->cmd_argv,
+					get_infos()->env);
 		return (true);
 	}
 	get_infos()->path = path_split(env_to_path(get_infos()->env));
@@ -108,7 +91,7 @@ void	execution_dispach(t_infos *infos)
 		simple_exec(&infos->cmd);
 	if (WIFEXITED(infos->latest_error_code))
 		infos->latest_error_code = WEXITSTATUS(infos->latest_error_code);
-	else if (WIFSIGNALED(infos->latest_error_code) && infos->latest_error_code != 1)
+	else if (WIFSIGNALED(infos->latest_error_code)
+		&& infos->latest_error_code != 1)
 		infos->latest_error_code = (128 + WTERMSIG(infos->latest_error_code));
 }
-

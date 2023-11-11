@@ -13,26 +13,13 @@ static void	no_equal(t_key_val *vk, char *raw_input)
 
 t_key_val	*export_get_key_val(char *raw_input)
 {
-	int			i;
-	int			k;
 	t_key_val	*infos;
 
 	i = 0;
 	if (!raw_input)
 		return (NULL);
 	infos = mms_alloc(1, sizeof(t_key_val));
-	while (raw_input[i])
-	{
-		if (raw_input[i] == '=')
-		{
-			k = -1;
-			infos->key = mms_alloc(i + 1, sizeof(char));
-			while (raw_input[++k] != '=')
-				infos->key[k] = raw_input[k];
-			break ;
-		}
-		i++;
-	}
+	initiate_keys(raw_input, infos);
 	if (!infos->key)
 		no_equal(infos, raw_input);
 	infos->value = mms_alloc(ft_strlen(&raw_input[i + 1]) + 1, sizeof(char));
@@ -68,7 +55,8 @@ char	**create_new_variable(t_key_val *vk, char **env)
 	k = 0;
 	d = 0;
 	env = copy_double_char(env, i + 1);
-	env[i] = mms_alloc(ft_strlen(vk->key) + ft_strlen(vk->value) + 2, sizeof(char));
+	env[i] = mms_alloc(ft_strlen(vk->key)
+			+ ft_strlen(vk->value) + 2, sizeof(char));
 	while (vk->key[k])
 		env[i][d++] = vk->key[k++];
 	k = 0;
@@ -84,7 +72,8 @@ void	edit_variable(t_key_val *vk, char **env, int i)
 	int	b;
 
 	env[i] = mms_free(env[i]);
-	env[i] = mms_alloc(ft_strlen(vk->key) + ft_strlen(vk->value) + 2, sizeof(char));
+	env[i] = mms_alloc(ft_strlen(vk->key)
+			+ ft_strlen(vk->value) + 2, sizeof(char));
 	k = 0;
 	b = 0;
 	while (vk->key[k])

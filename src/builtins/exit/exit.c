@@ -22,7 +22,7 @@ void	ft_exit_minishell(int argc, char **argv, char **env)
 	if (!is_num(argv[1]))
 	{
 		printf_error(1, "minishell: ft_exit: The argument n:%s seems wrong\n",
-				 argv[1]);
+			argv[1]);
 		return ;
 	}
 	n = ft_atoi(argv[1]);

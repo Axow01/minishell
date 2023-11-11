@@ -10,15 +10,6 @@ char	*cmd_accessible(char **cmd, int modes)
 	return (cmd[0]);
 }
 
-t_path	check_path_type(char **cmd)
-{
-	if (!cmd || !cmd[0] || !cmd[0][0])
-		return (-1);
-	if (cmd[0][0] == '.' || cmd[0][0] == '/')
-		return (ABSOLUTE_PATH);
-	return (COMMAND);
-}
-
 void	clean_cmd_struct(t_command *cmd)
 {
 	t_command	*buf;
@@ -63,7 +54,7 @@ bool	indexing_previous_cmd(t_command *cmd)
 	return (true);
 }
 
-static Builtin_ptr	get_builtin_ptr(t_command *cmd)
+Builtin_ptr	get_builtin_ptr(t_command *cmd)
 {
 	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
 		return (&ft_export);
@@ -92,15 +83,7 @@ bool	execution(t_infos *infos)
 		infos->path = path_split(env_to_path(infos->env));
 		cmd_buffer->is_builtin = false;
 		if (check_path_type(cmd_buffer->cmd) == COMMAND)
-		{
-			if (check_for_builtins(cmd_buffer))
-			{
-				cmd_buffer->is_builtin = true;
-				cmd_buffer->exec_cmd = (char *)get_builtin_ptr(cmd_buffer);
-			}
-			else
-				cmd_buffer->exec_cmd = get_cmd_path(cmd_buffer->cmd, infos->path);
-		}
+			config_builtins_cmd(cmd_buffer, infos);
 		else
 			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, R_OK | X_OK);
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;

@@ -57,3 +57,21 @@ int	printf_error(int16_t error_code, char *fmt, ...)
 	va_end(va);
 	return (total);
 }
+
+/// @brief This count the number of commands in the t_command's structure.
+/// @param cmd command struct.
+/// @return the number of command in it.
+int16_t	count_cmd(t_command *cmd)
+{
+	int			i;
+	t_command	*buf;
+
+	buf = cmd;
+	i = 0;
+	while (buf)
+	{
+		i++;
+		buf = buf->next;
+	}
+	return (i);
+}

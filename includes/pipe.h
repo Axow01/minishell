@@ -23,4 +23,8 @@ bool	init_pipefd(t_command *cmd);
 /// @param infos structure.
 void	wait_for_programs(t_infos *infos);
 
+/// @brief Change the cmd stdin/out if needed.
+/// @param cmd 
+void	change_in_out(t_command *cmd);
+
 #endif

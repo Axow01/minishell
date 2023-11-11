@@ -1,20 +1,6 @@
 
 #include "../../includes/minishell.h"
 
-static void	change_in_out(t_command *cmd)
-{
-	if (!cmd)
-		return ;
-	if (cmd->c_pipe[0] > 0 && cmd->c_pipe[1] > 0 && cmd->stdout_ == STDOUT_FILENO)
-		cmd->stdout_ = cmd->c_pipe[1];
-	else if (cmd->c_pipe[0] > 0 && cmd->c_pipe[1] > 0)
-		close(cmd->c_pipe[1]);
-	if (cmd->previous && cmd->previous->c_pipe[0] > 0 && cmd->previous->c_pipe[1] > 0 && cmd->stdin_ == STDIN_FILENO)
-		cmd->stdin_ = cmd->previous->c_pipe[0];
-	else if (cmd->previous && cmd->previous->c_pipe[0] > 0 && cmd->previous->c_pipe[1] > 0)
-		close(cmd->previous->c_pipe[0]);
-}
-
 static void	close_unused_fd(t_command *cmd)
 {
 	if (!cmd)
@@ -71,7 +57,6 @@ static void	run_fork(t_command *buf, t_infos *infos)
 	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
 }
 
-
 static bool	run_all(t_infos *infos)
 {
 	t_command	*buf;
@@ -82,9 +67,6 @@ static bool	run_all(t_infos *infos)
 		if ((buf->c_pipe[0] == 0 || buf->c_pipe[1] == 0) && buf->next)
 			init_pipefd(buf);
 		change_in_out(buf);
-		get_infos()->path = path_split(env_to_path(get_infos()->env));
-		if (check_path_type(buf->cmd) == COMMAND && !buf->is_builtin)
-			buf->exec_cmd = get_cmd_path(buf->cmd, get_infos()->path);
 		buf->pid = fork();
 		if (buf->pid == -1)
 			write(STDERR_FILENO, "Failled to create forks\n", 25);
