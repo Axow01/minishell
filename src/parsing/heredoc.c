@@ -51,6 +51,7 @@ bool	heredoc_read(char *delimiter, int fd)
 		if (!new)
 			return (false);
 		ft_putendl_fd(new, fd);
+		line = mms_free(line);
 		mms_free(new);
 	}
 	return (true);

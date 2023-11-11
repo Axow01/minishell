@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 static void not_inquote_side(char *str, char *new_line, size_t *i, size_t *j)
 {
     if (str[*i] && !isinquote(str, *i, QUOTES))

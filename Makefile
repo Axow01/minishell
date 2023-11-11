@@ -50,6 +50,7 @@ submodules:
 ${NAME}:	$(OBJDIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
 	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
+	cat logo.txt
 
 $(OBJDIR):
 	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR) $(OBJDIR)/$(BUILTINS_DIR)/export $(OBJDIR)/parsing $(OBJDIR)/$(BUILTINS_DIR)/exit $(OBJDIR)/$(BUILTINS_DIR)/pwd $(OBJDIR)/$(BUILTINS_DIR)/echo $(OBJDIR)/$(BUILTINS_DIR)/env $(OBJDIR)/$(BUILTINS_DIR)/unset $(OBJDIR)/signals
@@ -57,7 +58,7 @@ $(OBJDIR):
 libft:
 	@$(MAKE) -C $(LIBFT_DIR)
 
-run:	readline all
+run:	all
 	@./$(NAMES)
 
 readline:
