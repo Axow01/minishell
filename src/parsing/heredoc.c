@@ -8,7 +8,8 @@ char	*heredoc_parsing(char *line, bool do_dollar)
 
 	new = NULL;
 	if (do_dollar)
-		new = mms_alloc(ft_strlen(line) + dollars_count(line) + 1, sizeof(char));
+		new = mms_alloc(ft_strlen(line) + dollars_count(line) + 1,
+			sizeof(char));
 	else
 		new = mms_alloc(ft_strlen(line) + 1, sizeof(char));
 	i = 0;

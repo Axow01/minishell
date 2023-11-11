@@ -44,8 +44,8 @@ void	get_token(char *line, size_t start, size_t end, t_command *head)
 
 size_t	count_token(char *line, size_t start, size_t end)
 {
-	size_t i;
-	size_t count;
+	size_t	i;
+	size_t	count;
 
 	i = start;
 	count = 1;
