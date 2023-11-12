@@ -14,7 +14,8 @@ MK = mkdir -p
 #--- COLORS ---#
 GREEN	=	\033[1;32m
 RED		=	\033[1;31m
-RESET 	= 	\033[0m
+RESET 	=	\033[0m
+YLW		=	\x1b[33m
 
 #--- INCLUDE ---#
 INCDIR = includes
@@ -29,34 +30,49 @@ BUILTINS_DIR = builtins
 SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c pipe/pipe_errors.c builtins/export/export.c builtins/export/utils.c \
 			builtins/exit/exit.c builtins/pwd/pwd.c builtins/export/clean.c builtins/echo/echo.c builtins/env/env.c builtins/unset/unset.c\
 			parsing/parsing.c parsing/linked_list.c parsing/is.c parsing/tools.c parsing/dollars.c parsing/string.c parsing/git.c parsing/redirection.c parsing/token.c parsing/setup_line.c \
-			parsing/quote.c parsing/heredoc.c parsing/dollars_count.c signals/signals.c
+			parsing/quote.c parsing/heredoc.c parsing/heredoc_tools.c parsing/dollars_count.c signals/signals.c
 VPATH	=	$(SRC_DIR)
-HISTORYLIB    =    readline/libhistory.a
-READLINELIB    =    readline/libreadline.a
 
 #--- OBJECT ---#
 OBJDIR  =   obj
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
+#--- READLINE ---#
+HISTORYLIB    =    readline/libhistory.a
+READLINELIB    =    readline/libreadline.a
+ANBOISVE = $(shell test -e includes/readline/libreadline.a ; echo "$$?")
+
 #--- RULES ---#
 $(OBJDIR)/%.o:	%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I. -c $< -o $@
-	
-all:	submodules libft $(NAME)
+
+
+all:	submodules rl libft logo $(NAME)
 
 submodules:
 	@git submodule update --init --recursive
 	
+rl:
+	@if test $(ANBOISVE) = 1 ; then \
+		cd includes/readline && ./configure && make ; \
+	else \
+		echo "$(GREEN)readline all ready make.$(RESET)" ; sleep 1; \
+	fi
+
 ${NAME}:	$(OBJDIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
-	@echo "$(NAME)$(GREEN) sucessefully compiled 📁.$(RESET)"
-	cat logo.txt
+	@$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -Lincludes/libmms/ -lmms -L$(INCDIR)/readline/ -lreadline -lhistory -lncurses -o minishell
+	@echo "$(GREEN)$(NAME) sucessefully compiled 📁.$(RESET)"
 
 $(OBJDIR):
 	@$(MK) $(OBJDIR) $(OBJDIR)/$(EXECUTION_DIR) $(OBJDIR)/$(PATH_DIR) $(OBJDIR)/$(BUILTINS_DIR) $(OBJDIR)/$(BUILTINS_DIR)/cd $(OBJDIR)/$(PIPE_DIR) $(OBJDIR)/$(BUILTINS_DIR)/export $(OBJDIR)/parsing $(OBJDIR)/$(BUILTINS_DIR)/exit $(OBJDIR)/$(BUILTINS_DIR)/pwd $(OBJDIR)/$(BUILTINS_DIR)/echo $(OBJDIR)/$(BUILTINS_DIR)/env $(OBJDIR)/$(BUILTINS_DIR)/unset $(OBJDIR)/signals
 
+logo:
+	@echo "$(YLW)"
+	@cat logo.txt
+	@echo "$(RESET)"
+
 libft:
-	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -s -C $(LIBFT_DIR)
 
 run:	all
 	@./$(NAMES)

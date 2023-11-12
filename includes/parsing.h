@@ -28,7 +28,9 @@ void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 char	*setup_line(char *str, size_t *len);
 bool	heredoc(t_command *head);
+bool	heredoc_read(char *delimiter, int fd);
 void	heredoc_clean(void);
+void	tmp_to_cmd(t_command *head);
 
 //----------------------//
 //        token         //
@@ -51,7 +53,7 @@ void	get_token(char *line, size_t start, size_t end, t_command *head);
 /// @param start The start of that cmd line.
 /// @param end The end of that cmd line.
 /// @return Size_t: the number of token.
-size_t	count_token(char *line, size_t start, size_t end);
+size_t	ctoken(char *line, size_t start, size_t end);
 
 //----------------------//
 //      redirection     //

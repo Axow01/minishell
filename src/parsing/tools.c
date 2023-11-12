@@ -79,3 +79,22 @@ void	**ft_sfree_2d(void **ptr)
 	mms_free(temp);
 	return (NULL);
 }
+
+void	tmp_to_cmd(t_command *head)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	head->cmd = mms_alloc(count_nonerdt_token(head->tmp) + 1,
+							sizeof(char *));
+	while (head->tmp && head->tmp[i])
+	{
+		if (isredirec(head->tmp[i]))
+			i++;
+		else
+			head->cmd[j++] = head->tmp[i];
+		i++;
+	}
+}
