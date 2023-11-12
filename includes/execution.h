@@ -51,4 +51,9 @@ t_builtin_ptr	get_builtin_ptr(t_command *cmd);
 /// @param infos
 void			config_builtins_cmd(t_command *cmd_buffer, t_infos *infos);
 
+/// @brief This redirect the in/out of the cmd, to the std.
+/// @param in fd
+/// @param out fd
+void			builtin_redirections_fd(int in, int out);
+
 #endif

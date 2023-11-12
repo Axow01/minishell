@@ -59,9 +59,11 @@ bool	simple_exec(t_command *cmd)
 
 	if (cmd->is_builtin)
 	{
+		builtin_redirections_fd(cmd->stdin_, cmd->stdout_);
 		if ((t_builtin_ptr)cmd->exec_cmd)
 			((t_builtin_ptr)cmd->exec_cmd)(cmd->arg_count, cmd->cmd_argv,
 					get_infos()->env);
+		builtin_redirections_fd(cmd->stdin_, cmd->stdout_);
 		return (true);
 	}
 	get_infos()->path = path_split(env_to_path(get_infos()->env));

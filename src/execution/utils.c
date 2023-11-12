@@ -21,3 +21,25 @@ void	config_builtins_cmd(t_command *cmd_buffer, t_infos *infos)
 		cmd_buffer->exec_cmd = get_cmd_path(cmd_buffer->cmd,
 				infos->path);
 }
+
+void	builtin_redirections_fd(int in, int out)
+{
+	static int	std[2] = {0, 0};
+
+	if (in == STDIN_FILENO && out == STDOUT_FILENO)
+		return ;
+	if (std[0] > 0 || std[1] > 0)
+	{
+		dup2(std[0], STDIN_FILENO);
+		dup2(std[1], STDOUT_FILENO);
+		std[0] = 0;
+		std[1] = 0;
+		return ;
+	}
+	std[0] = dup(STDIN_FILENO);
+	std[1] = dup(STDOUT_FILENO);
+	if (in > STDIN_FILENO)
+		dup2(in, STDIN_FILENO);
+	if (out > STDOUT_FILENO)
+		dup2(out, STDOUT_FILENO);
+}
