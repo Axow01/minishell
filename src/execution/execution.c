@@ -54,7 +54,7 @@ bool	indexing_previous_cmd(t_command *cmd)
 	return (true);
 }
 
-Builtin_ptr	get_builtin_ptr(t_command *cmd)
+t_builtin_ptr	get_builtin_ptr(t_command *cmd)
 {
 	if (ft_strncmp(cmd->cmd[0], "export", 7) == 0)
 		return (&ft_export);

@@ -3,8 +3,8 @@
 # define PIPE_H
 
 # include <defines.h>
-# include <unistd.h>
 # include <stdio.h>
+# include <unistd.h>
 
 /// @brief This complete the pipe operation for the command given.
 bool	execution_pipe(t_infos *infos);
@@ -24,7 +24,7 @@ bool	init_pipefd(t_command *cmd);
 void	wait_for_programs(t_infos *infos);
 
 /// @brief Change the cmd stdin/out if needed.
-/// @param cmd 
+/// @param cmd
 void	change_in_out(t_command *cmd);
 
 #endif

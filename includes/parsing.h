@@ -20,17 +20,27 @@
 # define GIT1 "\x1b[36;49;1;3m%s\x1b[34m git:\x1b[31m(%s)"
 # define GIT2 "\x1b[33m%s \x1b[32;1m[%s]\x1b[33m ➜ \x1b[0m"
 
+//----------------------//
+//       parsing        //
+//----------------------//
+
+/// @brief Main parsing function.
+/// @param str The original input line.
 void	parsing(char *str);
-int		count_cmd_total(char *line, char delim);
+
+//----------------------//
+//        list          //
+//----------------------//
+
+/// @brief Init all cmd node.
+/// @param str The original string. 
 void	init_cmd_struct(char *str);
-void	strnput(char *str, size_t len);
-void	free_cmd(t_command *lst);
-void	print_cmd(t_command *lst);
-char	*setup_line(char *str, size_t *len);
-bool	heredoc(t_command *head);
-bool	heredoc_read(char *delimiter, int fd);
-void	heredoc_clean(void);
-void	tmp_to_cmd(t_command *head);
+
+/// @brief Count how many 'char' have in original input string.
+/// @param line The original input string.
+/// @param delim The char.
+/// @return Number of this char.
+int		count_cmd_total(char *line, char delim);
 
 //----------------------//
 //        token         //
@@ -71,6 +81,20 @@ void	fd_maker(t_command *head);
 /// @param head The struct.
 /// @return Bool: true if yes: false if not.
 bool	check_valid_redirec(t_command *head);
+
+/// @brief The main heredoc function.
+/// @param head The node.
+/// @return Bool: true if do: false if does not.
+bool	heredoc(t_command *head);
+
+/// @brief Copies the heredoc input.
+/// @param delimiter The word that closes the heredoc.
+/// @param fd The file descriptor for the heredoc.
+/// @return Bool: Returns true if successful, false otherwise.
+bool	heredoc_read(char *delimiter, int fd);
+
+/// @brief Clean the heredoc folder.
+void	heredoc_clean(void);
 
 //----------------------//
 //        prompt        //
@@ -191,5 +215,20 @@ char	*remove_quote_token(char *token);
 /// @param start The start.
 /// @param end The end.
 void	replace_space(char *str, size_t start, size_t end);
+
+/// @brief Print a string with all null char.
+/// @param str The string.
+/// @param len The string len.
+void	strnput(char *str, size_t len);
+
+/// @brief Expend the original input line.
+/// @param str The original input line.
+/// @param len The len of new line.
+/// @return The new line.
+char	*setup_line(char *str, size_t *len);
+
+/// @brief Copy a none redirection in cmd.
+/// @param head The node.
+void	tmp_to_cmd(t_command *head);
 
 #endif

@@ -59,8 +59,8 @@ bool	simple_exec(t_command *cmd)
 
 	if (cmd->is_builtin)
 	{
-		if ((Builtin_ptr)cmd->exec_cmd)
-			((Builtin_ptr)cmd->exec_cmd)(cmd->arg_count, cmd->cmd_argv,
+		if ((t_builtin_ptr)cmd->exec_cmd)
+			((t_builtin_ptr)cmd->exec_cmd)(cmd->arg_count, cmd->cmd_argv,
 					get_infos()->env);
 		return (true);
 	}
