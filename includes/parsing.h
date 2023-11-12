@@ -20,6 +20,8 @@
 # define GIT1 "\x1b[36;49;1;3m%s\x1b[34m git:\x1b[31m(%s)"
 # define GIT2 "\x1b[33m%s \x1b[32;1m[%s]\x1b[33m ➜ \x1b[0m"
 
+void	print_cmd(t_command *lst);
+
 //----------------------//
 //       parsing        //
 //----------------------//
