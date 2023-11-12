@@ -1,86 +1,52 @@
 #include "minishell.h"
 
-char	*heredoc_parsing(char *line, bool do_dollar)
+void	run_heredoc_fork(t_command *head, size_t i, char *fname)
 {
-	size_t	i;
-	size_t	j;
-	char *new;
+	int	fd;
 
-	new = NULL;
-	if (do_dollar)
-		new = mms_alloc(ft_strlen(line) + dollars_count(line) + 1, sizeof(char));
-	else
-		new = mms_alloc(ft_strlen(line) + 1, sizeof(char));
-	i = 0;
-	j = 0;
-	while (line[i])
-	{
-		if (do_dollar && line[i] == '$')
-			dollars_token_copy(line, new, &i, &j);
-		new[j++] = line[i++];
-	}
-	mms_free(line);
-	return (new);
+	ft_setup_signal(HEREDOC);
+	fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
+	if (fd < 0)
+		mms_kill(NULL, true, 1);
+	heredoc_read(head->tmp[i + 1], fd);
+	close(fd);
+	mms_kill(NULL, true, 0);
 }
 
-bool	heredoc_read(char *delimiter, int fd)
+bool	heredoc_handler(t_command *head, char *fname, size_t i)
 {
-	char *line;
-	char *new;
-	char *del;
-	bool do_dollar;
+	int		fd;
+	pid_t	pid;
 
-	do_dollar = false;
-	del = delimiter;
-	if (char_count(delimiter, '"') > 0 || char_count(delimiter, '\'') > 0)
+	fd = 0;
+	if (fd > STDIN_FILENO)
+		close(fd);
+	get_infos()->child = true;
+	pid = fork();
+	if (pid == -1)
+		return (false);
+	else if (pid == 0)
+		run_heredoc_fork(head, i, fname);
+	waitpid(pid, &get_infos()->latest_error_code, 0);
+	if (WEXITSTATUS(get_infos()->latest_error_code) == 28)
 	{
-		do_dollar = false;
-		del = remove_quote_token(delimiter);
+		mms_free(fname);
+		return (false);
 	}
-	else 
-		do_dollar = true;
-	while (true)
-	{
-		line = readline("heredoc> ");
-		if (!line)
-			return (false);
-		mms_add_ptr(line);
-		if (ft_strncmp(line, del, ft_strlen(del) + 1) == 0)
-			return (false);
-		new = heredoc_parsing(line, do_dollar);
-		if (!new)
-			return (false);
-		ft_putendl_fd(new, fd);
-		mms_free(new);
-	}
+	get_infos()->child = false;
+	fd = open(fname, O_RDONLY);
+	head->stdin_ = fd;
+	fname = mms_free(fname);
 	return (true);
 }
 
-void heredoc_clean(void)
+bool	heredoc(t_command *head)
 {
-	int i;
-	char *fname;
-
-	i = get_infos()->nb_heredoc;
-	while (i >= 0)
-	{
-		fname = ft_stringf("%s%s%d", "/tmp", "/heredoc", i);
-		unlink(fname);
-		fname = mms_free(fname);
-		i--;
-	}
-}
-
-bool heredoc(t_command *head)
-{
-	size_t i;
-	int fd;
-	char *fname;
-	t_infos *infos;
-	pid_t pid;
+	size_t	i;
+	char	*fname;
+	t_infos	*infos;
 
 	i = 0;
-	fd = 0;
 	infos = get_infos();
 	while (head && head->tmp && head->tmp[i])
 	{
@@ -90,32 +56,8 @@ bool heredoc(t_command *head)
 			{
 				fname = ft_stringf("/tmp/heredoc%d", infos->nb_heredoc);
 				infos->nb_heredoc++;
-				if (fd > STDIN_FILENO)
-					close(fd);
-				get_infos()->child = true;
-				pid = fork();
-				if (pid == -1)
-					break ;
-				else if (pid == 0)
-				{
-					ft_setup_signal(HEREDOC);
-					fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
-					if (fd < 0)
-						mms_kill(NULL, true, 1);
-					heredoc_read(head->tmp[i + 1], fd);
-					close(fd);
-					mms_kill(NULL, true, 0);
-				}
-				waitpid(pid, &get_infos()->latest_error_code, 0);
-				if (WEXITSTATUS(get_infos()->latest_error_code) == 28)
-				{
-					mms_free(fname);
+				if (!heredoc_handler(head, fname, i))
 					return (false);
-				}
-				get_infos()->child = false;
-				fd = open(fname, O_RDONLY);
-				head->stdin_ = fd;
-				fname = mms_free(fname);
 			}
 		}
 		i++;

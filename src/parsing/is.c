@@ -12,7 +12,7 @@ int	isredirec(char *str)
 bool	is_coated_quote(char *str, size_t pos)
 {
 	if ((str[pos] == '\'' && !isinquote(str, pos, DOUBLE_QUOTE))
-			|| (str[pos] == '\"' && !isinquote(str, pos, SINGLE_QUOTE)))
+		|| (str[pos] == '\"' && !isinquote(str, pos, SINGLE_QUOTE)))
 		return (true);
 	return (false);
 }

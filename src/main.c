@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +13,24 @@ t_infos	*get_infos(void)
 		infos->env = NULL;
 	}
 	return (infos);
+}
+
+char	*check_for_key(char *key, char **env, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (env[i][j] != '=')
+			j++;
+		if (j == len && ft_strncmp(env[i], key, j) == 0)
+			return (&env[i][j + 1]);
+		i++;
+	}
+	return (NULL);
 }
 
 void	add_cmd(char *cmd, int stdin_, int stdout_, t_infos *infos)

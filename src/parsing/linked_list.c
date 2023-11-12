@@ -37,8 +37,8 @@ static void	ft_cmdadd(t_command **lst)
 
 void	init_cmd_struct(char *str)
 {
-	int i;
-	t_command *head;
+	int			i;
+	t_command	*head;
 
 	i = count_cmd_total(str, '|');
 	head = &get_infos()->cmd;

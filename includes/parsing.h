@@ -1,4 +1,4 @@
-
+//heredoc parsing
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -17,6 +17,8 @@
 # define GRY "\x1b[38;5;249m"
 # define YLW "\x1b[33m"
 # define RESET "\x1b[0m"
+# define GIT1 "\x1b[36;49;1;3m%s\x1b[34m git:\x1b[31m(%s)"
+# define GIT2 "\x1b[33m%s \x1b[32;1m[%s]\x1b[33m ➜ \x1b[0m"
 
 void	parsing(char *str);
 int		count_cmd_total(char *line, char delim);
@@ -26,7 +28,9 @@ void	free_cmd(t_command *lst);
 void	print_cmd(t_command *lst);
 char	*setup_line(char *str, size_t *len);
 bool	heredoc(t_command *head);
-void    heredoc_clean(void);
+bool	heredoc_read(char *delimiter, int fd);
+void	heredoc_clean(void);
+void	tmp_to_cmd(t_command *head);
 
 //----------------------//
 //        token         //
@@ -49,7 +53,7 @@ void	get_token(char *line, size_t start, size_t end, t_command *head);
 /// @param start The start of that cmd line.
 /// @param end The end of that cmd line.
 /// @return Size_t: the number of token.
-size_t	count_token(char *line, size_t start, size_t end);
+size_t	ctoken(char *line, size_t start, size_t end);
 
 //----------------------//
 //      redirection     //

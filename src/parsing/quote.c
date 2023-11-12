@@ -2,9 +2,9 @@
 
 char	*remove_quote_token(char *token)
 {
-	size_t i;
-	size_t j;
-	char *new;
+	size_t	i;
+	size_t	j;
+	char	*new;
 
 	i = 0;
 	j = 0;
@@ -20,8 +20,8 @@ char	*remove_quote_token(char *token)
 
 void	remove_quote(t_command *head)
 {
-	size_t i;
-	char *new;
+	size_t	i;
+	char	*new;
 
 	i = 0;
 	while (head && head->tmp && head->tmp[i])

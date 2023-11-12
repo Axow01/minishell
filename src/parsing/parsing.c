@@ -23,23 +23,21 @@ int	count_cmd_total(char *str, char delim)
 	return (count);
 }
 
-void	tmp_to_cmd(t_command *head)
+static bool	error_cmd_maker(t_command *head)
 {
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	head->cmd = mms_alloc(count_nonerdt_token(head->tmp) + 1,
-							sizeof(char *));
-	while (head->tmp && head->tmp[i])
+	if (!head->tmp || !head->tmp[0] || !head->tmp[0][0])
 	{
-		if (isredirec(head->tmp[i]))
-			i++;
-		else
-			head->cmd[j++] = head->tmp[i];
-		i++;
+		get_infos()->latest_error_code = 258;
+		return (printf("%s`|'\n", ERROR_BASE_MSG), false);
 	}
+	if (!check_valid_redirec(head))
+		return (false);
+	fd_maker(head);
+	if (!heredoc(head))
+		return (false);
+	remove_quote(head);
+	tmp_to_cmd(head);
+	return (true);
 }
 
 bool	cmd_maker(char *str, size_t len)
@@ -57,22 +55,12 @@ bool	cmd_maker(char *str, size_t len)
 		if ((str[i] == '|' && !isinquote(str, i, QUOTES)) || i == len)
 		{
 			end = i;
-			head->tmp = mms_alloc(count_token(str, start, end) + 1, sizeof(char *));
+			head->tmp = mms_alloc(ctoken(str, start, end) + 1, sizeof(char *));
 			head->stdin_ = STDIN_FILENO;
 			head->stdout_ = STDOUT_FILENO;
 			get_token(str, start, end, head);
-			if (!head->tmp || !head->tmp[0] || !head->tmp[0][0])
-			{
-				get_infos()->latest_error_code = 258;
-				return (printf("%s`|'\n", ERROR_BASE_MSG), false);
-			}
-			if (!check_valid_redirec(head))
+			if (!error_cmd_maker(head))
 				return (false);
-			fd_maker(head);
-			if (!heredoc(head))
-				return (false);
-			remove_quote(head);
-			tmp_to_cmd(head);
 			head = head->next;
 			start = end + 1;
 		}
@@ -96,7 +84,7 @@ void	parsing(char *line)
 	else if (cmd_maker(new, len))
 	{
 		// printf("%s\n", line);
-		// strnput(new, len);
+		strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
 		get_infos()->child = true;
