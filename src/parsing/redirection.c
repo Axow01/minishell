@@ -7,14 +7,12 @@ size_t	count_redirection(char *str)
 
 	i = 0;
 	count = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == '|')
-			{
 				count += 2;
-			}
 			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i],
 					"<<", 2) == 0)
 			{
@@ -24,7 +22,8 @@ size_t	count_redirection(char *str)
 			if (str[i] == '>' || str[i] == '<')
 				count += 2;
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (count);
 }
