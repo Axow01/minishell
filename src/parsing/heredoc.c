@@ -5,11 +5,11 @@ void	run_heredoc_fork(t_command *head, size_t i, char *fname)
 	int	fd;
 
 	ft_setup_signal(HEREDOC);
-	fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
+	fd = mms_open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 	if (fd < 0)
 		mms_kill(NULL, true, 1);
 	heredoc_read(head->tmp[i + 1], fd);
-	close(fd);
+	mms_close(fd);
 	mms_kill(NULL, true, 0);
 }
 
@@ -18,7 +18,7 @@ bool	heredoc_handler(t_command *head, char *fname, size_t i, int *fd)
 	pid_t	pid;
 
 	if (*fd > STDIN_FILENO)
-		close(*fd);
+		mms_close(*fd);
 	get_infos()->child = true;
 	pid = fork();
 	if (pid == -1)
@@ -32,7 +32,7 @@ bool	heredoc_handler(t_command *head, char *fname, size_t i, int *fd)
 		return (false);
 	}
 	get_infos()->child = false;
-	*fd = open(fname, O_RDONLY);
+	*fd = mms_open(fname, O_RDONLY, 0);
 	head->stdin_ = *fd;
 	fname = mms_free(fname);
 	return (true);

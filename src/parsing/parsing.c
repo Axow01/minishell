@@ -92,8 +92,7 @@ void	parsing(char *line)
 		get_infos()->child = false;
 		// printf("\n");
 	}
-	else
-		clean_cmd_struct(&get_infos()->cmd);
+	clean_cmd_struct(&get_infos()->cmd);
 	heredoc_clean();
 	new = mms_free(new);
 }

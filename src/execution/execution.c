@@ -3,7 +3,7 @@
 
 char	*cmd_accessible(char **cmd, int modes)
 {
-	if (!cmd)
+	if (!cmd || !cmd[0])
 		return (NULL);
 	if (access(cmd[0], modes) == -1)
 		return (NULL);
@@ -24,10 +24,6 @@ void	clean_cmd_struct(t_command *cmd)
 	{
 		cmd->cmd = (char **)ft_sfree_2d((void **)cmd->cmd);
 		cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
-		if (buf->stdin_ > 0)
-			close(buf->stdin_);
-		if (buf->stdout_ > 1)
-			close(buf->stdout_);
 		buf->exec_cmd = mms_free(buf->exec_cmd);
 		buf->cmd_argv = NULL;
 		prev = buf;

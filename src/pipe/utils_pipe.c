@@ -43,11 +43,11 @@ void	change_in_out(t_command *cmd)
 		&& cmd->stdout_ == STDOUT_FILENO)
 		cmd->stdout_ = cmd->c_pipe[1];
 	else if (cmd->c_pipe[0] > 0 && cmd->c_pipe[1] > 0)
-		close(cmd->c_pipe[1]);
+		mms_close(cmd->c_pipe[1]);
 	if (cmd->previous && cmd->previous->c_pipe[0] > 0
 		&& cmd->previous->c_pipe[1] > 0 && cmd->stdin_ == STDIN_FILENO)
 		cmd->stdin_ = cmd->previous->c_pipe[0];
 	else if (cmd->previous && cmd->previous->c_pipe[0] > 0
 		&& cmd->previous->c_pipe[1] > 0)
-		close(cmd->previous->c_pipe[0]);
+		mms_close(cmd->previous->c_pipe[0]);
 }
