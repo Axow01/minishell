@@ -50,7 +50,7 @@ static void	simple_exec_run_fork(t_command *cmd)
 	mms_kill(NULL, false, 0);
 	rl_clear_history();
 	execve(cmd->exec_cmd, cmd->cmd_argv, env);
-	exit(1);
+	mms_kill("Did not run execve\n", true, 1);
 }
 
 bool	simple_exec(t_command *cmd)

@@ -20,10 +20,15 @@ void	clean_cmd_struct(t_command *cmd)
 	cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
 	cmd->exec_cmd = mms_free(cmd->exec_cmd);
 	cmd->next = NULL;
+	mms_clean_fd();
 	while (buf)
 	{
 		cmd->cmd = (char **)ft_sfree_2d((void **)cmd->cmd);
 		cmd->tmp = (char **)ft_sfree_2d((void **)cmd->tmp);
+		if (buf->c_pipe[0] > 1)
+			close(buf->c_pipe[0]);
+		if (buf->c_pipe[1] > 1)
+			close(buf->c_pipe[1]);
 		buf->exec_cmd = mms_free(buf->exec_cmd);
 		buf->cmd_argv = NULL;
 		prev = buf;

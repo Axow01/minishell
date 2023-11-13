@@ -5,7 +5,7 @@ LIBFT_A = libft.a
 
 #--- COMMAND VARIABLES ---#
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 #-fsanitize=address
 RM = rm -fd
 AR = ar rcs
@@ -96,7 +96,7 @@ fclean:	clean
 
 re:	fclean all
 
-leak: all
+leaks: all
 	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=$(PWD)/supp.txt ./minishell
 
 .PHONY:	all clean fclean re libft leak

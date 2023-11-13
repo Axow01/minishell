@@ -6,9 +6,9 @@ static void	close_unused_fd(t_command *cmd)
 	if (!cmd)
 		return ;
 	if (cmd->c_pipe[0] > 0)
-		mms_close(cmd->c_pipe[0]);
+		close(cmd->c_pipe[0]);
 	if (cmd->previous && cmd->previous->c_pipe[1] > 0)
-		mms_close(cmd->previous->c_pipe[1]);
+		close(cmd->previous->c_pipe[1]);
 }
 
 static void	close_all_pipes(t_command *cmd)
@@ -21,9 +21,9 @@ static void	close_all_pipes(t_command *cmd)
 	while (buf)
 	{
 		if (buf->c_pipe[0] > 0)
-			mms_close(buf->c_pipe[0]);
+			close(buf->c_pipe[0]);
 		if (buf->c_pipe[1] > 0)
-			mms_close(buf->c_pipe[1]);
+			close(buf->c_pipe[1]);
 		buf = buf->next;
 	}
 }
@@ -54,7 +54,7 @@ static void	run_fork(t_command *buf, t_infos *infos)
 	untrack_cmd(buf);
 	rl_clear_history();
 	mms_kill(NULL, false, 0);
-	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
+	mms_kill(NULL, true, execve(buf->exec_cmd, buf->cmd_argv, env));
 }
 
 static bool	run_all(t_infos *infos)
