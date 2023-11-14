@@ -13,7 +13,8 @@ size_t	count_nonerdt_token(char **token)
 			i++;
 		else
 			count++;
-		i++;
+		if (token[i])
+			i++;
 	}
 	return (count);
 }

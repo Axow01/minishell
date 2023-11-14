@@ -35,8 +35,8 @@ static bool	error_cmd_maker(t_command *head)
 	fd_maker(head);
 	if (!heredoc(head))
 		return (false);
-	remove_quote(head);
 	tmp_to_cmd(head);
+	remove_quote(head);
 	return (true);
 }
 
@@ -74,6 +74,11 @@ void	parsing(char *line)
 	char	*new;
 	size_t	len;
 
+	if (char_count(line, ' ') == ft_strlen(line))
+	{
+		clean_cmd_struct(&get_infos()->cmd);
+		return ;
+	}
 	new = setup_line(line, &len);
 	if (new == NULL)
 		return ;
@@ -85,7 +90,7 @@ void	parsing(char *line)
 	{
 		// printf("%s\n", line);
 		// strnput(new, len);
-		// print_cmd(&get_infos()->cmd);
+		print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
 		get_infos()->child = true;
 		execution(get_infos());

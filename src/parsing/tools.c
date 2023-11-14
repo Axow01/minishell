@@ -94,7 +94,8 @@ void	tmp_to_cmd(t_command *head)
 		if (isredirec(head->tmp[i]))
 			i++;
 		else
-			head->cmd[j++] = head->tmp[i];
-		i++;
+			head->cmd[j++] = ft_strdup(head->tmp[i]);
+		if (head->tmp[i])
+			i++;
 	}
 }
