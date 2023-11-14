@@ -48,20 +48,26 @@ bool	check_valid_redirec(t_command *head)
 	return (true);
 }
 
-static int	fd_open(t_command *head, size_t fd, int i)
+static int	fd_open(t_command *head, int fd, int i)
 {
 	if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '>')
 	{
+		if (fd > 2 && fd != head->stdin_)
+			mms_close(fd);
 		fd = mms_open(head->tmp[i + 1], O_RDWR | O_TRUNC | O_CREAT, S_IRWXU);
 		head->stdout_ = fd;
 	}
 	else if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '<')
 	{
+		if (fd > 2 && fd != head->stdout_)
+			mms_close(fd);
 		fd = mms_open(head->tmp[i + 1], O_RDONLY, 0);
 		head->stdin_ = fd;
 	}
 	else if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '>')
 	{
+		if (fd > 2 && fd != head->stdin_)
+			mms_close(fd);
 		fd = mms_open(head->tmp[i + 1], O_RDWR | O_APPEND | O_CREAT, S_IRWXU);
 		head->stdout_ = fd;
 	}
@@ -75,12 +81,10 @@ void	fd_maker(t_command *head)
 
 	i = 0;
 	fd = 0;
-	while (head->tmp[i])
+	while (head->tmp && head->tmp[i])
 	{
 		if (head->tmp[i][0] && isredirec(head->tmp[i]) > 0)
 		{
-			if (fd > 2)
-				mms_close(fd);
 			fd = fd_open(head, fd, i);
 			if (fd < 0)
 				break ;

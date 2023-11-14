@@ -31,7 +31,6 @@ void	remove_quote(t_command *head)
 		head->tmp[i] = new;
 		i++;
 	}
-
 	i = 0;
 	while (head && head->cmd && head->cmd[i])
 	{

@@ -43,7 +43,7 @@ bool	heredoc(t_command *head)
 	size_t	i;
 	char	*fname;
 	t_infos	*infos;
-	int fd;
+	int		fd;
 
 	i = 0;
 	fd = 0;

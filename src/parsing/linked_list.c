@@ -35,15 +35,15 @@ static void	ft_cmdadd(t_command **lst)
 		last->next = new;
 }
 
-size_t dollars_pipe(char *str)
+size_t	dollars_pipe(char *str)
 {
-	size_t i;
-	size_t count;
-	char *token;
+	size_t	i;
+	size_t	count;
+	char	*token;
 
 	token = NULL;
 	count = 0;
-	i  = 0;
+	i = 0;
 	while (str && str[i])
 	{
 		if (str[i] == '$' && !isinquote(str, i, QUOTES))
@@ -51,7 +51,7 @@ size_t dollars_pipe(char *str)
 			if (dollars_key_exist(&str[i + 1], dollars_key_len(&str[i + 1])))
 			{
 				token = check_for_key(&str[i + 1],
-					get_infos()->env, dollars_key_len(&str[i + 1]));
+						get_infos()->env, dollars_key_len(&str[i + 1]));
 				count += char_count(token, '|');
 				token = mms_free(token);
 			}
