@@ -63,11 +63,9 @@ void	cd(int ac, char **args, char **env)
 
 	if (!args || ac == 0 || !env)
 		return ;
-	home_dir = NULL;
 	home_dir = check_for_key("HOME", env, 4);
 	old_pwd = check_for_key("OLDPWD", env, 6);
 	pwd = NULL;
-	printf("homedir: %s\n", home_dir);
 	getcwd(current_dir, PATH_MAX);
 	if (ac == 1 || !args[1])
 		pwd = home_dir;
