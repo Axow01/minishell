@@ -51,6 +51,7 @@ static void	run_fork(t_command *buf, t_infos *infos)
 		((t_builtin_ptr)buf->exec_cmd)(buf->arg_count, buf->cmd_argv, env);
 		mms_kill(NULL, true, 1);
 	}
+	close_all_pipes(&infos->cmd);
 	untrack_cmd(buf);
 	rl_clear_history();
 	mms_kill(NULL, false, 0);
