@@ -48,14 +48,13 @@ static void	run_fork(t_command *buf, t_infos *infos)
 		dup2(buf->stdout_, STDOUT_FILENO);
 	if (buf->stdin_ != STDIN_FILENO)
 		dup2(buf->stdin_, STDIN_FILENO);
+	close_all_pipes(&infos->cmd);
 	env = infos->env;
 	if (buf->is_builtin)
 	{
 		((t_builtin_ptr)buf->exec_cmd)(buf->arg_count, buf->cmd_argv, env);
-		close_all_pipes(&infos->cmd);
 		mms_kill(NULL, true, 1);
 	}
-	close_all_pipes(&infos->cmd);
 	untrack_cmd(buf);
 	rl_clear_history();
 	mms_kill(NULL, false, 0);
