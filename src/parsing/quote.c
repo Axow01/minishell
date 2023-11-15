@@ -31,4 +31,12 @@ void	remove_quote(t_command *head)
 		head->tmp[i] = new;
 		i++;
 	}
+	i = 0;
+	while (head && head->cmd && head->cmd[i])
+	{
+		new = remove_quote_token(head->cmd[i]);
+		mms_free(head->cmd[i]);
+		head->cmd[i] = new;
+		i++;
+	}
 }
