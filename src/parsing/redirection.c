@@ -7,14 +7,12 @@ size_t	count_redirection(char *str)
 
 	i = 0;
 	count = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		if (!isinquote(str, i, QUOTES))
 		{
 			if (str[i] == '|')
-			{
 				count += 2;
-			}
 			while (ft_strncmp(&str[i], ">>", 2) == 0 || ft_strncmp(&str[i],
 					"<<", 2) == 0)
 			{
@@ -24,7 +22,8 @@ size_t	count_redirection(char *str)
 			if (str[i] == '>' || str[i] == '<')
 				count += 2;
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (count);
 }
@@ -53,17 +52,17 @@ static int	fd_open(t_command *head, size_t fd, int i)
 {
 	if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '>')
 	{
-		fd = open(head->tmp[i + 1], O_RDWR | O_TRUNC | O_CREAT, S_IRWXU);
+		fd = mms_open(head->tmp[i + 1], O_RDWR | O_TRUNC | O_CREAT, S_IRWXU);
 		head->stdout_ = fd;
 	}
 	else if (isredirec(head->tmp[i]) == 1 && head->tmp[i][0] == '<')
 	{
-		fd = open(head->tmp[i + 1], O_RDONLY);
+		fd = mms_open(head->tmp[i + 1], O_RDONLY, 0);
 		head->stdin_ = fd;
 	}
 	else if (isredirec(head->tmp[i]) == 2 && head->tmp[i][0] == '>')
 	{
-		fd = open(head->tmp[i + 1], O_RDWR | O_APPEND | O_CREAT, S_IRWXU);
+		fd = mms_open(head->tmp[i + 1], O_RDWR | O_APPEND | O_CREAT, S_IRWXU);
 		head->stdout_ = fd;
 	}
 	return (fd);
@@ -81,7 +80,7 @@ void	fd_maker(t_command *head)
 		if (head->tmp[i][0] && isredirec(head->tmp[i]) > 0)
 		{
 			if (fd > 2)
-				close(fd);
+				mms_close(fd);
 			fd = fd_open(head, fd, i);
 			if (fd < 0)
 				break ;

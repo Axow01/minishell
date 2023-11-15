@@ -40,7 +40,10 @@ static void	run_fork(t_command *buf, t_infos *infos)
 		mms_kill(NULL, true, 1);
 	}
 	if (!check_cmd_valid(buf))
+	{
+		close_all_pipes(&infos->cmd);
 		mms_kill(NULL, true, 127);
+	}
 	if (buf->stdout_ != STDOUT_FILENO)
 		dup2(buf->stdout_, STDOUT_FILENO);
 	if (buf->stdin_ != STDIN_FILENO)
@@ -49,13 +52,14 @@ static void	run_fork(t_command *buf, t_infos *infos)
 	if (buf->is_builtin)
 	{
 		((t_builtin_ptr)buf->exec_cmd)(buf->arg_count, buf->cmd_argv, env);
+		close_all_pipes(&infos->cmd);
 		mms_kill(NULL, true, 1);
 	}
 	close_all_pipes(&infos->cmd);
 	untrack_cmd(buf);
 	rl_clear_history();
 	mms_kill(NULL, false, 0);
-	mms_kill(NULL, false, execve(buf->exec_cmd, buf->cmd_argv, env));
+	mms_kill(NULL, true, execve(buf->exec_cmd, buf->cmd_argv, env));
 }
 
 static bool	run_all(t_infos *infos)
@@ -75,8 +79,8 @@ static bool	run_all(t_infos *infos)
 			run_fork(buf, infos);
 		if (buf->previous)
 		{
-			close(buf->previous->c_pipe[0]);
-			close(buf->previous->c_pipe[1]);
+			mms_close(buf->previous->c_pipe[0]);
+			mms_close(buf->previous->c_pipe[1]);
 		}
 		buf = buf->next;
 	}

@@ -50,7 +50,7 @@ static void	simple_exec_run_fork(t_command *cmd)
 	mms_kill(NULL, false, 0);
 	rl_clear_history();
 	execve(cmd->exec_cmd, cmd->cmd_argv, env);
-	exit(1);
+	mms_kill("Did not run execve\n", true, 1);
 }
 
 bool	simple_exec(t_command *cmd)
@@ -77,9 +77,9 @@ bool	simple_exec(t_command *cmd)
 	if (pid_fork == 0)
 		simple_exec_run_fork(cmd);
 	if (cmd->stdout_ < 0)
-		close(cmd->stdout_);
+		mms_close(cmd->stdout_);
 	if (cmd->stdin_ < 0)
-		close(cmd->stdin_);
+		mms_close(cmd->stdin_);
 	waitpid(pid_fork, (int *)&get_infos()->latest_error_code, 0);
 	return (true);
 }

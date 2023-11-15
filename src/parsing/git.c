@@ -28,7 +28,7 @@ char	*get_branch(size_t *count)
 	git_dir = find_git(count);
 	if (git_dir && access(git_dir, F_OK) == 0)
 	{
-		fd = open(git_dir, O_RDONLY);
+		fd = mms_open(git_dir, O_RDONLY, 0);
 		temp = get_next_line(fd);
 		i = ft_strlen(temp) - 1;
 		while (temp[i] && temp[i] != '/')
@@ -36,7 +36,7 @@ char	*get_branch(size_t *count)
 		new = ft_del_char(ft_strdup(&temp[i + 1]), '\n');
 		mms_free(temp);
 		mms_free(git_dir);
-		close(fd);
+		mms_close(fd);
 		return (new);
 	}
 	return (NULL);

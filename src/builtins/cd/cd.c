@@ -37,6 +37,11 @@ static void	update_pwd_env(char *pwd, t_infos *infos, char *old_pwd)
 
 void	finish_cd_process(char *pwd, char *current_dir, char *old_pwd)
 {
+	if (!pwd)
+	{
+		printf_error(1, "minishell: cd: HOME variable not set\n");
+		return ;
+	}
 	if (chdir(pwd) != 0)
 	{
 		printf_error(1, "minishell: cd: No such file or directory\n");
