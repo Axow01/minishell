@@ -65,27 +65,54 @@ int	get_env_index(char *key, char **env, size_t n)
 	return (i);
 }
 
-void	export_pars_err(int err)
+void	export_pars_err(char **av, int err)
 {
+	int		i;
+	char	*token;
+
+	i = 0;
+	token = NULL;
 	if (err != -1)
-		printf("export: not an identifier\n");
+	{
+		while (av[err][i])
+		{
+			if (av[err][i] == '=' && av[err][i + 1] != '=')
+				break ;
+			i++;
+		}
+		token = mms_alloc(i + 1, sizeof(char));
+		ft_strlcpy(token, av[err], i + 1);
+		printf("export: not an identifier: %s\n", token);
+		token = mms_free(token);
+	}
 }
 
-bool	export_pars(char *str, int *err)
+bool	export_pars(char *str, int *err, int ac_i)
 {
 	size_t	i;
 
 	i = 0;
+	if (str[i] == '=' || ft_isdigit(str[i]))
+	{
+		if (*err == -1)
+			*err = ac_i;
+		return (false);
+	}
 	if (str[i] && (str[i] == '_' || ft_isalpha(str[i])))
 		i++;
-	while (str[i] && (str[i] == '_' || ft_isalpha(str[i]) || ft_isalnum(str[i])))
-		i++;
-	if ((str[i] != '=' || i < ft_strlen(str)) && *err == -1)
+	while (str[i])
 	{
-		*err = i;
-		return(false);
+		if (str[i] == '=' || (!ft_isalpha(str[i]) && !ft_isdigit(str[i])))
+			break ;
+		i++;
 	}
-	return (true);
+	if (str[i] == '=' && str[i + 1] == '=')
+		return (*err = ac_i, false);
+	else if (!str[i] || str[i] == '=')
+		return (true);
+	else if (*err == -1)
+		*err = ac_i;
+	return (false);
 }
 
 void	ft_export(int ac, char **argv, char **env)
@@ -104,17 +131,16 @@ void	ft_export(int ac, char **argv, char **env)
 		print_double_char(env);
 	while (argv[++ac_i] && ac > 1)
 	{
-		if (export_pars(argv[ac_i], &err))
-		{
-			cpy_env = copy_double_char(cpy_env, ft_length_d_char(cpy_env));
-			vk = export_get_key_val(argv[ac_i]);
-			i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
-			if (i < 0)
-				cpy_env = create_new_variable(vk, cpy_env);
-			else
-				edit_variable(vk, cpy_env, i);
-		}
+		if (!export_pars(argv[ac_i], &err, ac_i))
+			continue ;
+		cpy_env = copy_double_char(cpy_env, ft_length_d_char(cpy_env));
+		vk = export_get_key_val(argv[ac_i]);
+		i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
+		if (i < 0)
+			cpy_env = create_new_variable(vk, cpy_env);
+		else
+			edit_variable(vk, cpy_env, i);
 	}
-	export_pars_err(err);
+	export_pars_err(argv, err);
 	clean_vk(vk, cpy_env);
 }
