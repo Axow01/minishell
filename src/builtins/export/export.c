@@ -148,6 +148,7 @@ void	ft_export(int ac, char **argv, char **env)
 
 	err = -1;
 	ac_i = 0;
+	vk = NULL;
 	cpy_env = env;
 	if (ac == 1)
 		return (print_double_char_al(cpy_env));
