@@ -49,7 +49,7 @@ static void	unset_value(char **env, int *index, int n)
 	while (++i < n)
 		if (index[i] >= 0)
 			b++;
-	create_new_env(env, ft_length_d_char(env) - b, index, n);
+	create_new_env(env, len_double_char(env) - b, index, n);
 }
 
 void	ft_unset(int argc, char **argv, char **env)

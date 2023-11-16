@@ -17,7 +17,7 @@ void	print_double_char(char **dc)
 	}
 }
 
-char	**copy_double_char(char **dc, int n)
+char	**copy_double_charf(char **dc, int n)
 {
 	char	**cpy;
 	int		i;
@@ -37,7 +37,7 @@ char	**copy_double_char(char **dc, int n)
 	return (cpy);
 }
 
-size_t	ft_length_d_char(char **dc)
+size_t	len_double_char(char **dc)
 {
 	int	i;
 
@@ -115,6 +115,29 @@ bool	export_pars(char *str, int *err, int ac_i)
 	return (false);
 }
 
+void	print_double_char_al(char **env)
+{
+	size_t i;
+	char *tmp;
+	char **dc;
+
+	i = 0;
+	dc = copy_double_char(env);
+	while (dc && dc[i])
+	{
+		if (ft_strncmp(dc[i], dc[i + 1], ft_strlen(dc[i]) + 1) > 0)
+		{
+			tmp = dc[i + 1];
+			dc[i + 1] = dc[i];
+			dc[i] = tmp;
+			i = -1;
+		}
+		i++;
+	}
+	print_double_char(dc);
+	dc = (char **)ft_sfree_2d((void **)dc);
+}
+
 void	ft_export(int ac, char **argv, char **env)
 {
 	char		**cpy_env;
@@ -126,14 +149,13 @@ void	ft_export(int ac, char **argv, char **env)
 	err = -1;
 	ac_i = 0;
 	cpy_env = env;
-	vk = NULL;
 	if (ac == 1)
-		print_double_char(env);
+		return (print_double_char_al(cpy_env));
 	while (argv[++ac_i] && ac > 1)
 	{
 		if (!export_pars(argv[ac_i], &err, ac_i))
 			continue ;
-		cpy_env = copy_double_char(cpy_env, ft_length_d_char(cpy_env));
+		cpy_env = copy_double_charf(cpy_env, len_double_char(cpy_env));
 		vk = export_get_key_val(argv[ac_i]);
 		i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
 		if (i < 0)

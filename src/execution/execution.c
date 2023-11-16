@@ -88,7 +88,7 @@ bool	execution(t_infos *infos)
 		else
 			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, R_OK | X_OK);
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
-		cmd_buffer->arg_count = ft_length_d_char(cmd_buffer->cmd_argv);
+		cmd_buffer->arg_count = len_double_char(cmd_buffer->cmd_argv);
 		cmd_buffer = cmd_buffer->next;
 	}
 	if (!indexing_previous_cmd(&infos->cmd))

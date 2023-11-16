@@ -35,7 +35,7 @@ void	parsing(char *str);
 //----------------------//
 
 /// @brief Init all cmd node.
-/// @param str The original string. 
+/// @param str The original string.
 void	init_cmd_struct(char *str);
 
 /// @brief Count how many 'char' have in original input string.
@@ -232,5 +232,8 @@ char	*setup_line(char *str, size_t *len);
 /// @brief Copy a none redirection in cmd.
 /// @param head The node.
 void	tmp_to_cmd(t_command *head);
+
+/// @brief Return a copy of a char **.
+char	**copy_double_char(char **dc);
 
 #endif

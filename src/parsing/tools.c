@@ -80,6 +80,21 @@ void	**ft_sfree_2d(void **ptr)
 	return (NULL);
 }
 
+char	**copy_double_char(char **dc)
+{
+	size_t	i;
+	char	**tmp;
+
+	i = 0;
+	tmp = mms_alloc(len_double_char(dc) + 1, sizeof(char *));
+	while (dc && dc[i])
+	{
+		tmp[i] = ft_strdup(dc[i]);
+		i++;
+	}
+	return (tmp);
+}
+
 void	tmp_to_cmd(t_command *head)
 {
 	size_t	i;

@@ -17,7 +17,7 @@
 // 	}
 // }
 
-// char	**copy_double_char(char **dc, int n)
+// char	**copy_double_charf(char **dc, int n)
 // {
 // 	char	**cpy;
 // 	int		i;
@@ -37,7 +37,7 @@
 // 	return (cpy);
 // }
 
-// size_t	ft_length_d_char(char **dc)
+// size_t	len_double_char(char **dc)
 // {
 // 	int	i;
 
@@ -132,7 +132,7 @@
 // 	{
 // 		if (!export_pars(argv[ac_i], &err, ac_i))
 // 			continue;
-// 		cpy_env = copy_double_char(cpy_env, ft_length_d_char(cpy_env));
+// 		cpy_env = copy_double_charf(cpy_env, len_double_char(cpy_env));
 // 		vk = export_get_key_val(argv[ac_i]);
 // 		i = get_env_index(vk->key, cpy_env, ft_strlen(vk->key));
 // 		if (i < 0)

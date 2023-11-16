@@ -55,13 +55,13 @@ char		*check_for_key_export(char *key, char **env, size_t n);
 /// @brief Get the length of a double char pointer.
 /// @param dc **char
 /// @return The size of the **char.
-size_t		ft_length_d_char(char **dc);
+size_t		len_double_char(char **dc);
 
 /// @brief Copy the double char **.
 /// @param dc  char **.
 /// @param n The size of the double char **
 /// @return return the new double char.
-char		**copy_double_char(char **dc, int n);
+char		**copy_double_charf(char **dc, int n);
 
 /// @brief Create a new variable in the env
 /// @param vk struct
