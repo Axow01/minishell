@@ -23,7 +23,8 @@ static	void	dollars_count_logical(char *str, char *errc, size_t *count)
 			*count += ft_strlen(check_for_key(&str[i + 1], get_infos()->env,
 						dollars_len)) - dollars_len;
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 }
 

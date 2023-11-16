@@ -18,7 +18,8 @@ char	*heredoc_parsing(char *line, bool do_dollar)
 	{
 		if (do_dollar && line[i] == '$')
 			dollars_token_copy(line, new, &i, &j);
-		new[j++] = line[i++];
+		if (line[i])
+			new[j++] = line[i++];
 	}
 	mms_free(line);
 	return (new);
