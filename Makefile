@@ -46,7 +46,7 @@ $(OBJDIR)/%.o:	%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I. -c $< -o $@
 
 
-all:	submodules rl libft logo $(NAME)
+all:	submodules rl libft $(NAME) logo
 
 submodules:
 	@git submodule update --init --recursive
