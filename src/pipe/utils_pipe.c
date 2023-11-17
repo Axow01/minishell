@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_pipe.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmarcott <mmarcott@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 14:04:25 by mmarcott          #+#    #+#             */
+/*   Updated: 2023/11/17 14:04:26 by mmarcott         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 /// @brief This initiate the pipes.
@@ -49,4 +61,18 @@ void	change_in_out(t_command *cmd)
 	else if (cmd->previous && cmd->previous->c_pipe[0] > 0
 		&& cmd->previous->c_pipe[1] > 0)
 		mms_close(cmd->previous->c_pipe[0]);
+}
+
+void	pipe_fork_verif(t_infos *infos, t_command *buf)
+{
+	if (buf->stdin_ < 0 || buf->stdout_ < 0)
+	{
+		close_all_pipes(&infos->cmd);
+		mms_kill(NULL, true, 1);
+	}
+	if (!check_cmd_valid(buf))
+	{
+		close_all_pipes(&infos->cmd);
+		mms_kill(NULL, true, 127);
+	}
 }

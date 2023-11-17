@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmarcott <mmarcott@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 14:03:48 by mmarcott          #+#    #+#             */
+/*   Updated: 2023/11/17 14:03:50 by mmarcott         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_path	check_path_type(char **cmd)
@@ -41,4 +53,11 @@ void	builtin_redirections_fd(int in, int out)
 		dup2(in, STDIN_FILENO);
 	if (out > STDOUT_FILENO)
 		dup2(out, STDOUT_FILENO);
+}
+
+void	path_change_execution(t_command *cmd)
+{
+	get_infos()->path = path_split(env_to_path(get_infos()->env));
+	if (check_path_type(cmd->cmd) == COMMAND && !cmd->is_builtin)
+		cmd->exec_cmd = get_cmd_path(cmd->cmd, get_infos()->path);
 }
