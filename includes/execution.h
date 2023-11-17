@@ -56,4 +56,8 @@ void			config_builtins_cmd(t_command *cmd_buffer, t_infos *infos);
 /// @param out fd
 void			builtin_redirections_fd(int in, int out);
 
+/// @brief Change the path.
+/// @param cmd cmd pathing.
+void			path_change_execution(t_command *cmd);
+
 #endif

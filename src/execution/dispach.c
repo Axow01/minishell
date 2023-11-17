@@ -66,9 +66,7 @@ bool	simple_exec(t_command *cmd)
 		builtin_redirections_fd(cmd->stdin_, cmd->stdout_);
 		return (true);
 	}
-	get_infos()->path = path_split(env_to_path(get_infos()->env));
-	if (check_path_type(cmd->cmd) == COMMAND && !cmd->is_builtin)
-		cmd->exec_cmd = get_cmd_path(cmd->cmd, get_infos()->path);
+	path_change_execution(cmd);
 	if (!check_cmd_valid(cmd))
 		return (false);
 	pid_fork = fork();

@@ -43,3 +43,10 @@ void	builtin_redirections_fd(int in, int out)
 	if (out > STDOUT_FILENO)
 		dup2(out, STDOUT_FILENO);
 }
+
+void	path_change_execution(t_command *cmd)
+{
+	get_infos()->path = path_split(env_to_path(get_infos()->env));
+	if (check_path_type(cmd->cmd) == COMMAND && !cmd->is_builtin)
+		cmd->exec_cmd = get_cmd_path(cmd->cmd, get_infos()->path);
+}
