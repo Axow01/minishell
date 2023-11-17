@@ -26,4 +26,13 @@ void	wait_for_programs(t_infos *infos);
 /// @param cmd
 void	change_in_out(t_command *cmd);
 
+/// @brief Close all the pipes.
+/// @param cmd cmd struct.
+void	close_all_pipes(t_command *cmd);
+
+/// @brief Verif the pipes, for error. Fd in out etc...
+/// @param infos 
+/// @param buf 
+void	pipe_fork_verif(t_infos *infos, t_command *buf);
+
 #endif

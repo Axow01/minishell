@@ -10,7 +10,7 @@ static void	close_unused_fd(t_command *cmd)
 		close(cmd->previous->c_pipe[1]);
 }
 
-static void	close_all_pipes(t_command *cmd)
+void	close_all_pipes(t_command *cmd)
 {
 	t_command	*buf;
 
@@ -33,16 +33,6 @@ static void	run_fork(t_command *buf, t_infos *infos)
 
 	ft_setup_signal(CHILD);
 	close_unused_fd(buf);
-	if (buf->stdin_ < 0 || buf->stdout_ < 0)
-	{
-		close_all_pipes(&infos->cmd);
-		mms_kill(NULL, true, 1);
-	}
-	if (!check_cmd_valid(buf))
-	{
-		close_all_pipes(&infos->cmd);
-		mms_kill(NULL, true, 127);
-	}
 	if (buf->stdout_ != STDOUT_FILENO)
 		dup2(buf->stdout_, STDOUT_FILENO);
 	if (buf->stdin_ != STDIN_FILENO)
