@@ -45,6 +45,7 @@ bool	heredoc_read(char *delimiter, int fd)
 
 	do_dollar = false;
 	do_dollar = delimiter_isinquote(delimiter, do_dollar);
+	delimiter = remove_quote_token(delimiter);
 	while (true)
 	{
 		line = readline("heredoc> ");

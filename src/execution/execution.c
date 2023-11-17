@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 char	*cmd_accessible(char **cmd, int modes)

@@ -4,6 +4,7 @@ void	run_heredoc_fork(t_command *head, size_t i, char *fname)
 {
 	int	fd;
 
+	rl_clear_history();
 	ft_setup_signal(HEREDOC);
 	fd = mms_open(fname, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 	if (fd < 0)
@@ -29,6 +30,7 @@ bool	heredoc_handler(t_command *head, char *fname, size_t i, int *fd)
 	if (WEXITSTATUS(get_infos()->latest_error_code) == 28)
 	{
 		mms_free(fname);
+		get_infos()->child = false;
 		return (false);
 	}
 	get_infos()->child = false;

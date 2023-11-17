@@ -26,7 +26,7 @@ PARSINGDIR = parsing
 PATH_DIR = path
 PIPE_DIR = pipe
 BUILTINS_DIR = builtins
-SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c pipe/pipe_errors.c builtins/export/export.c builtins/export/utils.c \
+SRC		= 	main.c errors.c execution/execution.c path/path.c builtins/cd/cd.c pipe/pipe.c execution/dispach.c pipe/utils_pipe.c pipe/pipe_errors.c builtins/export/export.c builtins/export/utils.c builtins/export/pars_error.c\
 			builtins/exit/exit.c builtins/pwd/pwd.c builtins/export/clean.c builtins/echo/echo.c builtins/env/env.c builtins/unset/unset.c\
 			parsing/parsing.c parsing/linked_list.c parsing/is.c parsing/tools.c parsing/dollars.c parsing/string.c parsing/git.c parsing/redirection.c parsing/token.c parsing/setup_line.c \
 			parsing/quote.c parsing/heredoc.c parsing/heredoc_tools.c parsing/dollars_count.c signals/signals.c execution/utils.c
@@ -46,7 +46,7 @@ $(OBJDIR)/%.o:	%.c
 	@$(CC) $(CFLAGS) -I$(INCDIR) -I. -c $< -o $@
 
 
-all:	submodules rl libft logo $(NAME)
+all:	submodules rl libft $(NAME) logo
 
 submodules:
 	@git submodule update --init --recursive

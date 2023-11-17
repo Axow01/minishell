@@ -82,7 +82,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	rl_catch_signals = 0;
 	mms_set_alloc_fn(ft_calloc);
 	infos = get_infos();
 	infos->env = env;
@@ -95,6 +94,6 @@ int	main(int argc, char **argv, char **env)
 		if (!read_line())
 			break ;
 	}
-	mms_kill("", false, 0);
+	mms_kill("", true, get_infos()->latest_error_code);
 	return (0);
 }

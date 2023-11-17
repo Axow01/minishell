@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 static void	close_unused_fd(t_command *cmd)

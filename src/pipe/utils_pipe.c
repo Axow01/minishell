@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 /// @brief This initiate the pipes.

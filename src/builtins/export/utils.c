@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 static void	no_equal(t_key_val *vk, char *raw_input)

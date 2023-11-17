@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 t_path	check_path_type(char **cmd)

@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 bool	check_for_builtins(t_command *cmd)

@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 void	sig_parent_handle(int signal)
@@ -6,11 +5,12 @@ void	sig_parent_handle(int signal)
 	(void)signal;
 	if (get_infos()->child)
 		return ;
-	write(0, "\n", 1);
+	clean_cmd_struct(&get_infos()->cmd);
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	clean_cmd_struct(&get_infos()->cmd);
+	get_infos()->latest_error_code = 1;
 }
 
 void	sig_child_handle(int signal)

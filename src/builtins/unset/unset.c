@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 static bool	is_indexed(int i, int *index, int size)

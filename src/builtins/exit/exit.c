@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 static bool	is_num(char *str)

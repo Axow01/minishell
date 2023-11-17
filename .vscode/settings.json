@@ -1,6 +1,8 @@
 {
 	"files.associations": {
 		"minishell.h": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"rltypedefs.h": "c",
+		"rlstdc.h": "c"
 	}
 }
