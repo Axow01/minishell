@@ -1,6 +1,0 @@
-[submodule "includes/libftms"]
-	path = includes/libftms
-	url = https://github.com/axhar005/libftms.git
-[submodule "includes/libmms"]
-	path = includes/libmms
-	url = https://github.com/Axow01/libmms.git
