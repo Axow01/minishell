@@ -3,10 +3,18 @@
 
 char	*cmd_accessible(char **cmd, int modes)
 {
+	DIR	*test_dir;
+
 	if (!cmd || !cmd[0])
 		return (NULL);
 	if (access(cmd[0], modes) == -1)
 		return (NULL);
+	test_dir = opendir(cmd[0]);
+	if (test_dir != NULL)
+	{
+		closedir(test_dir);
+		return (NULL);
+	}
 	return (cmd[0]);
 }
 
@@ -86,7 +94,8 @@ bool	execution(t_infos *infos)
 		if (check_path_type(cmd_buffer->cmd) == COMMAND)
 			config_builtins_cmd(cmd_buffer, infos);
 		else
-			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, R_OK | X_OK);
+			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, F_OK | X_OK);
+		printf("Exec_cmd: %s\n", cmd_buffer->exec_cmd);
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
 		cmd_buffer->arg_count = len_double_char(cmd_buffer->cmd_argv);
 		cmd_buffer = cmd_buffer->next;
