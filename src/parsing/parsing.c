@@ -90,7 +90,7 @@ void	parsing(char *line)
 	else if (cmd_maker(new, len))
 	{
 		// printf("%s\n", line);
-		strnput(new, len);
+		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
 		get_infos()->child = true;

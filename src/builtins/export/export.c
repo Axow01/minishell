@@ -83,6 +83,7 @@ void	export_pars_err(char **av, int err)
 		token = mms_alloc(i + 1, sizeof(char));
 		ft_strlcpy(token, av[err], i + 1);
 		printf("export: not an identifier: %s\n", token);
+		get_infos()->latest_error_code = 1;
 		token = mms_free(token);
 	}
 }
