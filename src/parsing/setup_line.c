@@ -40,11 +40,11 @@ static void	dollars_side(char *str, char *new_line, size_t *i, size_t *j)
 		else if (str[*i] == '$' && str[*i + 1] == '?' && !isinquote(str, *i,
 				SINGLE_QUOTE))
 			dollars_qmark(new_line, i, j);
-		// else if (str[*i] == '$' && !isalpha(str[*i + 1]))
-		// {
-		// 	new_line[(*j)++] = '$';
-		// 	*i += 1;
-		// }
+		else if (str[*i] == '$' && !isalpha(str[*i + 1]))
+		{
+			new_line[(*j)++] = '$';
+			*i += 1;
+		}
 		else if (str[*i] == '$' && !isinquote(str, *i, SINGLE_QUOTE))
 			dollars_token_copy(str, new_line, i, j);
 	}
