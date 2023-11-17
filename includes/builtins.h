@@ -1,5 +1,6 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
+# include <stdbool.h>
 # include <unistd.h>
 
 typedef struct s_key_val
@@ -73,6 +74,12 @@ char		**create_new_variable(t_key_val *vk, char **env);
 /// @param env value.
 /// @param i the position of the value.
 void		edit_variable(t_key_val *vk, char **env, int i);
+
+void		export_pars_err(char **av, int err);
+
+bool		export_pars(char *str, int *err, int ac_i);
+
+void		print_double_char_al(char **env);
 
 /// ======== ///
 ///   EXIT   ///

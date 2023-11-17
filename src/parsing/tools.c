@@ -1,35 +1,35 @@
 #include "minishell.h"
 
-void	print_cmd(t_command *lst)
-{
-	size_t		i;
-	size_t		j;
-	t_command	*head;
+// void	print_cmd(t_command *lst)
+// {
+// 	size_t		i;
+// 	size_t		j;
+// 	t_command	*head;
 
-	i = 0;
-	head = lst;
-	while (head)
-	{
-		printf("in: %d out: %d\n", head->stdin_, head->stdout_);
-		printf("tmp: command%lu : \n", i);
-		j = 0;
-		while (head->tmp && head->tmp[j])
-		{
-			printf("tmp: token%lu : %s\n", j, head->tmp[j]);
-			j++;
-		}
-		printf("cmd: command%lu : \n", i);
-		j = 0;
-		while (head->cmd && head->cmd[j])
-		{
-			printf("cmd: token%lu : %s\n", j, head->cmd[j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-		head = head->next;
-	}
-}
+// 	i = 0;
+// 	head = lst;
+// 	while (head)
+// 	{
+// 		printf("in: %d out: %d\n", head->stdin_, head->stdout_);
+// 		printf("tmp: command%lu : \n", i);
+// 		j = 0;
+// 		while (head->tmp && head->tmp[j])
+// 		{
+// 			printf("tmp: token%lu : %s\n", j, head->tmp[j]);
+// 			j++;
+// 		}
+// 		printf("cmd: command%lu : \n", i);
+// 		j = 0;
+// 		while (head->cmd && head->cmd[j])
+// 		{
+// 			printf("cmd: token%lu : %s\n", j, head->cmd[j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 		head = head->next;
+// 	}
+// }
 
 void	strnput(char *str, size_t len)
 {
@@ -103,7 +103,7 @@ void	tmp_to_cmd(t_command *head)
 	i = 0;
 	j = 0;
 	head->cmd = mms_alloc(count_nonerdt_token(head->tmp) + 1,
-							sizeof(char *));
+			sizeof(char *));
 	while (head->tmp && head->tmp[i])
 	{
 		if (isredirec(head->tmp[i]))

@@ -29,6 +29,7 @@ bool	heredoc_handler(t_command *head, char *fname, size_t i, int *fd)
 	if (WEXITSTATUS(get_infos()->latest_error_code) == 28)
 	{
 		mms_free(fname);
+		get_infos()->child = false;
 		return (false);
 	}
 	get_infos()->child = false;

@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 void	ft_env(int argc, char **argv, char **env)

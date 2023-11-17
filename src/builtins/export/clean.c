@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 void	clean_vk(t_key_val *vk, char **cpy_env)

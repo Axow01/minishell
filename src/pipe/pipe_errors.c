@@ -1,4 +1,3 @@
-
 #include "../../includes/minishell.h"
 
 bool	check_cmd_valid(t_command *cmd)

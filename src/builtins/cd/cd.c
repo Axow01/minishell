@@ -1,4 +1,3 @@
-
 #include "../../../includes/minishell.h"
 
 static char	*new_path(char *current, char *addition)
