@@ -95,7 +95,6 @@ bool	execution(t_infos *infos)
 			config_builtins_cmd(cmd_buffer, infos);
 		else
 			cmd_buffer->exec_cmd = cmd_accessible(cmd_buffer->cmd, F_OK | X_OK);
-		printf("Exec_cmd: %s\n", cmd_buffer->exec_cmd);
 		cmd_buffer->cmd_argv = cmd_buffer->cmd;
 		cmd_buffer->arg_count = len_double_char(cmd_buffer->cmd_argv);
 		cmd_buffer = cmd_buffer->next;
