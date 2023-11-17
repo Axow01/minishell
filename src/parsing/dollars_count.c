@@ -37,5 +37,5 @@ size_t	dollars_count(char *str)
 	errc = ft_itoa(get_infos()->latest_error_code);
 	dollars_count_logical(str, errc, &count);
 	errc = mms_free(errc);
-	return (count + 1);
+	return (count + 2);
 }

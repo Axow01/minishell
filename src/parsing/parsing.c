@@ -85,12 +85,14 @@ void	parsing(char *line)
 		return ;
 	init_cmd_struct(line);
 	replace_space(new, 0, len);
+	strnput(new, len);
+	printf("len : %zu\n", len);
 	if (isinquote(line, ft_strlen(line) - 1, QUOTES))
 		printf("%s(\"or')\n", ERROR_QUOTE_MSG);
 	else if (cmd_maker(new, len))
 	{
 		// printf("%s\n", line);
-		strnput(new, len);
+		// strnput(new, len);
 		// print_cmd(&get_infos()->cmd);
 		// printf("len : %zu\n", len);
 		get_infos()->child = true;
