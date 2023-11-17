@@ -139,6 +139,12 @@ void	print_double_char_al(char **env)
 	dc = (char **)ft_sfree_2d((void **)dc);
 }
 
+void init_export(int *err, int *ac_i)
+{
+	*err = -1;
+	*ac_i = 0;
+}
+
 void	ft_export(int ac, char **argv, char **env)
 {
 	char		**cpy_env;
@@ -147,10 +153,9 @@ void	ft_export(int ac, char **argv, char **env)
 	int			ac_i;
 	int			err;
 
-	err = -1;
-	ac_i = 0;
-	vk = NULL;
 	cpy_env = env;
+	init_export(&err, &ac_i);
+	vk = NULL;
 	if (ac == 1)
 		return (print_double_char_al(cpy_env));
 	while (argv[++ac_i] && ac > 1)
@@ -165,6 +170,6 @@ void	ft_export(int ac, char **argv, char **env)
 		else
 			edit_variable(vk, cpy_env, i);
 	}
-	export_pars_err(argv, err);
 	clean_vk(vk, cpy_env);
+	export_pars_err(argv, err);
 }
