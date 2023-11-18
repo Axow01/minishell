@@ -33,6 +33,7 @@ static void	run_fork(t_command *buf, t_infos *infos)
 
 	ft_setup_signal(CHILD);
 	close_unused_fd(buf);
+	pipe_fork_verif(infos, buf);
 	if (buf->stdout_ != STDOUT_FILENO)
 		dup2(buf->stdout_, STDOUT_FILENO);
 	if (buf->stdin_ != STDIN_FILENO)
